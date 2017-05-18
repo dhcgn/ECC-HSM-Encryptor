@@ -21,6 +21,8 @@ namespace Contract
         [JsonIgnore]
         [ProtoMember(2)]
         public Cargo Cargo { get; set; }
+
+        public int Version { get; set; }
     }
 
     [ProtoContract]
@@ -34,6 +36,8 @@ namespace Contract
 
         [ProtoMember(3)]
         public EncryptedData EncryptedData { get; set; }
+
+        public int Version { get; set; }
     }
 
     [ProtoContract]
@@ -44,6 +48,8 @@ namespace Contract
 
         [ProtoMember(2)]
         public byte[] Data { get; set; }
+
+        public int Version { get; set; }
     }
 
     [ProtoContract]
@@ -55,6 +61,8 @@ namespace Contract
 
         [ProtoMember(2)]
         public PublicKey PublicKey { get; set; }
+
+        public int Version { get; set; }
     }
 
     [ProtoContract]
@@ -65,6 +73,8 @@ namespace Contract
 
         [ProtoMember(2)]
         public byte[] Qy { get; set; }
+
+        public int Version { get; set; }
     }
 
     [ProtoContract]
@@ -75,13 +85,12 @@ namespace Contract
 
         [ProtoMember(2)]
         public int Proof { get; set; }
+
+        public int Version { get; set; }
     }
 
-    public class ProtoBase<T>
+    public abstract class ProtoBase<T>
     {
-        [ProtoMember(Int32.MaxValue)]
-        public int Version { get; set; }
-
         public byte[] ToProtoBufData()
         {
             var protoStream = new MemoryStream();

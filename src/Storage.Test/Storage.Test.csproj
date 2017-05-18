@@ -51,6 +51,10 @@
       <Project>{D47D8FD4-3D63-4172-8F12-470650DA225E}</Project>
       <Name>Contract</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Encryption\Encryption.csproj">
+      <Project>{a324cce8-8e12-4cac-9981-1c0c4a5ce57c}</Project>
+      <Name>Encryption</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Storage\Storage.csproj">
       <Project>{05eca464-d3b5-461c-b90d-1b5d0b01fd94}</Project>
       <Name>Storage</Name>

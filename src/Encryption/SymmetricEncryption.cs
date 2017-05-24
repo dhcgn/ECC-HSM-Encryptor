@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Encryption
 {
-    public partial class SymmetricEncryption
+    public class SymmetricEncryption
     {
         public static void Decrypt(Stream input, Stream output, string password)
         {

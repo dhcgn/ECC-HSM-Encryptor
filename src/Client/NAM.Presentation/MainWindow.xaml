@@ -1,0 +1,36 @@
+﻿<Window x:Class="NAM.Presentation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NAM.Presentation"
+        Background="#12000000"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        BorderThickness="1"
+        BorderBrush="Gray"
+        mc:Ignorable="d"
+        Loaded="MainWindow_OnLoaded"
+        Title="MainWindow" Height="404" Width="776">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0" Background="#659F9F9F" HorizontalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid HorizontalAlignment="Stretch" />
+            <Grid Grid.Row="1" HorizontalAlignment="Stretch">
+                <ListView Background="Transparent" HorizontalContentAlignment="Stretch" VerticalAlignment="Bottom" BorderBrush="Transparent">
+                    
+                    <local:MenuButton Text="Identities"></local:MenuButton>
+                    <local:MenuButton Text="Configuration"></local:MenuButton>
+                </ListView>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="1" Background="Transparent" />
+    </Grid>
+</Window>

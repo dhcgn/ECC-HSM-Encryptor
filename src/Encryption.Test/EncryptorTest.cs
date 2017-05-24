@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace Encryption.Test
 {
     [TestFixture]
-    public class CryptoFileInfo : TestBase
+    public class CryptoFileInfoTest : TestBase
     {
 
         [Test]
@@ -19,7 +19,7 @@ namespace Encryption.Test
             var data = Guid.NewGuid().ToByteArray();
             File.WriteAllBytes(this.InputFile, data);
 
-            var cryptoFileInfo = new SymmetricEncryption.CryptoFileInfo()
+            var cryptoFileInfo = new CryptoFileInfo()
             {
                 Iterations = Int32.MaxValue,
                 Version = Int32.MaxValue,
@@ -30,7 +30,7 @@ namespace Encryption.Test
             using (var rawFileStream = File.OpenRead(this.InputFile))
             using (var output = File.Create(this.OutputFile))
             {
-                SymmetricEncryption.CryptoFileInfo.WriteToDisk(cryptoFileInfo, output, rawFileStream);
+                CryptoFileInfo.WriteToDisk(cryptoFileInfo, output, rawFileStream);
             }
 
             Console.Out.WriteLine(nameof(this.OutputFile));
@@ -39,7 +39,7 @@ namespace Encryption.Test
 
             Assert.That(File.Exists(this.OutputFile), Is.True);
 
-            var magicNumber = SymmetricEncryption.CryptoFileInfo.MagicNumber;
+            var magicNumber = CryptoFileInfo.MagicNumber;
             Assert.That(outFileData.Take(magicNumber.Count), Is.EquivalentTo(magicNumber));
 
             var lenght = cryptoFileInfo.ToProtoBufData().Length;
@@ -52,7 +52,7 @@ namespace Encryption.Test
             var data = Guid.NewGuid().ToByteArray();
             var inputStream = new MemoryStream(data);
 
-            var cryptoFileInfo = new SymmetricEncryption.CryptoFileInfo()
+            var cryptoFileInfo = new CryptoFileInfo()
             {
                 Iterations = Int32.MaxValue,
                 Version = Int32.MaxValue,
@@ -62,7 +62,7 @@ namespace Encryption.Test
 
             using (var output = File.Create(this.OutputFile))
             {
-                SymmetricEncryption.CryptoFileInfo.WriteToDisk(cryptoFileInfo, output, inputStream);
+                CryptoFileInfo.WriteToDisk(cryptoFileInfo, output, inputStream);
             }
 
             Console.Out.WriteLine(nameof(this.OutputFile));
@@ -71,7 +71,7 @@ namespace Encryption.Test
 
             Assert.That(File.Exists(this.OutputFile), Is.True);
 
-            var magicNumber = SymmetricEncryption.CryptoFileInfo.MagicNumber;
+            var magicNumber = CryptoFileInfo.MagicNumber;
             Assert.That(outFileData.Take(magicNumber.Count), Is.EquivalentTo(magicNumber));
 
             var lenght = cryptoFileInfo.ToProtoBufData().Length;
@@ -84,7 +84,7 @@ namespace Encryption.Test
             var data = Guid.NewGuid().ToByteArray();
             File.WriteAllBytes(this.InputFile, data);
 
-            var cryptoFileInfo = new SymmetricEncryption.CryptoFileInfo()
+            var cryptoFileInfo = new CryptoFileInfo()
             {
                 Iterations = Int32.MaxValue,
                 Version = Int32.MaxValue,
@@ -95,17 +95,17 @@ namespace Encryption.Test
             using (var rawFileStream = File.OpenRead(this.InputFile))
             using (var output = File.Create(this.OutputFile))
             {
-                SymmetricEncryption.CryptoFileInfo.WriteToDisk(cryptoFileInfo, output, rawFileStream);
+                CryptoFileInfo.WriteToDisk(cryptoFileInfo, output, rawFileStream);
             }
 
             Console.Out.WriteLine(nameof(this.OutputFile));
             Console.Out.WriteLine(BitConverter.ToString(File.ReadAllBytes(this.OutputFile)));
 
-            SymmetricEncryption.CryptoFileInfo result;
+            CryptoFileInfo result;
             using (var raw = File.Create(this.RawFile))
             using (var input = File.OpenRead(this.OutputFile))
             {
-                result = SymmetricEncryption.CryptoFileInfo.LoadFromDisk(input, raw);
+                result = CryptoFileInfo.LoadFromDisk(input, raw);
             }
 
             Assert.That(File.Exists(this.RawFile), Is.True);
@@ -118,7 +118,7 @@ namespace Encryption.Test
             var data = Guid.NewGuid().ToByteArray();
             var inputStream = new MemoryStream(data);
 
-            var cryptoFileInfo = new SymmetricEncryption.CryptoFileInfo()
+            var cryptoFileInfo = new CryptoFileInfo()
             {
                 Iterations = Int32.MaxValue,
                 Version = Int32.MaxValue,
@@ -128,17 +128,17 @@ namespace Encryption.Test
 
             using (var output = File.Create(this.OutputFile))
             {
-                SymmetricEncryption.CryptoFileInfo.WriteToDisk(cryptoFileInfo, output, inputStream);
+                CryptoFileInfo.WriteToDisk(cryptoFileInfo, output, inputStream);
             }
 
             Console.Out.WriteLine(nameof(this.OutputFile));
             Console.Out.WriteLine(BitConverter.ToString(File.ReadAllBytes(this.OutputFile)));
 
-            SymmetricEncryption.CryptoFileInfo result;
+            CryptoFileInfo result;
             using (var raw = File.Create(this.RawFile))
             using (var input = File.OpenRead(this.OutputFile))
             {
-                result = SymmetricEncryption.CryptoFileInfo.LoadFromDisk(input, raw);
+                result = CryptoFileInfo.LoadFromDisk(input, raw);
             }
 
             Assert.That(File.Exists(this.RawFile), Is.True);

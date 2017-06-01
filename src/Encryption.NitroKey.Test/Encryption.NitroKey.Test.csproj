@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{90FFE4CE-ABAD-4402-9A6D-F7AFE42B5347}</ProjectGuid>
+    <ProjectGuid>{6ABB9C57-8743-47F7-A47B-0033C3697C39}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Storage.Test</RootNamespace>
-    <AssemblyName>Storage.Test</AssemblyName>
+    <RootNamespace>Encryption.NitroKey.Test</RootNamespace>
+    <AssemblyName>Encryption.NitroKey.Test</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -44,25 +44,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LocalStorageManagerTest.cs" />
+    <Compile Include="EllipticCurveCryptographerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contract\Contract.csproj">
       <Project>{D47D8FD4-3D63-4172-8F12-470650DA225E}</Project>
       <Name>Contract</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Encryption.NitroKey\Encryption.NitroKey.csproj">
+      <Project>{76666989-fa10-49e2-a5c5-43af0c5bf01c}</Project>
+      <Name>Encryption.NitroKey</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Encryption\Encryption.csproj">
       <Project>{a324cce8-8e12-4cac-9981-1c0c4a5ce57c}</Project>
       <Name>Encryption</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Storage\Storage.csproj">
-      <Project>{05eca464-d3b5-461c-b90d-1b5d0b01fd94}</Project>
-      <Name>Storage</Name>
+    <ProjectReference Include="..\TestBase\TestBase.csproj">
+      <Project>{4810f571-aec5-44bb-8409-482a1a9cea42}</Project>
+      <Name>TestBase</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

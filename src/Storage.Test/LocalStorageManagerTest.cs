@@ -24,7 +24,7 @@ namespace Storage.Test
             new LocalStorageManager("qwert").Add(new EcKeyPair());
             var result = new LocalStorageManager("qwert").GetAll<EcKeyPair>();
 
-            Assert.That(result.Count(), Is.EqualTo(2));
+            Assert.That(result.Count(), Is.EqualTo(1));
         }
     }
 }

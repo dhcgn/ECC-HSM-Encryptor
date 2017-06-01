@@ -1,0 +1,26 @@
+﻿<Window x:Class="EHF.Presentation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EHF.Presentation"
+        mc:Ignorable="d"
+        
+        DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModel}"
+        d:DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModel}"
+        
+        AllowDrop="True"
+        DragEnter="MainWindow_OnDragEnter"
+        DragLeave="MainWindow_OnDragLeave"
+        Drop="MainWindow_OnDrop"
+        Title="ECC HSM FileCrypter (Working title)" Height="156.126" Width="480.91">
+
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding StartCommand}" Key="Enter"/>
+        <KeyBinding Command="{Binding HelpCommand}" Key="F1"/>
+    </Window.InputBindings>
+    
+    <Grid>
+
+    </Grid>
+</Window>

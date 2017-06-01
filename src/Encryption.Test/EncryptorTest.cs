@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -148,10 +147,8 @@ namespace Encryption.Test
     }
 
     [TestFixture]
-    public class EncryptorTest :TestBase
+    public class SymmetricEncryptionTest : TestBase
     {
-      
-
         [Test]
         public void GetRandomDataTest()
         {

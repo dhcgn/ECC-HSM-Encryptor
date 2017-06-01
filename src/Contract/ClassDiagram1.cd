@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Contract.Message">
+    <Position X="7.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAgAAAAAAAAAAAAAAAAAAAAABAAAAACAAAAA=</HashCode>
+      <FileName>Message.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ProofOfWork" />
+      <Property Name="Cargo" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Contract.ProofOfWork" Collapsed="true">
+    <Position X="10.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAQAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ProofOfWork.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Contract.Cargo" Collapsed="true">
+    <Position X="11" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAACAAAAAAEAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Cargo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Contract.EncryptedData">
+    <Position X="14.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAgAAAAAAA=</HashCode>
+      <FileName>EncryptedData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Contract.EcKeyPair">
+    <Position X="14.5" Y="2.25" Width="1.5" />
+    <AssociationLine Name="PublicKey" Type="Contract.PublicKey" FixedToPoint="true">
+      <Path>
+        <Point X="16" Y="3.128" />
+        <Point X="17" Y="3.128" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>IAAAAAAIARAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>EcKeyPair.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PublicKey" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Contract.PublicKey">
+    <Position X="17" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAACAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PublicKey.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -77,5 +77,26 @@ namespace Encryption.NitroKey.Test
 
             Assert.That(derivedSecret1, Has.Length.GreaterThan(0));
         }
+
+        [Test]
+        public void GetEcKeyPairInfos()
+        {
+            var tokens = Encryption.NitroKey.EllipticCurveCryptographer.GetEcKeyPairInfos();
+
+            for (var index = 0; index < tokens.Length; index++)
+            {
+                var token = tokens[index];
+                Console.Out.WriteLine($"{index+1}. " + "\r\n"+
+                                      $"Label:       {token.Label}, " + "\r\n" +
+                                      $"EC Params:   {base.ToHexString(token.ECParamsData)}" + "\r\n" +
+                                      $"Curve Desc:  {token.CurveDescription}" + "\r\n" +
+                                      $"Token Label: {token.TokenLabel}" + "\r\n" +
+                                      $"Token Serial Number: \"{token.TokenSerialNumber}" + "\r\n" +
+                                      $"PublicKey:\r\n" +
+                                      $"{token.PublicKey.ToArmor()}");
+            }
+
+            Assert.That(tokens.Length, Is.GreaterThan(0));
+        }
     }
 }

@@ -41,6 +41,57 @@ namespace Encryption.NitroKey
             return requiredAttributes[0].GetValueAsByteArray();
         }
 
+        private static string GetStringFromObject(ObjectHandle handle, Session session, CKA type)
+        {
+            var attributes = new List<ulong> { (ulong)type };
+            var requiredAttributes = session.GetAttributeValue(handle, attributes);
+            return requiredAttributes[0].GetValueAsString();
+        }
+
+        public static EcKeyPairInfo[] GetEcKeyPairInfos()
+        {
+            var result = new List<EcKeyPairInfo>();
+
+            using (Pkcs11 pk = new Pkcs11(LibraryPath, false))
+            {
+                var slots = pk.GetSlotList(true).Where(slot1 => slot1.GetSlotInfo().ManufacturerId == "Nitrokey");
+                foreach (var slot in slots)
+                {
+                    using (Session session = slot.OpenSession(true))
+                    {
+                        var slotInfo = slot.GetSlotInfo();
+                        var tokenInfo = slot.GetTokenInfo();
+
+                        var objectAttributes = new List<ObjectAttribute>
+                        {
+                            new ObjectAttribute(CKA.CKA_CLASS, CKO.CKO_PUBLIC_KEY),
+                            new ObjectAttribute(CKA.CKA_TOKEN, true)
+                        };
+
+                        foreach (var handle in session.FindAllObjects(objectAttributes))
+                        {
+                            var label = GetStringFromObject(handle, session, CKA.CKA_LABEL);
+                            var @params = GetDataFromObject(handle, session, CKA.CKA_EC_PARAMS);
+                            var ecPoint = GetDataFromObject(handle, session, CKA.CKA_EC_POINT);
+
+                            result.Add(new EcKeyPairInfo
+                            {
+                                Label = label,
+                                ECParamsData=@params,
+                                CurveDescription = Contract.CurveHelper.GetCurveDescriptionFromEcParam(@params),
+                                ManufacturerId = slotInfo.ManufacturerId,
+                                TokenLabel = tokenInfo.Label,
+                                TokenSerialNumber = tokenInfo.SerialNumber,
+                                PublicKey = EcKeyPair.CreateFromAnsi(ecPoint),
+                        });
+                        }
+                    }
+                }
+            }
+
+            return result.ToArray();
+        }
+
         public static EcKeyPair GetPublicKey(string name)
         {
             byte[] ecPoint = null;

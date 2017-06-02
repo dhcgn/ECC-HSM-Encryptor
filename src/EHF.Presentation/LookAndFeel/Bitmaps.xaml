@@ -7,5 +7,8 @@
     <BitmapImage x:Key="BitmapSetting" UriSource="Bitmaps/Settings-96.png"></BitmapImage>
     <BitmapImage x:Key="BitmapOpen" UriSource="Bitmaps/Open-100.png"></BitmapImage>
     <BitmapImage x:Key="BitmapRefresh" UriSource="Bitmaps/Refresh-96.png"></BitmapImage>
+    <BitmapImage x:Key="BitmapKey" UriSource="Bitmaps/Key 2-96.png"></BitmapImage>
+    <BitmapImage x:Key="BitmapSupport" UriSource="Bitmaps/Support-96.png"></BitmapImage>
+    <BitmapImage x:Key="BitmapIcon" UriSource="Bitmaps/web_hi_res_512.png"></BitmapImage>
 
 </ResourceDictionary>

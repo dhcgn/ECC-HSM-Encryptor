@@ -49,6 +49,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>web_hi_res_512_jS1_icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
@@ -102,6 +105,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LookAndFeel\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LookAndFeel\Values.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -166,6 +173,21 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="LookAndFeel\Bitmaps\Refresh-96.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LookAndFeel\Bitmaps\Key 2-96.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LookAndFeel\Bitmaps\Support-96.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LookAndFeel\Bitmaps\Keyhole Shield Filled_100.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LookAndFeel\Bitmaps\web_hi_res_512.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="web_hi_res_512_jS1_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterResolveReferences" Condition="">

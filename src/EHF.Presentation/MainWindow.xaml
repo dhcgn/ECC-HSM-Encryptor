@@ -13,7 +13,14 @@
         DragEnter="MainWindow_OnDragEnter"
         DragLeave="MainWindow_OnDragLeave"
         Drop="MainWindow_OnDrop"
-        Title="ECC HSM FileCrypter (Working title)" Height="188.439" Width="681.428">
+        Title="ECC HSM FileCrypter (Working title)" 
+        Icon="{StaticResource BitmapIcon}"
+        
+        MinHeight="225"
+        MaxWidth="680"
+        
+        Height="225"
+        Width="680">
 
     <Window.InputBindings>
         <KeyBinding Command="{Binding StartCommand}" Key="Enter" />
@@ -24,8 +31,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -34,11 +42,11 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="25" />
                 <ColumnDefinition />
-                <ColumnDefinition Width="25" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Image Grid.Column="0" Margin="5" Source="{StaticResource BitmapImport}" />
             <TextBox Grid.Column="1" Text="" Margin="5" />
-            <Button Grid.Column="2" Margin="5" Background="Transparent">
+            <Button Grid.Column="2" Style="{StaticResource IconButtonStyle}">
                 <Image Source="{StaticResource BitmapOpen}" />
             </Button>
         </Grid>
@@ -46,15 +54,27 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="25" />
                 <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Image Grid.Column="0" Margin="5" Source="{StaticResource BitmapKey}" />
+            <WrapPanel Grid.Column="1" Margin="5" />
+            <Button Grid.Column="2" Style="{StaticResource IconButtonStyle}">
+                <Image Source="{StaticResource BitmapSupport}" />
+            </Button>
+        </Grid>
+        <Grid Grid.Row="2" Margin="5">
+            <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="25" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Image Grid.Column="0" Source="{StaticResource BitmapUsb}" Margin="5" />
             <ComboBox Grid.Column="1" Margin="5" />
-            <Button Grid.Column="2" Margin="5" Background="Transparent">
+            <Button Grid.Column="2" Style="{StaticResource IconButtonStyle}">
                 <Image Source="{StaticResource BitmapRefresh}" />
             </Button>
         </Grid>
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="3" Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -65,16 +85,16 @@
             <Button Grid.Column="1" Content="encrypt" Height="40" />
             <Button Grid.Column="3" Content="decrypt" Height="40" />
         </Grid>
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="3" Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" Height="25" Width="25" Background="Transparent" Margin="5" >
+            <Button Grid.Column="1" Style="{StaticResource IconButtonStyle}" >
                 <Image Source="{StaticResource BitmapSetting}" />
             </Button>
         </Grid>
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="4">
             <ProgressBar Height="10" Value="50" />
         </Grid>
     </Grid>

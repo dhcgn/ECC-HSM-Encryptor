@@ -114,6 +114,10 @@
     <Compile Include="Views\PasswordWindow.xaml.cs">
       <DependentUpon>PasswordWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PublicKeySettingsWindows.xaml.cs">
+      <DependentUpon>PublicKeySettingsWindows.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WindowInvoker.cs" />
     <Page Include="LookAndFeel\Bitmaps.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -151,6 +155,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\PasswordWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PublicKeySettingsWindows.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

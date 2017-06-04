@@ -100,7 +100,7 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
-            <Button Grid.Column="2" Style="{StaticResource IconButtonStyle}">
+            <Button Grid.Column="2" Style="{StaticResource IconButtonStyle}" Command="{Binding PublicKeySettingsCommand}">
                 <Image Source="{StaticResource BitmapSupport}" />
             </Button>
         </Grid>

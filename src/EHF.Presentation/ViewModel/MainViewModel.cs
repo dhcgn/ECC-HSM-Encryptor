@@ -59,6 +59,7 @@ namespace EHF.Presentation.ViewModel
             else
             {
                 this.LoadedCommand = new RelayCommand(this.LoadedCommandHandling);
+                this.PublicKeySettingsCommand = new RelayCommand(this.PublicKeySettingsCommandHandling);
                 this.EncryptCommand = new RelayCommand(this.EncryptCommandHandling, this.EncryptCommandCanExecute);
                 this.DecryptCommand = new RelayCommand(this.DecryptCommandHandling, this.DecryptCommandCanExecute);
 
@@ -68,6 +69,11 @@ namespace EHF.Presentation.ViewModel
                     this.DecryptCommand.RaiseCanExecuteChanged();
                 };
             }
+        }
+
+        private void PublicKeySettingsCommandHandling()
+        {
+            WindowInvoker.ShowPublicKeySettingsWindows();
         }
 
         private bool DecryptCommandCanExecute()
@@ -121,6 +127,7 @@ namespace EHF.Presentation.ViewModel
         public RelayCommand DecryptCommand { get; set; }
 
         public RelayCommand EncryptCommand { get; set; }
+        public RelayCommand PublicKeySettingsCommand { get; set; }
 
         private async void LoadedCommandHandling()
         {

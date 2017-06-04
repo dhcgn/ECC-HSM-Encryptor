@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using GalaSoft.MvvmLight.Threading;
 using Microsoft.HockeyApp;
 
 namespace EHF.Presentation
@@ -20,6 +21,12 @@ namespace EHF.Presentation
         {
             EmbeddedLibsResolver.Init();
             InitHockeyClient();
+            InitializeDispatcherHelper();
+        }
+
+        private static void InitializeDispatcherHelper()
+        {
+            DispatcherHelper.Initialize();
         }
 
         private static void InitHockeyClient()
@@ -50,6 +57,8 @@ namespace EHF.Presentation
 
                 AppDomain.CurrentDomain.AssemblyResolve += (s, e) =>
                 {
+                    Console.Out.WriteLine("AssemblyResolve Name: " + e.Name);
+
                     var assemblyName = new AssemblyName(e.Name);
                     var path = $"{assemblyName.Name}.dll";
 

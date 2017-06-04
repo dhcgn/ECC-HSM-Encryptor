@@ -9,5 +9,7 @@ namespace Contract
         public string TokenLabel { get; set; }
         public string TokenSerialNumber { get; set; }
         public EcKeyPair PublicKey { get; set; }
+
+        public string DisplayName => $"{Label}-{TokenLabel}-{TokenSerialNumber}";
     }
 }

@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Encryption.NitroKey.Test
@@ -95,6 +96,8 @@ namespace Encryption.NitroKey.Test
                                       $"PublicKey:\r\n" +
                                       $"{token.PublicKey.ToArmor()}");
             }
+
+            Console.WriteLine(JsonConvert.SerializeObject(tokens,Formatting.Indented));
 
             Assert.That(tokens.Length, Is.GreaterThan(0));
         }

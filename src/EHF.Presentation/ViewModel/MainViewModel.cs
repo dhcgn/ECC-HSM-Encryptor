@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Contract;
+using EHF.Presentation.DesignData;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
@@ -23,7 +24,7 @@ namespace EHF.Presentation.ViewModel
         {
             if (this.IsInDesignMode || IsInDesignModeStatic)
             {
-                #region DesignData
+                #region Design Data
 
                 this.FileLength = 10324313;
                 this.FilePath = @"C:\temp\document.docx";
@@ -31,28 +32,19 @@ namespace EHF.Presentation.ViewModel
                 {
                     new EcKeyPairInfoViewModel()
                     {
-                        KeyPairInfos = new EcKeyPairInfo()
-                        {
-                            Label = "Test Key"
-                        }
+                        KeyPairInfos = DesignDataFactory.CreateDesignData<EcKeyPairInfo>()
                     }
                 };
                 this.EcKeyPairInfos = new List<EcKeyPairInfo>()
                 {
-                    new EcKeyPairInfo()
-                    {
-                        Label = "Label",
-                        TokenLabel = "Tokenlabel",
-                        ManufacturerId = "NitroKey",
-                        TokenSerialNumber = "31431434",
-                    }
+                    DesignDataFactory.CreateDesignData<EcKeyPairInfo>()
                 };
 
                 #endregion
             }
             else
             {
-                LoadedCommand = new RelayCommand(this.LoadedCommandHandling);
+                this.LoadedCommand = new RelayCommand(this.LoadedCommandHandling);
             }
         }
 
@@ -102,8 +94,6 @@ namespace EHF.Presentation.ViewModel
         }
 
         private bool showDropPanel;
-
-
         public bool ShowDropPanel
         {
             get => this.showDropPanel;
@@ -112,7 +102,7 @@ namespace EHF.Presentation.ViewModel
 
         public void DropFiles(string[] files)
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }

@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace Encryption.NitroKey.Test
 {
     [TestFixture]
-    public class EllipticCurveCryptographerTest  : TestBase.TestBase
+    public class EllipticCurveCryptographerTest  : TestHelper.Helper
     {
         [Test]
         public void ExtractPublicKey()

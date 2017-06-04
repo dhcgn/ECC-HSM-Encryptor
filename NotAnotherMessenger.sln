@@ -31,7 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encryption.NitroKey.Test", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{4EC2DEF2-8A0C-446F-8D18-63556DFD7176}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestBase", "src\TestBase\TestBase.csproj", "{4810F571-AEC5-44BB-8409-482A1A9CEA42}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHelper", "src\TestBase\TestHelper.csproj", "{4810F571-AEC5-44BB-8409-482A1A9CEA42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -6,6 +6,12 @@
         <Setter Property="RenderOptions.BitmapScalingMode" Value="Fant" />
     </Style>
 
+    <Style TargetType="Image" x:Key="SmallIdenticonStyle">
+        <Setter Property="RenderOptions.BitmapScalingMode" Value="Fant" />
+        <Setter Property="Height" Value="25" />
+        <Setter Property="Width" Value="25" />
+    </Style>
+
 
     <Style TargetType="Button" x:Key="IconButtonStyle">
         <Setter Property="RenderOptions.BitmapScalingMode" Value="Fant" />

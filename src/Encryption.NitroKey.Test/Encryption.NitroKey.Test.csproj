@@ -66,9 +66,9 @@
       <Project>{a324cce8-8e12-4cac-9981-1c0c4a5ce57c}</Project>
       <Name>Encryption</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TestBase\TestBase.csproj">
+    <ProjectReference Include="..\TestBase\TestHelper.csproj">
       <Project>{4810f571-aec5-44bb-8409-482a1a9cea42}</Project>
-      <Name>TestBase</Name>
+      <Name>TestHelper</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace Encryption.Test
 {
     [TestFixture]
-    public class EllipticCurveCryptograperTest
+    public class EllipticCurveCryptograperTest : TestHelper.Helper
     {
         [OneTimeSetUp]
         public void OneTimeSetUp()
@@ -47,6 +47,10 @@ namespace Encryption.Test
             Console.Out.WriteLine(Convert.ToBase64String(keyPair.ToProtoBufData()));
             Console.Out.WriteLine($"----------- armor ({keyPair.ToArmor().Length})------------");
             Console.Out.WriteLine(keyPair.ToArmor());
+            Console.Out.WriteLine($"----------- ToAns1 ({keyPair.ToAns1().Length})------------");
+            Console.Out.WriteLine(base.ToHexString(keyPair.ToAns1()));
+            Console.Out.WriteLine($"----------- ToDre ({keyPair.ToDre().Length})------------");
+            Console.Out.WriteLine(base.ToHexString(keyPair.ToDre()));
         }
 
         [Test]

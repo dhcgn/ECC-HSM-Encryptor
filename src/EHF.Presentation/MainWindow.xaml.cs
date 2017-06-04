@@ -29,13 +29,13 @@ namespace EHF.Presentation
         private void MainWindow_OnDragEnter(object sender, DragEventArgs e)
         {
             var viewModel = (MainViewModel)DataContext;
-            viewModel.ShowDropPanel = true;
+           // viewModel.ShowDropPanel = true;
         }
 
         private void MainWindow_OnDragLeave(object sender, DragEventArgs e)
         {
             var viewModel = (MainViewModel)DataContext;
-            viewModel.ShowDropPanel = false;
+           // viewModel.ShowDropPanel = false;
         }
 
         private void MainWindow_OnDrop(object sender, DragEventArgs e)
@@ -45,8 +45,8 @@ namespace EHF.Presentation
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
                 var viewModel = (MainViewModel)DataContext;
-                viewModel.DropFiles(files);
-                viewModel.ShowDropPanel = false;
+                //viewModel.DropFiles(files);
+               // viewModel.ShowDropPanel = false;
             }
         }
     }

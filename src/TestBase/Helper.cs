@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestBase
+namespace TestHelper
 {
-    public class TestBase
+    public class Helper
     {
         public string ToHexString(byte[] data)
         {

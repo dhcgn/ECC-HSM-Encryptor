@@ -13,7 +13,7 @@
         DragEnter="MainWindow_OnDragEnter"
         DragLeave="MainWindow_OnDragLeave"
         Drop="MainWindow_OnDrop"
-        Title="ECC HSM FileCrypter (Working title)"
+        Title="ECC HSM FileCrypter (Working title) ALPHA 0.0.1"
         Icon="{StaticResource BitmapIcon}"
 
         MinHeight="225"
@@ -51,7 +51,7 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Image Grid.Column="0" Margin="5" Source="{StaticResource BitmapImport}" />
+            <Image Grid.Column="0" Margin="5" Source="{StaticResource BitmapImport}" ToolTip="{StaticResource TooltipFile}" />
             <TextBox Grid.Column="1" Margin="5" Text="{Binding FilePath, Mode=TwoWay}" />
             <Button Grid.Column="2" Style="{StaticResource IconButtonStyle}">
                 <Image Source="{StaticResource BitmapOpen}" />
@@ -63,19 +63,26 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Image Grid.Column="0" Margin="5" Source="{StaticResource BitmapKey}" />
+            <Image Grid.Column="0" Margin="5" Source="{StaticResource BitmapKey}" ToolTip="{StaticResource TooltipPublicKey}" />
             <ItemsControl Grid.Column="1" Margin="5" ItemsSource="{Binding EcKeyPairInfoViewModels, Mode=TwoWay}"
                           BorderThickness="1" BorderBrush="Black">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border>
+                        <Border Background="#588FBC8F" Margin="2" Padding="2">
                             <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition />
+                                    <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <CheckBox IsChecked="{Binding IsSelected}"></CheckBox>
-                                <TextBlock Grid.Column="1" Text="{Binding KeyPairInfos.Label}" />
+                                <CheckBox Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" IsChecked="{Binding IsSelected}"></CheckBox>
+                                <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Source="{Binding KeyPairInfos.PublicKey.ToJson, Converter={StaticResource IdenticonConverter}}" Style="{StaticResource SmallIdenticonStyle}" />
+                                <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding KeyPairInfos.Label}" />
+                                <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding KeyPairInfos.DisplayName}" />
                             </Grid>
                         </Border>
                     </DataTemplate>
@@ -96,7 +103,7 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Image Grid.Column="0" Source="{StaticResource BitmapUsb}" Margin="5" />
+            <Image Grid.Column="0" Source="{StaticResource BitmapUsb}" Margin="5" ToolTip="{StaticResource TooltipHardware}" />
             <ComboBox Grid.Column="1" Margin="5" ItemsSource="{Binding EcKeyPairInfos}" DisplayMemberPath="DisplayName" />
             <Button Grid.Column="2" Style="{StaticResource IconButtonStyle}">
                 <Image Source="{StaticResource BitmapRefresh}" />

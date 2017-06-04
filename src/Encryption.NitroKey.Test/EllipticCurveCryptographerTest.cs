@@ -48,7 +48,7 @@ namespace Encryption.NitroKey.Test
 
             var salt = Random.CreateSalt();
 
-            var derivedSecret1 = Encryption.EllipticCurveCryptographer.DeriveSecret(alice, bob.ExportPublicKey(), salt);
+            var derivedSecret1 = Encryption.EllipticCurveCryptographer.DeriveSecret(alice, bob.ExportPublicKey());
             var derivedSecret2 = Encryption.NitroKey.EllipticCurveCryptographer.DeriveSecret("Brainpool #1", alice.ExportPublicKey());
 
             Console.Out.WriteLine($"derivedSecret NET length: {derivedSecret1?.Length * 8} bit");
@@ -71,7 +71,7 @@ namespace Encryption.NitroKey.Test
 
             var salt = Random.CreateSalt();
 
-            var derivedSecret1 = Encryption.EllipticCurveCryptographer.DeriveSecret(alice, bob.ExportPublicKey(), salt);
+            var derivedSecret1 = Encryption.EllipticCurveCryptographer.DeriveSecret(alice, bob.ExportPublicKey());
 
             Console.Out.WriteLine($"derivedSecret length: {derivedSecret1?.Length * 8} bit");
             Console.Out.WriteLine($"derivedSecret1 : {Convert.ToBase64String(derivedSecret1).Substring(0, 16)} ...");
@@ -93,6 +93,7 @@ namespace Encryption.NitroKey.Test
                                       $"Curve Desc:  {token.CurveDescription}" + "\r\n" +
                                       $"Token Label: {token.TokenLabel}" + "\r\n" +
                                       $"Token Serial Number: \"{token.TokenSerialNumber}" + "\r\n" +
+                                      $"ManufacturerId:      \"{token.ManufacturerId}" + "\r\n" +
                                       $"PublicKey:\r\n" +
                                       $"{token.PublicKey.ToArmor()}");
             }

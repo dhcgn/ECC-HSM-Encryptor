@@ -76,8 +76,8 @@ namespace Encryption.Test
                 rngCsp.GetBytes(salt);
             }
 
-            var derivedSecret1 = EllipticCurveCryptographer.DeriveSecret(alice, bob.ExportPublicKey(), salt);
-            var derivedSecret2 = EllipticCurveCryptographer.DeriveSecret(bob, alice.ExportPublicKey(), salt);
+            var derivedSecret1 = EllipticCurveCryptographer.DeriveSecret(alice, bob.ExportPublicKey());
+            var derivedSecret2 = EllipticCurveCryptographer.DeriveSecret(bob, alice.ExportPublicKey());
 
             Console.Out.WriteLine($"derivedSecret length: {derivedSecret1?.Length * 8} bit");
 
@@ -88,6 +88,17 @@ namespace Encryption.Test
             Assert.That(derivedSecret2, Has.Length.GreaterThan(0));
 
             Assert.That(derivedSecret1, Is.EquivalentTo(derivedSecret2));
+        }
+
+
+        [Test]
+        public void Derive()
+        {
+            var alice = EllipticCurveCryptographer.CreateKeyPair(true);
+            var bob = EllipticCurveCryptographer.CreateKeyPair(true);
+            var guenther = EllipticCurveCryptographer.CreateKeyPair(true);
+
+            var temp = EllipticCurveCryptographer.DeriveSecretWithEphemeralKey(alice.ExportPublicKey(), bob.ExportPublicKey(), guenther.ExportPublicKey());
         }
     }
 }

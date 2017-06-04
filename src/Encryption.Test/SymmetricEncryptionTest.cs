@@ -35,12 +35,35 @@ namespace Encryption.Test
         }
 
         [Test]
-        public void EncryptDecryptTest()
+        public void EncryptDecryptWithPasswordTest()
         {
             var data = Guid.NewGuid().ToByteArray();
             File.WriteAllBytes(this.InputFile, data);
 
             var pwd = Guid.NewGuid().ToString();
+
+            using (var input = File.OpenRead(this.InputFile))
+            using (var output = File.Create(this.OutputFile))
+            {
+                SymmetricEncryption.Encrypt(input, output, pwd);
+            }
+
+            using (var input = File.OpenRead(this.OutputFile))
+            using (var output = File.Create(this.ResultFile))
+            {
+                SymmetricEncryption.Decrypt(input, output, pwd);
+            }
+
+            Assert.That(data, Is.EquivalentTo(File.ReadAllBytes(this.ResultFile)));
+        }
+
+        [Test]
+        public void EncryptDecryptWithKeyTest()
+        {
+            var data = Guid.NewGuid().ToByteArray();
+            File.WriteAllBytes(this.InputFile, data);
+
+            var pwd = Encryption.Random.CreateData(512);
 
             using (var input = File.OpenRead(this.InputFile))
             using (var output = File.Create(this.OutputFile))

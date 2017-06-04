@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,9 +14,16 @@ using Newtonsoft.Json;
 
 namespace EHF.Presentation.ViewModel
 {
-    public class EcKeyPairInfoViewModel
+    public class EcKeyPairInfoViewModel : ViewModelBase
     {
-        public bool IsSelected { get; set; }
+        private bool isSelected;
+
+        public bool IsSelected
+        {
+            get => this.isSelected;
+            set => base.Set(ref this.isSelected, value);
+        }
+
         public EcKeyPairInfo KeyPairInfos { get; set; }
     }
 
@@ -28,53 +37,134 @@ namespace EHF.Presentation.ViewModel
 
                 this.FileLength = 10324313;
                 this.FilePath = @"C:\temp\document.docx";
-                this.EcKeyPairInfoViewModels = new List<EcKeyPairInfoViewModel>()
+                this.PublicKeys = new ObservableCollection<EcKeyPairInfoViewModel>()
                 {
                     new EcKeyPairInfoViewModel()
                     {
-                        KeyPairInfos = DesignDataFactory.CreateDesignData<EcKeyPairInfo>()
-                    }
+                        KeyPairInfos = DesignDataFactory.CreateDesignData<EcKeyPairInfo>("My Key #1", "Token White", "DENK0100123"),
+                        IsSelected = true,
+                    },
+                    new EcKeyPairInfoViewModel()
+                    {
+                        KeyPairInfos = DesignDataFactory.CreateDesignData<EcKeyPairInfo>("My Key #2", "Token White", "DENK0100123"),
+                        IsSelected = false,
+                    },
+                    new EcKeyPairInfoViewModel()
+                    {
+                        KeyPairInfos = DesignDataFactory.CreateDesignData<EcKeyPairInfo>("My Key #3", "Token Black", "DENK0100321"),
+                        IsSelected = false,
+                    },
                 };
-                this.EcKeyPairInfos = new List<EcKeyPairInfo>()
+                this.AvailableHardwareTokens = new List<EcKeyPairInfo>()
                 {
-                    DesignDataFactory.CreateDesignData<EcKeyPairInfo>()
+                    DesignDataFactory.CreateDesignData<EcKeyPairInfo>("My Key #1", "Token White", "DENK0100123"),
+                    DesignDataFactory.CreateDesignData<EcKeyPairInfo>("My Key #3", "Token Black", "DENK0100321"),
                 };
+                this.SelectedAvailableHardwareToken = this.AvailableHardwareTokens.First();
 
                 #endregion
             }
             else
             {
                 this.LoadedCommand = new RelayCommand(this.LoadedCommandHandling);
+                this.EncryptCommand = new RelayCommand(this.EncryptCommandHandling, this.EncryptCommandCanExecute);
+                this.DecryptCommand = new RelayCommand(this.DecryptCommandHandling, this.DecryptCommandCanExecute);
+
+                this.PropertyChanged += (sender, args) =>
+                {
+                    this.EncryptCommand.RaiseCanExecuteChanged();
+                    this.DecryptCommand.RaiseCanExecuteChanged();
+                };
             }
         }
+
+        private bool DecryptCommandCanExecute()
+        {
+            if (!File.Exists(this.FilePath))
+                return false;
+
+            if (this.SelectedAvailableHardwareToken == null)
+                return false;
+
+            return true;
+        }
+
+        private bool EncryptCommandCanExecute()
+        {
+            if (!File.Exists(this.FilePath))
+                return false;
+
+            if (!this.PublicKeys.Any(model => model.IsSelected))
+                return false;
+
+            return true;
+        }
+
+        private void DecryptCommandHandling()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void EncryptCommandHandling()
+        {
+            throw new NotImplementedException();
+        }
+
+        public RelayCommand DecryptCommand { get; set; }
+
+        public RelayCommand EncryptCommand { get; set; }
 
         private async void LoadedCommandHandling()
         {
             var loadedKeys = await Task.Run(() => new Storage.LocalStorageManager().GetAll<EcKeyPairInfoViewModel>().ToArray());
             var nitroKeys = await Task.Run(() => Encryption.NitroKey.EllipticCurveCryptographer.GetEcKeyPairInfos());
 
-            DispatcherHelper.CheckBeginInvokeOnUI(() => { this.EcKeyPairInfoViewModels = new List<EcKeyPairInfoViewModel>(loadedKeys); });
-            DispatcherHelper.CheckBeginInvokeOnUI(() => { this.EcKeyPairInfos = new List<EcKeyPairInfo>(nitroKeys); });
+            DispatcherHelper.CheckBeginInvokeOnUI(() => { this.PublicKeys = new ObservableCollection<EcKeyPairInfoViewModel>(loadedKeys); });
+            DispatcherHelper.CheckBeginInvokeOnUI(() => { this.AvailableHardwareTokens = new List<EcKeyPairInfo>(nitroKeys); });
+            DispatcherHelper.CheckBeginInvokeOnUI(() => { this.SelectedAvailableHardwareToken = this.AvailableHardwareTokens.FirstOrDefault(); });
         }
 
-        private List<EcKeyPairInfo> ecKeyPairInfos;
+        private List<EcKeyPairInfo> availableHardwareTokens;
 
-        public List<EcKeyPairInfo> EcKeyPairInfos
+        public List<EcKeyPairInfo> AvailableHardwareTokens
         {
-            get => this.ecKeyPairInfos;
-            set => this.Set(ref this.ecKeyPairInfos, value);
+            get => this.availableHardwareTokens;
+            set => this.Set(ref this.availableHardwareTokens, value);
+        }
+
+        private EcKeyPairInfo selectedAvailableHardwareToken;
+
+        public EcKeyPairInfo SelectedAvailableHardwareToken
+        {
+            get => this.selectedAvailableHardwareToken;
+            set => this.Set(ref this.selectedAvailableHardwareToken, value);
         }
 
         public RelayCommand StartCommand { get; set; }
         public RelayCommand LoadedCommand { get; set; }
         public RelayCommand HelpCommand { get; set; }
 
-        private List<EcKeyPairInfoViewModel> ecKeyPairInfoViewModels;
+        private ObservableCollection<EcKeyPairInfoViewModel> publicKeys;
 
-        public List<EcKeyPairInfoViewModel> EcKeyPairInfoViewModels
+        public ObservableCollection<EcKeyPairInfoViewModel> PublicKeys
         {
-            get => this.ecKeyPairInfoViewModels;
-            set => this.Set(ref this.ecKeyPairInfoViewModels, value);
+            get => this.publicKeys;
+            set
+            {
+                if(this.publicKeys != null)
+                    this.publicKeys.CollectionChanged -= this.PublicKeysCollectionChanged;
+
+                this.Set(ref this.publicKeys, value);
+
+                if (this.publicKeys != null)
+                    this.publicKeys.CollectionChanged += this.PublicKeysCollectionChanged;
+            }
+        }
+
+        private void PublicKeysCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            this.EncryptCommand.RaiseCanExecuteChanged();
+            this.DecryptCommand.RaiseCanExecuteChanged();
         }
 
         private long fileLength;
@@ -90,10 +180,11 @@ namespace EHF.Presentation.ViewModel
         public string FilePath
         {
             get => this.filePath;
-            set => base.Set(ref this.filePath, value);
+            set => this.Set(ref this.filePath, value);
         }
 
         private bool showDropPanel;
+
         public bool ShowDropPanel
         {
             get => this.showDropPanel;
@@ -102,7 +193,7 @@ namespace EHF.Presentation.ViewModel
 
         public void DropFiles(string[] files)
         {
-            
+            this.FilePath = files.FirstOrDefault();
         }
     }
 }

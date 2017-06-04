@@ -45,7 +45,7 @@ namespace EHF.Presentation
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
                 var viewModel = (MainViewModel)DataContext;
-                //viewModel.DropFiles(files);
+                viewModel.DropFiles(files);
                // viewModel.ShowDropPanel = false;
             }
         }

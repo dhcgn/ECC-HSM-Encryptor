@@ -1,33 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Contract;
+using Encryption.NitroKey;
 using Newtonsoft.Json;
 
 namespace EHF.Presentation.DesignData
 {
     public static class DesignDataFactory
     {
-        public static T CreateDesignData<T>() where T : class
+        public static T CreateDesignData<T>(params string[] propertyValues) where T : class
         {
             if (typeof(T).Name.Contains("EcKeyPairInfo"))
             {
+                var seed = Encoding.UTF8.GetBytes(propertyValues.Aggregate((s, s1) => s + s1));
+                seed = SHA1.Create().ComputeHash(seed);
+                var key = ToHexString(seed);
+
+                if(!KeyStorage.ContainsKey(key))
+                    KeyStorage.Add(key, Encryption.EllipticCurveCryptographer.CreateKeyPair(false));
+
                 return new Contract.EcKeyPairInfo()
                 {
-                    Label = "Label",
-                    TokenLabel = "Tokenlabel",
-                    ManufacturerId = "NitroKey",
-                    TokenSerialNumber = "31431434",
+                    Label = propertyValues[0],
+                    TokenLabel = propertyValues[1],
+                    ManufacturerId = "Nitrokey",
+                    TokenSerialNumber = propertyValues[2],
                     CurveDescription = "brainpoolP320r1 (320 bit)",
                     ECParamsData = StringToByteArray("06092b2403030208010109"),
-                    PublicKey = EcKeyPair.CreateFromAnsi(StringToByteArray("045104a03e0974ae3678587b6068f8b6420a01249b943649dc0e698ab2cad7048f5363e6ffa1b36455ca8986888919ca486aec898546448bb5d6abf99cf8036477adeb709f56349aed34afec0dc49a6be3678d"))
+                    PublicKey = KeyStorage[key]
                 } as T;
             }
 
             return default(T);
         }
+
+        private static Dictionary<string,EcKeyPair > KeyStorage = new Dictionary<string, EcKeyPair>();
 
         private static string ToHexString(byte[] data)
         {
@@ -42,4 +53,6 @@ namespace EHF.Presentation.DesignData
                 .ToArray();
         }
     }
+
+
 }

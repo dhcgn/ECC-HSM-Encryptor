@@ -16,10 +16,10 @@
         Title="ECC HSM FileCrypter (Working title) ALPHA 0.0.1"
         Icon="{StaticResource BitmapIcon}"
 
-        MinHeight="225"
+        MinHeight="260"
         MinWidth="680"
 
-        Height="225"
+        Height="260"
         Width="680">
 
     <i:Interaction.Triggers>
@@ -51,7 +51,8 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Image Grid.Column="0" Margin="5" Source="{StaticResource BitmapImport}" ToolTip="{StaticResource TooltipFile}" />
+            <Image Grid.Column="0" Margin="5" Source="{StaticResource BitmapImport}"
+                   ToolTip="{StaticResource TooltipFile}" />
             <TextBox Grid.Column="1" Margin="5" Text="{Binding FilePath, Mode=TwoWay}" />
             <Button Grid.Column="2" Style="{StaticResource IconButtonStyle}">
                 <Image Source="{StaticResource BitmapOpen}" />
@@ -63,27 +64,31 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Image Grid.Column="0" Margin="5" Source="{StaticResource BitmapKey}" ToolTip="{StaticResource TooltipPublicKey}" />
-            <ItemsControl Grid.Column="1" Margin="5" ItemsSource="{Binding EcKeyPairInfoViewModels, Mode=TwoWay}"
+            <Image Grid.Column="0" Margin="5" Source="{StaticResource BitmapKey}"
+                   ToolTip="{StaticResource TooltipPublicKey}" />
+            <ItemsControl Grid.Column="1" Margin="5" ItemsSource="{Binding PublicKeys, Mode=TwoWay}"
                           BorderThickness="1" BorderBrush="Black">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="#588FBC8F" Margin="2" Padding="2">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <CheckBox Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" IsChecked="{Binding IsSelected}"></CheckBox>
-                                <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Source="{Binding KeyPairInfos.PublicKey.ToJson, Converter={StaticResource IdenticonConverter}}" Style="{StaticResource SmallIdenticonStyle}" />
-                                <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding KeyPairInfos.Label}" />
-                                <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding KeyPairInfos.DisplayName}" />
-                            </Grid>
+                        <Border Background="#588FBC8F" Margin="2" Padding="2" MaxWidth="315">
+                            <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                      ToolTip="{Binding KeyPairInfos.DisplayName}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+                                           Source="{Binding KeyPairInfos.PublicKey.ToJson, Converter={StaticResource IdenticonConverter}}"
+                                           Style="{StaticResource SmallIdenticonStyle}" />
+                                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding KeyPairInfos.Label}" />
+                                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding KeyPairInfos.TokenSerialNumber}" />
+                                </Grid>
+                            </CheckBox>
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
@@ -103,8 +108,48 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Image Grid.Column="0" Source="{StaticResource BitmapUsb}" Margin="5" ToolTip="{StaticResource TooltipHardware}" />
-            <ComboBox Grid.Column="1" Margin="5" ItemsSource="{Binding EcKeyPairInfos}" DisplayMemberPath="DisplayName" />
+            <Image Grid.Column="0" Source="{StaticResource BitmapUsb}" Margin="5"
+                   ToolTip="{StaticResource TooltipHardware}" />
+            <ComboBox Grid.Column="1" Margin="5" ItemsSource="{Binding AvailableHardwareTokens}"
+                      
+                      SelectedItem="{Binding SelectedAvailableHardwareToken}" 
+              
+                      >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Left">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+                                   Source="{Binding PublicKey.ToJson, Converter={StaticResource IdenticonConverter}}"
+                                   Style="{StaticResource SmallIdenticonStyle}" />
+
+                            <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
+                                <TextBlock Text="{Binding Label}" FontWeight="Bold"
+                                           Style="{StaticResource ComboBoxItemElementStyle}"/>
+                                <TextBlock Text="{Binding CurveDescription, StringFormat=({0})}"
+                                           Style="{StaticResource ComboBoxItemElementStyle}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+                                <TextBlock Text="{Binding TokenLabel, StringFormat=Token: {0}}"
+                                           Style="{StaticResource ComboBoxItemElementStyle}"/>
+                                <TextBlock Text="{Binding TokenSerialNumber, StringFormat=SN: {0}}"
+                                           Style="{StaticResource ComboBoxItemElementStyle}"/>
+                                <TextBlock Text="{Binding ManufacturerId, StringFormat=Manufacturer: {0}}"
+                                           Style="{StaticResource ComboBoxItemElementStyle}"/>
+                            </StackPanel>
+                          
+                        </Grid>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
             <Button Grid.Column="2" Style="{StaticResource IconButtonStyle}">
                 <Image Source="{StaticResource BitmapRefresh}" />
             </Button>
@@ -117,8 +162,8 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" Content="encrypt" Height="40" />
-            <Button Grid.Column="3" Content="decrypt" Height="40" />
+            <Button Grid.Column="1" Content="encrypt" Height="40" Command="{Binding EncryptCommand}" />
+            <Button Grid.Column="3" Content="decrypt" Height="40" Command="{Binding DecryptCommand}" />
         </Grid>
         <Grid Grid.Row="3" Margin="5">
             <Grid.ColumnDefinitions>
@@ -130,7 +175,7 @@
             </Button>
         </Grid>
         <Grid Grid.Row="4">
-            <ProgressBar Height="10" Value="50" />
+            <ProgressBar Height="10" Value="75" />
         </Grid>
     </Grid>
 </Window>

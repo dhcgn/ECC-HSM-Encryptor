@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Contract;
 using EHF.Presentation.DesignData;
 using Encryption;
+using Encryption.Hybrid;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
@@ -106,8 +107,7 @@ namespace EHF.Presentation.ViewModel
             using (var input = File.OpenRead(this.FilePath))
             using (var output = File.Create(this.FilePath + ".dec"))
             {
-                //var publicKeys = this.PublicKeys.Where(model => model.IsSelected).Select(model => model.KeyPairInfos.PublicKey.ExportPublicKey());
-                //HybridEncryption.Decrypt(input, output, publicKeys.ToArray());
+                HybridEncryption.Decrypt(input, output );
             }
         }
 

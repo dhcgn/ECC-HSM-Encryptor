@@ -36,14 +36,14 @@ namespace Encryption.NitroKey
 
         private static byte[] GetDataFromObject(ObjectHandle handle, Session session, CKA type)
         {
-            var attributes = new List<ulong> { (ulong)type };
+            var attributes = new List<ulong> {(ulong) type};
             var requiredAttributes = session.GetAttributeValue(handle, attributes);
             return requiredAttributes[0].GetValueAsByteArray();
         }
 
         private static string GetStringFromObject(ObjectHandle handle, Session session, CKA type)
         {
-            var attributes = new List<ulong> { (ulong)type };
+            var attributes = new List<ulong> {(ulong) type};
             var requiredAttributes = session.GetAttributeValue(handle, attributes);
             return requiredAttributes[0].GetValueAsString();
         }
@@ -55,6 +55,7 @@ namespace Encryption.NitroKey
             using (Pkcs11 pk = new Pkcs11(LibraryPath, false))
             {
                 var slots = pk.GetSlotList(true).Where(slot1 => slot1.GetSlotInfo().ManufacturerId == "Nitrokey");
+
                 foreach (var slot in slots)
                 {
                     using (Session session = slot.OpenSession(true))
@@ -76,14 +77,17 @@ namespace Encryption.NitroKey
 
                             result.Add(new EcKeyPairInfo
                             {
-                                Label = label,
-                                ECParamsData=@params,
+                                ECParamsData = @params,
                                 CurveDescription = Contract.CurveHelper.GetCurveDescriptionFromEcParam(@params),
                                 ManufacturerId = slotInfo.ManufacturerId,
                                 TokenLabel = tokenInfo.Label,
-                                TokenSerialNumber = tokenInfo.SerialNumber,
                                 PublicKey = EcKeyPair.CreateFromAnsi(ecPoint),
-                        });
+                                EcIdentifier = new EcIdentifier()
+                                {
+                                    KeyLabel = label,
+                                    TokenSerialNumber = tokenInfo.SerialNumber
+                                }
+                            });
                         }
                     }
                 }
@@ -92,6 +96,48 @@ namespace Encryption.NitroKey
             return result.ToArray();
         }
 
+        public static EcKeyPair GetPublicKey(EcIdentifier ecIdentifier)
+        {
+            byte[] ecPoint = null;
+
+            using (Pkcs11 pk = new Pkcs11(LibraryPath, false))
+            {
+                var slot = pk.GetSlotList(false)
+                    .First(s =>
+                    {
+                        try
+                        {
+                            bool found;
+                            using (Session session = s.OpenSession(true))
+                            {
+                                found = s.GetTokenInfo().SerialNumber == ecIdentifier.TokenSerialNumber;
+                            }
+                            return found;
+                        }
+                        catch
+                        {
+                            return false;
+                        }
+                    });
+
+                using (Session session = slot.OpenSession(false))
+                {
+                    session.Login(CKU.CKU_USER, UserPin);
+                    // CKO_PUBLIC_KEY, see https://www.cryptsoft.com/pkcs11doc/v220/group__SEC__12__3__3__ECDSA__PUBLIC__KEY__OBJECTS.html
+                    var objectPublic = GetObjectHandle(ecIdentifier.KeyLabel, session, CKO.CKO_PUBLIC_KEY);
+                    var @params = GetDataFromObject(objectPublic, session, CKA.CKA_EC_PARAMS);
+                    ecPoint = GetDataFromObject(objectPublic, session, CKA.CKA_EC_POINT);
+
+                    var paramsHex = BitConverter.ToString(@params).ToLower().Replace("-", null);
+                    if (paramsHex != BrainpoolOid)
+                        throw new Exception();
+                }
+            }
+
+            return EcKeyPair.CreateFromAnsi(ecPoint);
+        }
+
+        [Obsolete("GetPublicKey(EcIdentifier ecIdentifier)")]
         public static EcKeyPair GetPublicKey(string name)
         {
             byte[] ecPoint = null;
@@ -111,11 +157,66 @@ namespace Encryption.NitroKey
                     var paramsHex = BitConverter.ToString(@params).ToLower().Replace("-", null);
                     if (paramsHex != BrainpoolOid)
                         throw new Exception();
-
                 }
             }
 
             return EcKeyPair.CreateFromAnsi(ecPoint);
+        }
+
+        public static byte[] DeriveSecret(EcIdentifier ecIdentifier, EcKeyPair publicKeyPair)
+        {
+            using (Pkcs11 pk = new Pkcs11(LibraryPath, false))
+            {
+                var slot = pk.GetSlotList(false)
+                    .First(s =>
+                    {
+                        try
+                        {
+                            bool found;
+                            using (Session session = s.OpenSession(true))
+                            {
+                                found = s.GetTokenInfo().SerialNumber == ecIdentifier.TokenSerialNumber;
+                            }
+                            return found;
+                        }
+                        catch
+                        {
+                            return false;
+                        }
+                    });
+
+                using (Session session = slot.OpenSession(false))
+                {
+                    session.Login(CKU.CKU_USER, UserPin);
+
+                    var objectPrivate = GetObjectHandle(ecIdentifier.KeyLabel, session, CKO.CKO_PRIVATE_KEY);
+
+                    var publicKey = publicKeyPair.ToDre();
+
+                    byte[] data = session.GenerateRandom(32);
+                    var mechanism = new Mechanism(CKM.CKM_ECDH1_DERIVE, new CkEcdh1DeriveParams(0, null, publicKey));
+
+                    var deriveAttributes = new List<ObjectAttribute>
+                    {
+                        new ObjectAttribute(CKA.CKA_TOKEN, false),
+                        new ObjectAttribute(CKA.CKA_CLASS, CKO.CKO_SECRET_KEY),
+                        new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_GENERIC_SECRET),
+                        new ObjectAttribute(CKA.CKA_SENSITIVE, false),
+                        new ObjectAttribute(CKA.CKA_EXTRACTABLE, true),
+                        new ObjectAttribute(CKA.CKA_ENCRYPT, true),
+                        new ObjectAttribute(CKA.CKA_DECRYPT, true),
+                        new ObjectAttribute(CKA.CKA_WRAP, true),
+                        new ObjectAttribute(CKA.CKA_UNWRAP, true),
+                        new ObjectAttribute(CKA.CKA_VALUE_LEN, 320 / 8),
+                    };
+
+                    var derivedKey = session.DeriveKey(mechanism, objectPrivate, deriveAttributes);
+
+                    var derivedSecret = GetDataFromObject(derivedKey, session, CKA.CKA_VALUE);
+
+                    return SHA512.Create().ComputeHash(derivedSecret);
+                }
+            }
         }
 
         public static byte[] DeriveSecret(string name, EcKeyPair publicKeyPair)
@@ -146,7 +247,7 @@ namespace Encryption.NitroKey
                         new ObjectAttribute(CKA.CKA_DECRYPT, true),
                         new ObjectAttribute(CKA.CKA_WRAP, true),
                         new ObjectAttribute(CKA.CKA_UNWRAP, true),
-                        new ObjectAttribute(CKA.CKA_VALUE_LEN, 320/8),
+                        new ObjectAttribute(CKA.CKA_VALUE_LEN, 320 / 8),
                     };
 
                     var derivedKey = session.DeriveKey(mechanism, objectPrivate, deriveAttributes);

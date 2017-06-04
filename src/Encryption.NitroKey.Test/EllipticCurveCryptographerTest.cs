@@ -88,11 +88,11 @@ namespace Encryption.NitroKey.Test
             {
                 var token = tokens[index];
                 Console.Out.WriteLine($"{index+1}. " + "\r\n"+
-                                      $"Label:       {token.Label}, " + "\r\n" +
+                                      $"Label:       {token.EcIdentifier.KeyLabel}, " + "\r\n" +
                                       $"EC Params:   {base.ToHexString(token.ECParamsData)}" + "\r\n" +
                                       $"Curve Desc:  {token.CurveDescription}" + "\r\n" +
                                       $"Token Label: {token.TokenLabel}" + "\r\n" +
-                                      $"Token Serial Number: \"{token.TokenSerialNumber}" + "\r\n" +
+                                      $"Token Serial Number: \"{token.EcIdentifier.TokenSerialNumber}" + "\r\n" +
                                       $"ManufacturerId:      \"{token.ManufacturerId}" + "\r\n" +
                                       $"PublicKey:\r\n" +
                                       $"{token.PublicKey.ToArmor()}");

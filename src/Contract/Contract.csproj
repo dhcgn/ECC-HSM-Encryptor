@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cargo.cs" />
+    <Compile Include="EcIdentifier.cs" />
     <Compile Include="EcKeyPair.cs" />
     <Compile Include="CurveHelper.cs" />
     <Compile Include="EncryptedData.cs" />

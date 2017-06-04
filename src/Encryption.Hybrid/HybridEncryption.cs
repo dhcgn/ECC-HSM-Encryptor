@@ -2,9 +2,8 @@
 using System.IO;
 using System.Linq;
 using Contract;
-using ProtoBuf;
 
-namespace Encryption
+namespace Encryption.Hybrid
 {
     public partial class HybridEncryption
     {
@@ -27,6 +26,36 @@ namespace Encryption
             SymmetricEncryption.Decrypt(input, output, secretKey);
         }
 
+        public static void Decrypt(Stream input, Stream output)
+        {
+            var hybridFileInfo = HybridFileInfo.FromWire(input);
+
+            var keys = Encryption.NitroKey.EllipticCurveCryptographer.GetEcKeyPairInfos();
+
+            EcIdentifier ecIdentifier = keys.FirstOrDefault(info => hybridFileInfo.DerivedSecrets.Any(secret => info.PublicKey.ToAns1().SequenceEqual(secret.PublicKey.ToAns1())) )?.EcIdentifier;
+
+            if(ecIdentifier==null)
+                throw new Exception("Couldn't find any key on any token");
+
+            var secretKey = GetSecretKey(ecIdentifier, hybridFileInfo);
+            SymmetricEncryption.Decrypt(input, output, secretKey);
+        }
+
+        private static byte[] GetSecretKey(EcIdentifier ecIdentifier, HybridFileInfo hybridFileInfo)
+        {
+            var publicKey = Encryption.NitroKey.EllipticCurveCryptographer.GetPublicKey(ecIdentifier);
+            var derivedSecret = hybridFileInfo.DerivedSecrets.FirstOrDefault(secret => secret.PublicKey.ToAns1().SequenceEqual(publicKey.ToAns1()));
+            var ds = Encryption.NitroKey.EllipticCurveCryptographer.DeriveSecret(ecIdentifier, hybridFileInfo.EphemeralKey);
+
+            var derivedSecretInputStream = new MemoryStream(derivedSecret.EncryptedSharedSecret);
+            var derivedSecretOutputStream = new MemoryStream();
+
+            SymmetricEncryption.Decrypt(derivedSecretInputStream, derivedSecretOutputStream, ds);
+
+            var secretKey = derivedSecretOutputStream.ToArray();
+            return secretKey;
+        }
+
         private static byte[] GetSecretKey(EcKeyPair privateKey, HybridFileInfo hybridFileInfo)
         {
             var derivedSecret = hybridFileInfo.DerivedSecrets.FirstOrDefault(secret => secret.PublicKey.ToAns1().SequenceEqual(privateKey.ToAns1()));
@@ -41,5 +70,7 @@ namespace Encryption
             var secretKey = derivedSecretOutputStream.ToArray();
             return secretKey;
         }
+
+   
     }
 }

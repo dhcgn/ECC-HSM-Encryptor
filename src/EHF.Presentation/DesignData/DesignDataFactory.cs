@@ -20,25 +20,28 @@ namespace EHF.Presentation.DesignData
                 seed = SHA1.Create().ComputeHash(seed);
                 var key = ToHexString(seed);
 
-                if(!KeyStorage.ContainsKey(key))
+                if (!KeyStorage.ContainsKey(key))
                     KeyStorage.Add(key, Encryption.EllipticCurveCryptographer.CreateKeyPair(false));
 
                 return new Contract.EcKeyPairInfo()
                 {
-                    Label = propertyValues[0],
                     TokenLabel = propertyValues[1],
                     ManufacturerId = "Nitrokey",
-                    TokenSerialNumber = propertyValues[2],
                     CurveDescription = "brainpoolP320r1 (320 bit)",
                     ECParamsData = StringToByteArray("06092b2403030208010109"),
-                    PublicKey = KeyStorage[key]
+                    PublicKey = KeyStorage[key],
+                    EcIdentifier = new EcIdentifier()
+                    {
+                        KeyLabel = propertyValues[0],
+                        TokenSerialNumber = propertyValues[2]
+                    }
                 } as T;
             }
 
             return default(T);
         }
 
-        private static Dictionary<string,EcKeyPair > KeyStorage = new Dictionary<string, EcKeyPair>();
+        private static Dictionary<string, EcKeyPair> KeyStorage = new Dictionary<string, EcKeyPair>();
 
         private static string ToHexString(byte[] data)
         {
@@ -53,6 +56,4 @@ namespace EHF.Presentation.DesignData
                 .ToArray();
         }
     }
-
-
 }

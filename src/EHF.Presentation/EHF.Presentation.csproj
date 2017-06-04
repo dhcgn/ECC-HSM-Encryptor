@@ -215,6 +215,10 @@
       <Project>{d47d8fd4-3d63-4172-8f12-470650da225e}</Project>
       <Name>Contract</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Encryption.Hybrid\Encryption.Hybrid.csproj">
+      <Project>{a46b6ae4-6b8f-4e1f-bed8-5c359f35117c}</Project>
+      <Name>Encryption.Hybrid</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Encryption.NitroKey\Encryption.NitroKey.csproj">
       <Project>{76666989-fa10-49e2-a5c5-43af0c5bf01c}</Project>
       <Name>Encryption.NitroKey</Name>

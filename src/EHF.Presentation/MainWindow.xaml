@@ -85,8 +85,10 @@
                                     <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
                                            Source="{Binding KeyPairInfos.PublicKey.ToJson, Converter={StaticResource IdenticonConverter}}"
                                            Style="{StaticResource SmallIdenticonStyle}" />
-                                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding KeyPairInfos.Label}" />
-                                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding KeyPairInfos.TokenSerialNumber}" />
+                                    <TextBlock Grid.Column="1" Grid.Row="0"
+                                               Text="{Binding KeyPairInfos.EcIdentifier.KeyLabel}" />
+                                    <TextBlock Grid.Column="1" Grid.Row="1"
+                                               Text="{Binding KeyPairInfos.EcIdentifier.TokenSerialNumber}" />
                                 </Grid>
                             </CheckBox>
                         </Border>
@@ -110,11 +112,9 @@
             </Grid.ColumnDefinitions>
             <Image Grid.Column="0" Source="{StaticResource BitmapUsb}" Margin="5"
                    ToolTip="{StaticResource TooltipHardware}" />
-            <ComboBox Grid.Column="1" Margin="5" ItemsSource="{Binding AvailableHardwareTokens}"
-                      
-                      SelectedItem="{Binding SelectedAvailableHardwareToken}" 
-              
-                      >
+            <ComboBox Grid.Column="1" Margin="5" 
+                      ItemsSource="{Binding AvailableHardwareTokens}"
+                      SelectedItem="{Binding SelectedAvailableHardwareToken}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <Grid HorizontalAlignment="Left">
@@ -131,21 +131,21 @@
                                    Style="{StaticResource SmallIdenticonStyle}" />
 
                             <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
-                                <TextBlock Text="{Binding Label}" FontWeight="Bold"
-                                           Style="{StaticResource ComboBoxItemElementStyle}"/>
+                                <TextBlock Text="{Binding EcIdentifier.KeyLabel}" FontWeight="Bold"
+                                           Style="{StaticResource ComboBoxItemElementStyle}" />
                                 <TextBlock Text="{Binding CurveDescription, StringFormat=({0})}"
                                            Style="{StaticResource ComboBoxItemElementStyle}" />
                             </StackPanel>
 
                             <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
                                 <TextBlock Text="{Binding TokenLabel, StringFormat=Token: {0}}"
-                                           Style="{StaticResource ComboBoxItemElementStyle}"/>
-                                <TextBlock Text="{Binding TokenSerialNumber, StringFormat=SN: {0}}"
-                                           Style="{StaticResource ComboBoxItemElementStyle}"/>
+                                           Style="{StaticResource ComboBoxItemElementStyle}" />
+                                <TextBlock Text="{Binding EcIdentifier.TokenSerialNumber, StringFormat=SN: {0}}"
+                                           Style="{StaticResource ComboBoxItemElementStyle}" />
                                 <TextBlock Text="{Binding ManufacturerId, StringFormat=Manufacturer: {0}}"
-                                           Style="{StaticResource ComboBoxItemElementStyle}"/>
+                                           Style="{StaticResource ComboBoxItemElementStyle}" />
                             </StackPanel>
-                          
+
                         </Grid>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>

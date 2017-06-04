@@ -68,8 +68,6 @@ namespace Encryption
             {
                 var deriveSecret = EllipticCurveCryptographer.DeriveSecret(ephemeralKey, publicKey);
 
-                Console.Out.WriteLine("Encrypt - Derive: " + Convert.ToBase64String(deriveSecret));
-
                 var input = new MemoryStream(secretKey);
                 var output = new MemoryStream();
                 SymmetricEncryption.Encrypt(input, output, deriveSecret);

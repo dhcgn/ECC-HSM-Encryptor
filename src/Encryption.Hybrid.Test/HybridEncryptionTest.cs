@@ -2,6 +2,7 @@ using System.IO;
 using System.Linq;
 using Contract;
 using NUnit.Framework;
+using TestHelper;
 
 namespace Encryption.Hybrid.Test
 {
@@ -36,7 +37,7 @@ namespace Encryption.Hybrid.Test
             using (var input = File.OpenRead(this.OutputFile))
             using (var output = File.Create(this.ResultFile))
             {
-                HybridEncryption.Decrypt(input, output);
+                HybridEncryption.Decrypt(input, output, Constants.TestPin);
             }
 
             var inputData = File.ReadAllBytes(this.InputFile);

@@ -33,14 +33,25 @@ namespace EHF.Presentation.ViewModel
             ////}
 
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<PasswordViewModel>();
         }
 
 
         public MainViewModel MainViewModel => ServiceLocator.Current.GetInstance<MainViewModel>();
+        public PasswordViewModel PasswordViewModel => ServiceLocator.Current.GetInstance<PasswordViewModel>();
 
         public static void Cleanup()
         {
             // TODO Clear the ViewModels
         }
     }
+
+    public class Messages
+    {
+        public class PasswordWindowMessage
+        {
+            public bool? DialogResult { get; set; }
+        }
+    }
+
 }

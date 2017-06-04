@@ -5,30 +5,20 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Contract;
 using EHF.Presentation.DesignData;
+using EHF.Presentation.Views;
 using Encryption;
 using Encryption.Hybrid;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Threading;
 using Newtonsoft.Json;
 
 namespace EHF.Presentation.ViewModel
 {
-    public class EcKeyPairInfoViewModel : ViewModelBase
-    {
-        private bool isSelected;
-
-        public bool IsSelected
-        {
-            get => this.isSelected;
-            set => base.Set(ref this.isSelected, value);
-        }
-
-        public EcKeyPairInfo KeyPairInfos { get; set; }
-    }
-
     public class MainViewModel : ViewModelBase
     {
         public MainViewModel()
@@ -104,17 +94,24 @@ namespace EHF.Presentation.ViewModel
 
         private void DecryptCommandHandling()
         {
+            var result = new PasswordWindow().ShowDialog();
+
+            if (result == null || !(bool) result)
+                return;
+
+            var password = SimpleIoc.Default.GetInstance<PasswordViewModel>().Password;
+
             using (var input = File.OpenRead(this.FilePath))
             using (var output = File.Create(this.FilePath + ".dec"))
             {
-                HybridEncryption.Decrypt(input, output );
+                HybridEncryption.Decrypt(input, output, password);
             }
         }
 
         private void EncryptCommandHandling()
         {
             using (var input = File.OpenRead(this.FilePath))
-            using (var output = File.Create(this.FilePath+".enc"))
+            using (var output = File.Create(this.FilePath + ".enc"))
             {
                 var publicKeys = this.PublicKeys.Where(model => model.IsSelected).Select(model => model.KeyPairInfos.PublicKey.ExportPublicKey());
                 HybridEncryption.Encrypt(input, output, publicKeys.ToArray());
@@ -162,7 +159,7 @@ namespace EHF.Presentation.ViewModel
             get => this.publicKeys;
             set
             {
-                if(this.publicKeys != null)
+                if (this.publicKeys != null)
                     this.publicKeys.CollectionChanged -= this.PublicKeysCollectionChanged;
 
                 this.Set(ref this.publicKeys, value);

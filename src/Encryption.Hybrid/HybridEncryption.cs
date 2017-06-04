@@ -26,7 +26,7 @@ namespace Encryption.Hybrid
             SymmetricEncryption.Decrypt(input, output, secretKey);
         }
 
-        public static void Decrypt(Stream input, Stream output)
+        public static void Decrypt(Stream input, Stream output, string password)
         {
             var hybridFileInfo = HybridFileInfo.FromWire(input);
 
@@ -37,15 +37,15 @@ namespace Encryption.Hybrid
             if(ecIdentifier==null)
                 throw new Exception("Couldn't find any key on any token");
 
-            var secretKey = GetSecretKey(ecIdentifier, hybridFileInfo);
-            SymmetricEncryption.Decrypt(input, output, secretKey);
+            var symmetricKey = GetSecretKey(ecIdentifier, hybridFileInfo, password);
+            SymmetricEncryption.Decrypt(input, output, symmetricKey);
         }
 
-        private static byte[] GetSecretKey(EcIdentifier ecIdentifier, HybridFileInfo hybridFileInfo)
+        private static byte[] GetSecretKey(EcIdentifier ecIdentifier, HybridFileInfo hybridFileInfo, string password)
         {
-            var publicKey = Encryption.NitroKey.EllipticCurveCryptographer.GetPublicKey(ecIdentifier);
+            var publicKey = Encryption.NitroKey.EllipticCurveCryptographer.GetPublicKey(ecIdentifier, password);
             var derivedSecret = hybridFileInfo.DerivedSecrets.FirstOrDefault(secret => secret.PublicKey.ToAns1().SequenceEqual(publicKey.ToAns1()));
-            var ds = Encryption.NitroKey.EllipticCurveCryptographer.DeriveSecret(ecIdentifier, hybridFileInfo.EphemeralKey);
+            var ds = Encryption.NitroKey.EllipticCurveCryptographer.DeriveSecret(ecIdentifier, hybridFileInfo.EphemeralKey, password);
 
             var derivedSecretInputStream = new MemoryStream(derivedSecret.EncryptedSharedSecret);
             var derivedSecretOutputStream = new MemoryStream();

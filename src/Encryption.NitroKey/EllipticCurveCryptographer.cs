@@ -14,7 +14,7 @@ namespace Encryption.NitroKey
 {
     public class EllipticCurveCryptographer
     {
-        private const string UserPin = "648219";
+        //private const string UserPin = "648219";
         private const string LibraryPath = @"C:\Windows\System32\opensc-pkcs11.dll";
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Encryption.NitroKey
             return result.ToArray();
         }
 
-        public static EcKeyPair GetPublicKey(EcIdentifier ecIdentifier)
+        public static EcKeyPair GetPublicKey(EcIdentifier ecIdentifier, string password)
         {
             byte[] ecPoint = null;
 
@@ -122,7 +122,7 @@ namespace Encryption.NitroKey
 
                 using (Session session = slot.OpenSession(false))
                 {
-                    session.Login(CKU.CKU_USER, UserPin);
+                    session.Login(CKU.CKU_USER, password);
                     // CKO_PUBLIC_KEY, see https://www.cryptsoft.com/pkcs11doc/v220/group__SEC__12__3__3__ECDSA__PUBLIC__KEY__OBJECTS.html
                     var objectPublic = GetObjectHandle(ecIdentifier.KeyLabel, session, CKO.CKO_PUBLIC_KEY);
                     var @params = GetDataFromObject(objectPublic, session, CKA.CKA_EC_PARAMS);
@@ -138,7 +138,7 @@ namespace Encryption.NitroKey
         }
 
         [Obsolete("GetPublicKey(EcIdentifier ecIdentifier)")]
-        public static EcKeyPair GetPublicKey(string name)
+        public static EcKeyPair GetPublicKey(string name, string password)
         {
             byte[] ecPoint = null;
 
@@ -148,7 +148,7 @@ namespace Encryption.NitroKey
 
                 using (Session session = slot.OpenSession(false))
                 {
-                    session.Login(CKU.CKU_USER, UserPin);
+                    session.Login(CKU.CKU_USER, password);
                     // CKO_PUBLIC_KEY, see https://www.cryptsoft.com/pkcs11doc/v220/group__SEC__12__3__3__ECDSA__PUBLIC__KEY__OBJECTS.html
                     var objectPublic = GetObjectHandle(name, session, CKO.CKO_PUBLIC_KEY);
                     var @params = GetDataFromObject(objectPublic, session, CKA.CKA_EC_PARAMS);
@@ -163,7 +163,7 @@ namespace Encryption.NitroKey
             return EcKeyPair.CreateFromAnsi(ecPoint);
         }
 
-        public static byte[] DeriveSecret(EcIdentifier ecIdentifier, EcKeyPair publicKeyPair)
+        public static byte[] DeriveSecret(EcIdentifier ecIdentifier, EcKeyPair publicKeyPair, string password)
         {
             using (Pkcs11 pk = new Pkcs11(LibraryPath, false))
             {
@@ -187,7 +187,7 @@ namespace Encryption.NitroKey
 
                 using (Session session = slot.OpenSession(false))
                 {
-                    session.Login(CKU.CKU_USER, UserPin);
+                    session.Login(CKU.CKU_USER, password);
 
                     var objectPrivate = GetObjectHandle(ecIdentifier.KeyLabel, session, CKO.CKO_PRIVATE_KEY);
 
@@ -219,7 +219,7 @@ namespace Encryption.NitroKey
             }
         }
 
-        public static byte[] DeriveSecret(string name, EcKeyPair publicKeyPair)
+        public static byte[] DeriveSecret(string name, EcKeyPair publicKeyPair, string password)
         {
             using (Pkcs11 pk = new Pkcs11(LibraryPath, false))
             {
@@ -227,7 +227,7 @@ namespace Encryption.NitroKey
 
                 using (Session session = slot.OpenSession(false))
                 {
-                    session.Login(CKU.CKU_USER, UserPin);
+                    session.Login(CKU.CKU_USER, password);
 
                     var objectPrivate = GetObjectHandle(name, session, CKO.CKO_PRIVATE_KEY);
 

@@ -65,6 +65,10 @@
       <Project>{A324CCE8-8E12-4CAC-9981-1C0C4A5CE57C}</Project>
       <Name>Encryption</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TestBase\TestHelper.csproj">
+      <Project>{4810f571-aec5-44bb-8409-482a1a9cea42}</Project>
+      <Name>TestHelper</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

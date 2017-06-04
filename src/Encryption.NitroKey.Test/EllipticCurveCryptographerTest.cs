@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using TestHelper;
 
 namespace Encryption.NitroKey.Test
 {
@@ -16,7 +17,7 @@ namespace Encryption.NitroKey.Test
         [Test]
         public void ExtractPublicKey()
         {
-            var result = Encryption.NitroKey.EllipticCurveCryptographer.GetPublicKey("Brainpool #1");
+            var result = Encryption.NitroKey.EllipticCurveCryptographer.GetPublicKey("Brainpool #1", Constants.TestPin);
             Console.Out.WriteLine(result.ToJson);
 
             Console.Out.WriteLine(base.ToHexString(result.PublicKey.Qx));
@@ -34,7 +35,7 @@ namespace Encryption.NitroKey.Test
         [Test]
         public void Create_ECDiffieHellman()
         {
-            var result = Encryption.NitroKey.EllipticCurveCryptographer.GetPublicKey("Brainpool #1");
+            var result = Encryption.NitroKey.EllipticCurveCryptographer.GetPublicKey("Brainpool #1", Constants.TestPin);
             Console.Out.WriteLine(result.ToJson);
 
             Assert.DoesNotThrow(() => ECDiffieHellman.Create(result.CreateECParameters()));
@@ -44,12 +45,12 @@ namespace Encryption.NitroKey.Test
         public void DeriveSecretWithHsm()
         {
             var alice = Encryption.EllipticCurveCryptographer.CreateKeyPair(true);
-            var bob = Encryption.NitroKey.EllipticCurveCryptographer.GetPublicKey("Brainpool #1");
+            var bob = Encryption.NitroKey.EllipticCurveCryptographer.GetPublicKey("Brainpool #1", Constants.TestPin);
 
             var salt = Random.CreateSalt();
 
             var derivedSecret1 = Encryption.EllipticCurveCryptographer.DeriveSecret(alice, bob.ExportPublicKey());
-            var derivedSecret2 = Encryption.NitroKey.EllipticCurveCryptographer.DeriveSecret("Brainpool #1", alice.ExportPublicKey());
+            var derivedSecret2 = Encryption.NitroKey.EllipticCurveCryptographer.DeriveSecret("Brainpool #1", alice.ExportPublicKey(), Constants.TestPin);
 
             Console.Out.WriteLine($"derivedSecret NET length: {derivedSecret1?.Length * 8} bit");
             Console.Out.WriteLine($"derivedSecret HSM length: {derivedSecret2?.Length * 8} bit");
@@ -67,7 +68,7 @@ namespace Encryption.NitroKey.Test
         public void DeriveSecretWithoutHsm()
         {
             var alice = Encryption.EllipticCurveCryptographer.CreateKeyPair(true);
-            var bob = Encryption.NitroKey.EllipticCurveCryptographer.GetPublicKey("Brainpool #1");
+            var bob = Encryption.NitroKey.EllipticCurveCryptographer.GetPublicKey("Brainpool #1", Constants.TestPin);
 
             var salt = Random.CreateSalt();
 

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Contract;
 using EHF.Presentation.DesignData;
+using Encryption;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
@@ -102,12 +103,22 @@ namespace EHF.Presentation.ViewModel
 
         private void DecryptCommandHandling()
         {
-            throw new NotImplementedException();
+            using (var input = File.OpenRead(this.FilePath))
+            using (var output = File.Create(this.FilePath + ".dec"))
+            {
+                //var publicKeys = this.PublicKeys.Where(model => model.IsSelected).Select(model => model.KeyPairInfos.PublicKey.ExportPublicKey());
+                //HybridEncryption.Decrypt(input, output, publicKeys.ToArray());
+            }
         }
 
         private void EncryptCommandHandling()
         {
-            throw new NotImplementedException();
+            using (var input = File.OpenRead(this.FilePath))
+            using (var output = File.Create(this.FilePath+".enc"))
+            {
+                var publicKeys = this.PublicKeys.Where(model => model.IsSelected).Select(model => model.KeyPairInfos.PublicKey.ExportPublicKey());
+                HybridEncryption.Encrypt(input, output, publicKeys.ToArray());
+            }
         }
 
         public RelayCommand DecryptCommand { get; set; }

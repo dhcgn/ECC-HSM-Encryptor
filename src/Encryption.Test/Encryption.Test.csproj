@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="EllipticCurveCryptograperTest.cs" />
     <Compile Include="CryptoFileInfoTest.cs" />
+    <Compile Include="HybridEncryptionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SymmetricEncryptionTest.cs" />
     <Compile Include="TestBase.cs" />

@@ -18,6 +18,9 @@ namespace Encryption.Test
             this.OutputFile = Path.GetTempFileName();
             this.ResultFile = Path.GetTempFileName();
             this.RawFile = Path.GetTempFileName();
+
+            var data = Guid.NewGuid().ToByteArray();
+            File.WriteAllBytes(this.InputFile, data);
         }
 
 

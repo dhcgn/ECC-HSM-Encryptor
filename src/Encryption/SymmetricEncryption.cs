@@ -20,6 +20,7 @@ namespace Encryption
 
         private static void DecryptInternal(Stream input, Stream output, string password, byte[] secretKey)
         {
+            // BUG: NO file io!
             var tempPath = Path.GetTempFileName();
             CryptoFileInfo cryptoFileInfo;
             using (var rawfile = File.Create(tempPath))
@@ -34,6 +35,7 @@ namespace Encryption
             using (var tempFile = File.OpenRead(tempPath))
             using (var aes = Aes.Create())
             {
+                // BUG: NO Athenticaton
                 aes.Key = keyAes;
                 aes.IV = cryptoFileInfo.Iv;
 
@@ -76,11 +78,13 @@ namespace Encryption
 
         public static void EncryptInternal(Stream input, Stream output, byte[] keyAes, byte[] iv, byte[] salt, int iterations)
         {
+            // BUG: NO file io!
             var tempPath = Path.GetTempFileName();
             using (var tempFile = File.Create(tempPath))
             {
                 using (var aes = Aes.Create())
                 {
+                    // BUG: NO Athenticaton
                     aes.Key = keyAes;
                     aes.IV = iv;
 

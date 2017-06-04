@@ -36,7 +36,11 @@ namespace Encryption
 
         internal static CryptoFileInfo LoadFromDisk(Stream input, FileStream raw)
         {
-            input.Seek(CryptoFileInfo.MagicNumber.Count, SeekOrigin.Begin);
+            byte[] magicData = new byte[CryptoFileInfo.MagicNumber.Count];
+            input.Read(magicData, 0, magicData.Length);
+
+            if (!magicData.SequenceEqual(CryptoFileInfo.MagicNumber))
+                throw new Exception("File header does not match");
 
             byte[] intData = new byte[4];
             input.Read(intData, 0, intData.Length);

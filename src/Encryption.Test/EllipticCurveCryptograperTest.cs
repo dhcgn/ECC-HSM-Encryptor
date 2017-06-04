@@ -91,14 +91,6 @@ namespace Encryption.Test
         }
 
 
-        [Test]
-        public void Derive()
-        {
-            var alice = EllipticCurveCryptographer.CreateKeyPair(true);
-            var bob = EllipticCurveCryptographer.CreateKeyPair(true);
-            var guenther = EllipticCurveCryptographer.CreateKeyPair(true);
 
-            var temp = EllipticCurveCryptographer.DeriveSecretWithEphemeralKey(alice.ExportPublicKey(), bob.ExportPublicKey(), guenther.ExportPublicKey());
-        }
     }
 }

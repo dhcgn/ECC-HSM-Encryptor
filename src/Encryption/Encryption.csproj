@@ -45,8 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CryptoFileInfo.cs" />
-    <Compile Include="EllipticCurveCryptograper.cs" />
+    <Compile Include="MetaTypes\CryptoFileInfo.cs" />
+    <Compile Include="EllipticCurveCryptographer.cs" />
+    <Compile Include="HybridEncryption.cs" />
+    <Compile Include="MetaTypes\HybridFileInfo.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="RandomHelper.cs" />
     <Compile Include="SymmetricEncryption.cs" />

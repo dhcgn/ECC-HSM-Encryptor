@@ -22,6 +22,8 @@ namespace EHF.Presentation.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+        #region .ctor
+
         public MainViewModel()
         {
             if (this.IsInDesignMode || IsInDesignModeStatic)
@@ -72,20 +74,24 @@ namespace EHF.Presentation.ViewModel
             }
         }
 
+        #endregion
+
+        #region Commands
+
+        public RelayCommand DecryptCommand { get; set; }
+        public RelayCommand EncryptCommand { get; set; }
+        public RelayCommand PublicKeySettingsCommand { get; set; }
+        public RelayCommand StartCommand { get; set; }
+        public RelayCommand LoadedCommand { get; set; }
+        public RelayCommand HelpCommand { get; set; }
+
+        #endregion
+
+        #region Command Handling
+
         private void PublicKeySettingsCommandHandling()
         {
             WindowInvoker.ShowPublicKeySettingsWindows();
-        }
-
-        private bool DecryptCommandCanExecute()
-        {
-            if (!File.Exists(this.FilePath))
-                return false;
-
-            if (this.SelectedAvailableHardwareToken == null)
-                return false;
-
-            return true;
         }
 
         private bool EncryptCommandCanExecute()
@@ -94,6 +100,27 @@ namespace EHF.Presentation.ViewModel
                 return false;
 
             if (!this.PublicKeys.Any(model => model.IsSelected))
+                return false;
+
+            return true;
+        }
+
+        private void EncryptCommandHandling()
+        {
+            using (var input = File.OpenRead(this.FilePath))
+            using (var output = File.Create(this.FilePath + ".enc"))
+            {
+                var publicKeys = this.PublicKeys.Where(model => model.IsSelected).Select(model => model.KeyPairInfos.PublicKey.ExportPublicKey());
+                HybridEncryption.Encrypt(input, output, publicKeys.ToArray());
+            }
+        }
+
+        private bool DecryptCommandCanExecute()
+        {
+            if (!File.Exists(this.FilePath))
+                return false;
+
+            if (this.SelectedAvailableHardwareToken == null)
                 return false;
 
             return true;
@@ -115,21 +142,6 @@ namespace EHF.Presentation.ViewModel
             }
         }
 
-        private void EncryptCommandHandling()
-        {
-            using (var input = File.OpenRead(this.FilePath))
-            using (var output = File.Create(this.FilePath + ".enc"))
-            {
-                var publicKeys = this.PublicKeys.Where(model => model.IsSelected).Select(model => model.KeyPairInfos.PublicKey.ExportPublicKey());
-                HybridEncryption.Encrypt(input, output, publicKeys.ToArray());
-            }
-        }
-
-        public RelayCommand DecryptCommand { get; set; }
-
-        public RelayCommand EncryptCommand { get; set; }
-        public RelayCommand PublicKeySettingsCommand { get; set; }
-
         private async void LoadedCommandHandling()
         {
             var loadedKeys = await Task.Run(() =>
@@ -150,6 +162,10 @@ namespace EHF.Presentation.ViewModel
             DispatcherHelper.CheckBeginInvokeOnUI(() => { this.SelectedAvailableHardwareToken = this.AvailableHardwareTokens.FirstOrDefault(); });
         }
 
+        #endregion
+
+        #region Properties
+
         private List<EcKeyPairInfo> availableHardwareTokens;
 
         public List<EcKeyPairInfo> AvailableHardwareTokens
@@ -166,31 +182,12 @@ namespace EHF.Presentation.ViewModel
             set => this.Set(ref this.selectedAvailableHardwareToken, value);
         }
 
-        public RelayCommand StartCommand { get; set; }
-        public RelayCommand LoadedCommand { get; set; }
-        public RelayCommand HelpCommand { get; set; }
-
         private ObservableCollection<EcKeyPairInfoViewModel> publicKeys;
 
         public ObservableCollection<EcKeyPairInfoViewModel> PublicKeys
         {
             get => this.publicKeys;
-            set
-            {
-                if (this.publicKeys != null)
-                    this.publicKeys.CollectionChanged -= this.PublicKeysCollectionChanged;
-
-                this.Set(ref this.publicKeys, value);
-
-                if (this.publicKeys != null)
-                    this.publicKeys.CollectionChanged += this.PublicKeysCollectionChanged;
-            }
-        }
-
-        private void PublicKeysCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            this.EncryptCommand.RaiseCanExecuteChanged();
-            this.DecryptCommand.RaiseCanExecuteChanged();
+            set => this.Set(ref this.publicKeys, value);
         }
 
         private long fileLength;
@@ -216,6 +213,8 @@ namespace EHF.Presentation.ViewModel
             get => this.showDropPanel;
             set => this.Set(ref this.showDropPanel, value);
         }
+
+        #endregion
 
         public void DropFiles(string[] files)
         {

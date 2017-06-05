@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Contract;
+using EHF.Presentation.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
@@ -12,6 +13,8 @@ namespace EHF.Presentation.ViewModel
 {
     public class PublicKeySettingsViewModel : ViewModelBase
     {
+        #region .ctor
+
         public PublicKeySettingsViewModel()
         {
             if (this.IsInDesignMode || IsInDesignModeStatic)
@@ -21,7 +24,25 @@ namespace EHF.Presentation.ViewModel
             {
                 this.LoadPublicKeysFromHSMCommand = new RelayCommand(this.LoadPublicKeysFromHSMCommandHandling);
                 this.SaveCommand = new RelayCommand(this.SaveCommandHandling);
+                this.CloseCommand = new RelayCommand(this.CloseCommandHandling);
             }
+        }
+
+        #endregion
+
+        #region Commands
+
+        public RelayCommand LoadPublicKeysFromHSMCommand { get; set; }
+        public RelayCommand SaveCommand { get; set; }
+        public RelayCommand CloseCommand { get; set; }
+
+        #endregion
+
+        #region Command Handling
+
+        private void CloseCommandHandling()
+        {
+            WindowInvoker.ClosePublicKeySettingsWindows();
         }
 
         private void SaveCommandHandling()
@@ -46,8 +67,6 @@ namespace EHF.Presentation.ViewModel
             }
         }
 
-        public RelayCommand LoadPublicKeysFromHSMCommand { get; set; }
-        public RelayCommand SaveCommand { get; set; }
-        public RelayCommand CloseCommand { get; set; }
+        #endregion
     }
 }

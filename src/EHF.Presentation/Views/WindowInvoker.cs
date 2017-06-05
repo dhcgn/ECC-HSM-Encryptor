@@ -8,10 +8,17 @@ namespace EHF.Presentation.Views
 {
     public static class WindowInvoker
     {
+        private static PublicKeySettingsWindows publicKeySettingsWindows;
+
         public static void ShowPublicKeySettingsWindows()
         {
-            var publicKeySettingsWindows = new PublicKeySettingsWindows();
+            publicKeySettingsWindows = new PublicKeySettingsWindows();
             publicKeySettingsWindows.Show();
+        }
+
+        public static void ClosePublicKeySettingsWindows()
+        {
+            publicKeySettingsWindows.Close();
         }
     }
 }

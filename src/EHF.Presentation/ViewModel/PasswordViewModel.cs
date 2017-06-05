@@ -5,7 +5,7 @@ namespace EHF.Presentation.ViewModel
 {
     public class PasswordViewModel : ViewModelBase
     {
-        private string password;
+        #region .ctor
 
         public PasswordViewModel()
         {
@@ -25,13 +25,25 @@ namespace EHF.Presentation.ViewModel
             });
         }
 
+        #endregion
+
+        #region Commands
+
         public RelayCommand StartCommand { get; set; }
         public RelayCommand ExitCommand { get; set; }
+
+        #endregion
+
+        #region Properties
+
+        private string password;
 
         public string Password
         {
             get => this.password;
             set => base.Set(ref this.password, value);
         }
+
+        #endregion
     }
 }

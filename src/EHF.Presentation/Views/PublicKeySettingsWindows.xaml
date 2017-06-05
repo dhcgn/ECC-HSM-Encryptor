@@ -8,8 +8,12 @@
         
         DataContext="{Binding Source={StaticResource Locator}, Path=PublicKeySettingsViewModel}"
         d:DataContext="{Binding Source={StaticResource Locator}, Path=PublicKeySettingsViewModel}"
-        
         >
+    
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding CloseCommand}" Key="Escape" />
+    </Window.InputBindings>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />

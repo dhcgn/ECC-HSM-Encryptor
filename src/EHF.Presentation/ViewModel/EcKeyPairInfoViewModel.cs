@@ -5,6 +5,8 @@ namespace EHF.Presentation.ViewModel
 {
     public class EcKeyPairInfoViewModel : ViewModelBase
     {
+        #region Properties
+
         private bool isSelected;
         public bool IsSelected
         {
@@ -20,5 +22,7 @@ namespace EHF.Presentation.ViewModel
         }
 
         public EcKeyPairInfo KeyPairInfos { get; set; }
+
+        #endregion
     }
 }

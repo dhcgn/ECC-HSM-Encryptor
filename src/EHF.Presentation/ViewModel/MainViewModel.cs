@@ -16,6 +16,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Threading;
 using Newtonsoft.Json;
+using Storage;
 
 namespace EHF.Presentation.ViewModel
 {
@@ -131,7 +132,17 @@ namespace EHF.Presentation.ViewModel
 
         private async void LoadedCommandHandling()
         {
-            var loadedKeys = await Task.Run(() => new Storage.LocalStorageManager().GetAll<EcKeyPairInfoViewModel>().ToArray());
+            var loadedKeys = await Task.Run(() =>
+            {
+                try
+                {
+                    return new LocalStorageManager().GetAll<EcKeyPairInfoViewModel>().ToArray();
+                }
+                catch (Exception e)
+                {
+                    return Enumerable.Empty<EcKeyPairInfoViewModel>().ToArray();
+                }
+            });
             var nitroKeys = await Task.Run(() => Encryption.NitroKey.EllipticCurveCryptographer.GetEcKeyPairInfos());
 
             DispatcherHelper.CheckBeginInvokeOnUI(() => { this.PublicKeys = new ObservableCollection<EcKeyPairInfoViewModel>(loadedKeys); });

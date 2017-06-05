@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage", "src\Storage\Stor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Test", "src\Storage.Test\Storage.Test.csproj", "{90FFE4CE-ABAD-4402-9A6D-F7AFE42B5347}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client EHF", "Client EHF", "{9FA83D62-F622-4F26-B1B9-329F35D5FED6}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client ECC HSM Encryptor", "Client ECC HSM Encryptor", "{9FA83D62-F622-4F26-B1B9-329F35D5FED6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{7D56E864-73A9-40A0-A0A0-6A58CFFDA41B}"
 EndProject

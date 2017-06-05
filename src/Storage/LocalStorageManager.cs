@@ -34,6 +34,18 @@ namespace Storage
             }
         }
 
+        public void RemoveAll<T>()
+        {
+            var storageType = this.diskStorage.StorageTypes.SingleOrDefault(type => type.Name == typeof(T).Name);
+            if (storageType == null)
+            {
+                return;
+            }
+
+            storageType.Entites.Clear();
+            storageProvider.Save(this.diskStorage, this.StoragePath, this.password);
+        }
+
         public IEnumerable<T> GetAll<T>()
         {
             var storageType = this.diskStorage.StorageTypes.SingleOrDefault(type => type.Name == typeof(T).Name);
@@ -58,6 +70,15 @@ namespace Storage
             storageProvider.Save(this.diskStorage, this.StoragePath, this.password);
         }
 
+        public void AddRange<T>(IEnumerable<T> entities)
+        {
+            // BUG Performance nightmare
+            foreach (var entity in entities)
+            {
+                this.Add(entity);
+            }
+        }
+
         public string StoragePath
         {
             get
@@ -76,5 +97,7 @@ namespace Storage
             var storagePath = Path.Combine(directory, filename);
             return storagePath;
         }
+
+
     }
 }

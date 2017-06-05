@@ -110,6 +110,7 @@
     <Compile Include="ViewModel\EcKeyPairInfoViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\PasswordViewModel.cs" />
+    <Compile Include="ViewModel\PublicKeySettingsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="Views\PasswordWindow.xaml.cs">
       <DependentUpon>PasswordWindow.xaml</DependentUpon>

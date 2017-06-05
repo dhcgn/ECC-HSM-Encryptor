@@ -4,7 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="PublicKeySettingsWindows" Height="288.093" Width="528.818">
+        Title="PublicKeySettingsWindows" Height="288.093" Width="528.818"
+        
+        DataContext="{Binding Source={StaticResource Locator}, Path=PublicKeySettingsViewModel}"
+        d:DataContext="{Binding Source={StaticResource Locator}, Path=PublicKeySettingsViewModel}"
+        
+        >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -13,11 +18,18 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <DataGrid />
+        <DataGrid DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModel}" ItemsSource="{Binding PublicKeys}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding KeyPairInfos.EcIdentifier.KeyLabel}" Header="KeyLabel" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding KeyPairInfos.EcIdentifier.TokenSerialNumber}" Header="TokenSerialNumber" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding KeyPairInfos.CurveDescription}" Header="CurveDescription" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Description}" Header="Description" IsReadOnly="False"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Load from HSM" Margin="5" Padding="5" MinWidth="120" />
-            <Button Content="Save" Margin="5" Padding="5"  MinWidth="120" />
-            <Button Content="Close" Margin="5" Padding="5" MinWidth="120"  />
+            <Button Content="Load from HSM" Margin="5" Padding="5" MinWidth="120" Command="{Binding LoadPublicKeysFromHSMCommand}" />
+            <Button Content="Save" Margin="5" Padding="5"  MinWidth="120" Command="{Binding SaveCommand}"/>
+            <Button Content="Close" Margin="5" Padding="5" MinWidth="120" Command="{Binding CloseCommand}" />
         </StackPanel>
     </Grid>
 </Window>

@@ -6,11 +6,17 @@ namespace EHF.Presentation.ViewModel
     public class EcKeyPairInfoViewModel : ViewModelBase
     {
         private bool isSelected;
-
         public bool IsSelected
         {
             get => this.isSelected;
             set => base.Set(ref this.isSelected, value);
+        }
+
+        private string description;
+        public string Description
+        {
+            get => this.description;
+            set => base.Set(ref this.description, value);
         }
 
         public EcKeyPairInfo KeyPairInfos { get; set; }

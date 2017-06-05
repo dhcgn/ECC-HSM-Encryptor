@@ -38,16 +38,19 @@ namespace EHF.Presentation.ViewModel
                     {
                         KeyPairInfos = DesignDataFactory.CreateDesignData<EcKeyPairInfo>("My Key #1", "Token White", "DENK0100123"),
                         IsSelected = true,
+                        Description = "My buisness token"
                     },
                     new EcKeyPairInfoViewModel()
                     {
                         KeyPairInfos = DesignDataFactory.CreateDesignData<EcKeyPairInfo>("My Key #2", "Token White", "DENK0100123"),
                         IsSelected = false,
+                        Description = "My private token"
                     },
                     new EcKeyPairInfoViewModel()
                     {
                         KeyPairInfos = DesignDataFactory.CreateDesignData<EcKeyPairInfo>("My Key #3", "Token Black", "DENK0100321"),
                         IsSelected = false,
+                        Description = "My private backup token"
                     },
                 };
                 this.AvailableHardwareTokens = new List<EcKeyPairInfo>()

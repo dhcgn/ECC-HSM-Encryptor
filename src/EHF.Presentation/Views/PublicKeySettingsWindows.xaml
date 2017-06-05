@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:contract="clr-namespace:Contract;assembly=Contract"
+        xmlns:viewModel="clr-namespace:EHF.Presentation.ViewModel"
         mc:Ignorable="d"
         Title="PublicKeySettingsWindows" Height="288.093" Width="528.818"
         
@@ -19,15 +21,26 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <DataGrid DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModel}" ItemsSource="{Binding PublicKeys}" AutoGenerateColumns="False">
+        <DataGrid DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModel}" 
+                  ItemsSource="{Binding PublicKeys}" 
+                  CanUserAddRows="False"
+                  AutoGenerateColumns="False">
             <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="viewModel:EcKeyPairInfoViewModel">
+                            <Image Height="10" Width="10" Source="{Binding KeyPairInfos.PublicKey.ToJson, Converter={StaticResource IdenticonConverter}}">
+                                <Image.ToolTip>
+                                    <Image Height="50" Width="50" Source="{Binding KeyPairInfos.PublicKey.ToJson, Converter={StaticResource IdenticonConverter}}" />
+                                </Image.ToolTip>
+                            </Image>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Binding="{Binding KeyPairInfos.EcIdentifier.KeyLabel}" Header="KeyLabel" IsReadOnly="True"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding KeyPairInfos.EcIdentifier.TokenSerialNumber}" Header="TokenSerialNumber" IsReadOnly="True"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding KeyPairInfos.CurveDescription}" Header="CurveDescription" IsReadOnly="True"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Description}" Header="Description" IsReadOnly="False"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Description}" Header="Description" Width="*" IsReadOnly="False"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">

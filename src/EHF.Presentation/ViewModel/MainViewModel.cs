@@ -74,6 +74,13 @@ namespace EHF.Presentation.ViewModel
                     this.EncryptCommand.RaiseCanExecuteChanged();
                     this.DecryptCommand.RaiseCanExecuteChanged();
                 };
+
+                this.AvailableHardwareTokensIsBusy = true;
+                this.AvailableHardwareTokens = new List<EcKeyPairInfo>() { new EcKeyPairInfo()};
+                this.SelectedAvailableHardwareToken = this.AvailableHardwareTokens.First();
+
+                this.PublicKeysIsBusy = true;
+                this.PublicKeys = new ObservableCollection<EcKeyPairInfoViewModel>(){ new EcKeyPairInfoViewModel()};
             }
         }
 
@@ -160,9 +167,17 @@ namespace EHF.Presentation.ViewModel
             });
             var nitroKeys = await Task.Run(() => Encryption.NitroKey.EllipticCurveCryptographer.GetEcKeyPairInfos());
 
-            DispatcherHelper.CheckBeginInvokeOnUI(() => { this.PublicKeys = new ObservableCollection<EcKeyPairInfoViewModel>(loadedKeys); });
-            DispatcherHelper.CheckBeginInvokeOnUI(() => { this.AvailableHardwareTokens = new List<EcKeyPairInfo>(nitroKeys); });
-            DispatcherHelper.CheckBeginInvokeOnUI(() => { this.SelectedAvailableHardwareToken = this.AvailableHardwareTokens.FirstOrDefault(); });
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            {
+                this.PublicKeys = new ObservableCollection<EcKeyPairInfoViewModel>(loadedKeys);
+                this.PublicKeysIsBusy = false;
+            });
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            {
+                this.AvailableHardwareTokens = new List<EcKeyPairInfo>(nitroKeys);
+                this.SelectedAvailableHardwareToken = this.AvailableHardwareTokens.FirstOrDefault();
+                this.AvailableHardwareTokensIsBusy = false;
+            });
         }
 
         #endregion
@@ -194,7 +209,6 @@ namespace EHF.Presentation.ViewModel
         }
 
         private long fileLength;
-
         public long FileLength
         {
             get => this.fileLength;
@@ -202,7 +216,6 @@ namespace EHF.Presentation.ViewModel
         }
 
         private string filePath;
-
         public string FilePath
         {
             get => this.filePath;
@@ -210,11 +223,26 @@ namespace EHF.Presentation.ViewModel
         }
 
         private bool showDropPanel;
-
         public bool ShowDropPanel
         {
             get => this.showDropPanel;
             set => this.Set(ref this.showDropPanel, value);
+        }
+
+        private bool availableHardwareTokensIsBusy;
+      
+
+        public bool AvailableHardwareTokensIsBusy
+        {
+            get => this.availableHardwareTokensIsBusy;
+            set => this.Set(ref this.availableHardwareTokensIsBusy, value);
+        }
+
+        private bool publicKeysIsBusy;
+        public bool PublicKeysIsBusy
+        {
+            get => this.publicKeysIsBusy;
+            set => this.Set(ref this.publicKeysIsBusy, value);
         }
 
         #endregion

@@ -3,5 +3,6 @@
                     xmlns:converter="clr-namespace:EHF.Presentation.LookAndFeel.Converter">
 
     <converter:IdenticonConverter x:Key="IdenticonConverter"></converter:IdenticonConverter>
+    <converter:VisibilityConverter x:Key="VisibilityConverter"></converter:VisibilityConverter>
 
 </ResourceDictionary>

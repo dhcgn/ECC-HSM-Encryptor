@@ -107,6 +107,7 @@
     </ApplicationDefinition>
     <Compile Include="DesignData\DesignDataFactory.cs" />
     <Compile Include="LookAndFeel\Converter\IdenticonConverter.cs" />
+    <Compile Include="LookAndFeel\Converter\VisibilityConverter.cs" />
     <Compile Include="ViewModel\EcKeyPairInfoViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\PasswordViewModel.cs" />

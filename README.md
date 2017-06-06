@@ -10,6 +10,8 @@ The proof of concept is working! You need to install [OpenSC](https://github.com
 
 The actual state is more or less a minimum viable product (MVP), it has a few limitations and the most dialogs are not implemented.
 
+The Crypto-Stuff is here: https://github.com/dhcgn/Encryption-Suite
+
 ### Limitations
 
 The following ECDSA GF(p) 192-320 bit elliptic curves are supported by the HSM, but only brainpoolP320r1 is at the moment implemented.
@@ -26,12 +28,15 @@ The following ECDSA GF(p) 192-320 bit elliptic curves are supported by the HSM, 
 ## Features
 
 - Encryption and decryption of files with one or more elliptic curves
-- Decryption is only possible with a NitroKey HSM  
+- Decryption is only possible with a NitroKey HSM **private key can not leave HSM at any time**  
   (No software-based elliptic curve handling is implemented)
+- Encryption with **AES-256**, ENCRYPT-THAN-MAC (HMAC SHA512), Derived Secret hashed with SHA 512 against weak bits
 
 ## Roadmap
 
-- Add source code to github
+- Reach beta stadium, see issues 
+  - https://github.com/dhcgn/Encryption-Suite/issues
+  - https://github.com/dhcgn/ECC-HSM-Encryptor/issues
 
 ## Screenshots
 

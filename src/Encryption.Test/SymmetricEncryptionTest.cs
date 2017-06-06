@@ -18,67 +18,87 @@ namespace Encryption.Test
         }
 
         [Test]
-        public void EncryptTest()
+        [TestCase(EncryptionSecret.Key)]
+        [TestCase(EncryptionSecret.Password)]
+        public void EncryptTest(EncryptionSecret secretType)
         {
             var data = Guid.NewGuid().ToByteArray();
             File.WriteAllBytes(this.InputFile, data);
 
             var pwd = Guid.NewGuid().ToString();
+            var key = Encryption.Random.CreateData(512);
 
-            using (var fileStream = File.OpenRead(this.InputFile))
+            using (var input = File.OpenRead(this.InputFile))
             using (var output = File.Create(this.OutputFile))
             {
-                SymmetricEncryption.Encrypt(fileStream, output, pwd);
+                switch (secretType)
+                {
+                    case EncryptionSecret.Password:
+                        SymmetricEncryption.Encrypt(input, output, pwd);
+                        break;
+                    case EncryptionSecret.Key:
+                        SymmetricEncryption.Encrypt(input, output, key);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(secretType), secretType, null);
+                }
             }
+            Assert.That(data, Is.Not.EquivalentTo(File.ReadAllBytes(this.OutputFile)));
+            Assert.That(data.Length, Is.LessThan(File.ReadAllBytes(this.OutputFile).Length));
+        }
 
-            Assert.That(File.ReadAllBytes(this.OutputFile).Length, Is.GreaterThan(data.Length));
+        public enum EncryptionSecret
+        {
+            Password,
+            Key
         }
 
         [Test]
-        public void EncryptDecryptWithPasswordTest()
+        [TestCase(EncryptionSecret.Key)]
+        [TestCase(EncryptionSecret.Password)]
+        public void EncryptDecryptWithPasswordTest(EncryptionSecret secretType)
         {
             var data = Guid.NewGuid().ToByteArray();
             File.WriteAllBytes(this.InputFile, data);
 
             var pwd = Guid.NewGuid().ToString();
+            var key = Encryption.Random.CreateData(512);
 
             using (var input = File.OpenRead(this.InputFile))
             using (var output = File.Create(this.OutputFile))
             {
-                SymmetricEncryption.Encrypt(input, output, pwd);
+                switch (secretType)
+                {
+                    case EncryptionSecret.Password:
+                        SymmetricEncryption.Encrypt(input, output, pwd);
+                        break;
+                    case EncryptionSecret.Key:
+                        SymmetricEncryption.Encrypt(input, output, key);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(secretType), secretType, null);
+                }
             }
 
             using (var input = File.OpenRead(this.OutputFile))
             using (var output = File.Create(this.ResultFile))
             {
-                SymmetricEncryption.Decrypt(input, output, pwd);
+                switch (secretType)
+                {
+                    case EncryptionSecret.Password:
+                        SymmetricEncryption.Decrypt(input, output, pwd);
+                        break;
+                    case EncryptionSecret.Key:
+                        SymmetricEncryption.Decrypt(input, output, key);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(secretType), secretType, null);
+                }
             }
 
+            Assert.That(data, Is.Not.EquivalentTo(File.ReadAllBytes(this.OutputFile)));
+            Assert.That(data.Length, Is.LessThan(File.ReadAllBytes(this.OutputFile).Length));
             Assert.That(data, Is.EquivalentTo(File.ReadAllBytes(this.ResultFile)));
         }
-
-        [Test]
-        public void EncryptDecryptWithKeyTest()
-        {
-            var data = Guid.NewGuid().ToByteArray();
-            File.WriteAllBytes(this.InputFile, data);
-
-            var pwd = Encryption.Random.CreateData(512);
-
-            using (var input = File.OpenRead(this.InputFile))
-            using (var output = File.Create(this.OutputFile))
-            {
-                SymmetricEncryption.Encrypt(input, output, pwd);
-            }
-
-            using (var input = File.OpenRead(this.OutputFile))
-            using (var output = File.Create(this.ResultFile))
-            {
-                SymmetricEncryption.Decrypt(input, output, pwd);
-            }
-
-            Assert.That(data, Is.EquivalentTo(File.ReadAllBytes(this.ResultFile)));
-        }
-
     }
 }

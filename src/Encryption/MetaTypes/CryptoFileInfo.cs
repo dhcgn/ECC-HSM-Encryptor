@@ -21,6 +21,9 @@ namespace Encryption
         [ProtoMember(3)]
         public int Iterations { get; set; }
 
+        [ProtoMember(4)]
+        public byte[] Hmac { get; set; }
+
         [ProtoMember(Int16.MaxValue)]
         public int Version { get; set; }
 

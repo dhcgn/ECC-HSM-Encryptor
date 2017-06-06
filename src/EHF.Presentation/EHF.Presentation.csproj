@@ -54,6 +54,18 @@
     <ApplicationIcon>web_hi_res_512_jS1_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EncryptionSuite.Contract">
+      <HintPath>..\..\libs\EncryptionSuite.Contract.dll</HintPath>
+    </Reference>
+    <Reference Include="EncryptionSuite.Encryption">
+      <HintPath>..\..\libs\EncryptionSuite.Encryption.dll</HintPath>
+    </Reference>
+    <Reference Include="EncryptionSuite.Encryption.Hybrid">
+      <HintPath>..\..\libs\EncryptionSuite.Encryption.Hybrid.dll</HintPath>
+    </Reference>
+    <Reference Include="EncryptionSuite.Encryption.NitroKey">
+      <HintPath>..\..\libs\EncryptionSuite.Encryption.NitroKey.dll</HintPath>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
@@ -79,7 +91,7 @@
       <HintPath>..\..\packages\NIdenticon.1.2.1.0\lib\net35-client\NIdenticon.dll</HintPath>
     </Reference>
     <Reference Include="Pkcs11Interop">
-      <HintPath>..\Encryption.NitroKey\bin\Debug\Pkcs11Interop.dll</HintPath>
+      <HintPath>..\..\libs\Pkcs11Interop.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -230,22 +242,6 @@
     <Resource Include="web_hi_res_512_jS1_icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Contract\Contract.csproj">
-      <Project>{d47d8fd4-3d63-4172-8f12-470650da225e}</Project>
-      <Name>Contract</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Encryption.Hybrid\Encryption.Hybrid.csproj">
-      <Project>{a46b6ae4-6b8f-4e1f-bed8-5c359f35117c}</Project>
-      <Name>Encryption.Hybrid</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Encryption.NitroKey\Encryption.NitroKey.csproj">
-      <Project>{76666989-fa10-49e2-a5c5-43af0c5bf01c}</Project>
-      <Name>Encryption.NitroKey</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Encryption\Encryption.csproj">
-      <Project>{a324cce8-8e12-4cac-9981-1c0c4a5ce57c}</Project>
-      <Name>Encryption</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Storage\Storage.csproj">
       <Project>{05eca464-d3b5-461c-b90d-1b5d0b01fd94}</Project>
       <Name>Storage</Name>

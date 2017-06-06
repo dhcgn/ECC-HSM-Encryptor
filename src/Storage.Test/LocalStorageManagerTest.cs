@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Contract;
+using EncryptionSuite.Contract;
 using Newtonsoft.Json;
 using NUnit.Framework;
 

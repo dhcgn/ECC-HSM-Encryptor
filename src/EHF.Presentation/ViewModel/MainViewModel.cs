@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using Contract;
+using EncryptionSuite.Contract;
 using EHF.Presentation.DesignData;
 using EHF.Presentation.Views;
-using Encryption;
-using Encryption.Hybrid;
+using EncryptionSuite.Encryption;
+using EncryptionSuite.Encryption.Hybrid;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
@@ -165,7 +165,7 @@ namespace EHF.Presentation.ViewModel
                     return Enumerable.Empty<EcKeyPairInfoViewModel>().ToArray();
                 }
             });
-            var nitroKeys = await Task.Run(() => Encryption.NitroKey.EllipticCurveCryptographer.GetEcKeyPairInfos());
+            var nitroKeys = await Task.Run(() => EncryptionSuite.Encryption.NitroKey.EllipticCurveCryptographer.GetEcKeyPairInfos());
 
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {

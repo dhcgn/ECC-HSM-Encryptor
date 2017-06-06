@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Contract;
+using EncryptionSuite.Contract;
 using EHF.Presentation.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -54,7 +54,7 @@ namespace EHF.Presentation.ViewModel
 
         private void LoadPublicKeysFromHSMCommandHandling()
         {
-            var keys = Encryption.NitroKey.EllipticCurveCryptographer.GetEcKeyPairInfos();
+            var keys = EncryptionSuite.Encryption.NitroKey.EllipticCurveCryptographer.GetEcKeyPairInfos();
 
             foreach (var ecKeyPairInfo in keys)
             {

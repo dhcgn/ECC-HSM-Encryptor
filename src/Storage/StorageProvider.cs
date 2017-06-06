@@ -1,6 +1,7 @@
 using System.IO;
 using System.Text;
 using Newtonsoft.Json;
+using EncryptionSuite.Encryption;
 
 namespace Storage
 {
@@ -19,7 +20,7 @@ namespace Storage
                 }
                 else
                 {
-                    Encryption.SymmetricEncryption.Decrypt(input, output, password);
+                    EncryptionSuite.Encryption.SymmetricEncryption.Decrypt(input, output, password);
                     jsonData = Encoding.UTF8.GetString(output.ToArray());
                 }
             }
@@ -41,7 +42,7 @@ namespace Storage
                 }
                 else
                 {
-                    Encryption.SymmetricEncryption.Encrypt(input, output, password);
+                    SymmetricEncryption.Encrypt(input, output, password);
                 }
             }
         }

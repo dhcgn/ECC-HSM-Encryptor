@@ -4,8 +4,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Contract;
-using Encryption.NitroKey;
+using EncryptionSuite.Contract;
+using EncryptionSuite.Encryption.NitroKey;
 using Newtonsoft.Json;
 
 namespace EHF.Presentation.DesignData
@@ -21,9 +21,9 @@ namespace EHF.Presentation.DesignData
                 var key = ToHexString(seed);
 
                 if (!KeyStorage.ContainsKey(key))
-                    KeyStorage.Add(key, Encryption.EllipticCurveCryptographer.CreateKeyPair(false));
+                    KeyStorage.Add(key, EncryptionSuite.Encryption.EllipticCurveCryptographer.CreateKeyPair(false));
 
-                return new Contract.EcKeyPairInfo()
+                return new EncryptionSuite.Contract.EcKeyPairInfo()
                 {
                     TokenLabel = propertyValues[1],
                     ManufacturerId = "Nitrokey",

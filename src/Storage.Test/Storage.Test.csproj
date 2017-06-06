@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EncryptionSuite.Contract">
+      <HintPath>..\..\libs\EncryptionSuite.Contract.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Win32.Primitives.4.0.1\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
     </Reference>
@@ -128,14 +131,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Contract\Contract.csproj">
-      <Project>{D47D8FD4-3D63-4172-8F12-470650DA225E}</Project>
-      <Name>Contract</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Encryption\Encryption.csproj">
-      <Project>{a324cce8-8e12-4cac-9981-1c0c4a5ce57c}</Project>
-      <Name>Encryption</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Storage\Storage.csproj">
       <Project>{05eca464-d3b5-461c-b90d-1b5d0b01fd94}</Project>
       <Name>Storage</Name>

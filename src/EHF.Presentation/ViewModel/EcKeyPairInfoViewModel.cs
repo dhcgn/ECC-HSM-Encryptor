@@ -1,4 +1,4 @@
-﻿using Contract;
+﻿using EncryptionSuite.Contract;
 using GalaSoft.MvvmLight;
 
 namespace EHF.Presentation.ViewModel

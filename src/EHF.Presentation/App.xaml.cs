@@ -22,6 +22,21 @@ namespace EHF.Presentation
             EmbeddedLibsResolver.Init();
             InitHockeyClient();
             InitializeDispatcherHelper();
+            CheckInstalled();
+        }
+
+        private  void CheckInstalled()
+        {
+            // Todo move to lib
+            var filepath = Environment.Is64BitProcess 
+                ? @"C:\Windows\System32\opensc-pkcs11.dll" 
+                : @"C:\Windows\syswow64\opensc-pkcs11.dll";
+
+            if (!File.Exists(filepath))
+            {
+                MessageBox.Show($"File \"{filepath}\"doen't exist, but is necessary to communicate with nitro key hsm. Please download OpenSC from \"https://sourceforge.net/projects/opensc/files/OpenSC/opensc-0.16.0/\"");
+                this.Shutdown(-1);
+            }
         }
 
         private static void InitializeDispatcherHelper()

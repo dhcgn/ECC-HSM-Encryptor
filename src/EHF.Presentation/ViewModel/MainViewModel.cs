@@ -27,7 +27,6 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             {
                 #region Design Data
 
-                this.FileLength = 10324313;
                 this.FilePath = @"C:\temp\document.docx";
                 this.PublicKeys = new ObservableCollection<EcKeyPairInfoViewModel>()
                 {
@@ -158,7 +157,20 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             }
         }
 
-        public void RefreshPublicKeys()
+        private async void LoadedCommandHandling()
+        {
+            var tasks = new List<Task>
+            {
+                Task.Run(() => this.RefreshPublicKeys()),
+                Task.Run(() => this.RefreshAvailableHardwareToken())
+            };
+
+            await Task.WhenAll(tasks);
+        }
+
+        #endregion
+
+        private void RefreshPublicKeys()
         {
             List<EcKeyPairInfoViewModel> loadedKeys;
             try
@@ -179,17 +191,6 @@ namespace EccHsmEncryptor.Presentation.ViewModel
 
                 this.PublicKeysIsBusy = false;
             });
-        }
-
-        private async void LoadedCommandHandling()
-        {
-            List<Task> tasks = new List<Task>
-            {
-                Task.Run(() => this.RefreshPublicKeys()),
-                Task.Run(() => this.RefreshAvailableHardwareToken())
-            };
-
-            await Task.WhenAll(tasks);
         }
 
         private void RefreshAvailableHardwareToken()
@@ -213,7 +214,10 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             });
         }
 
-        #endregion
+        public void DropFiles(string[] files)
+        {
+            this.FilePath = files.FirstOrDefault();
+        }
 
         #region Properties
 
@@ -239,14 +243,6 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         {
             get => this.publicKeys;
             set => this.Set(ref this.publicKeys, value);
-        }
-
-        private long fileLength;
-
-        public long FileLength
-        {
-            get => this.fileLength;
-            set => this.Set(ref this.fileLength, value);
         }
 
         private string filePath;
@@ -275,13 +271,14 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private bool publicKeysIsBusy;
-        private bool publicKeysNotAvailable;
 
         public bool PublicKeysIsBusy
         {
             get => this.publicKeysIsBusy;
             set => this.Set(ref this.publicKeysIsBusy, value);
         }
+
+        private bool publicKeysNotAvailable;
 
         public bool PublicKeysNotAvailable
         {
@@ -290,10 +287,5 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         #endregion
-
-        public void DropFiles(string[] files)
-        {
-            this.FilePath = files.FirstOrDefault();
-        }
     }
 }

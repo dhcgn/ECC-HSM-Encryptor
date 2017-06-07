@@ -11,7 +11,11 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         public bool IsSelected
         {
             get => this.isSelected;
-            set => base.Set(ref this.isSelected, value);
+            set
+            {
+                base.Set(ref this.isSelected, value);
+                base.MessengerInstance.Send(new Messages.PropertyChanged(this.GetType()));
+            }
         }
 
         private string description;

@@ -53,7 +53,7 @@ namespace Storage
             {
                 return Enumerable.Empty<T>();
             }
-            return storageType.Entites.Select(o => JsonConvert.DeserializeObject<T>(o));
+            return storageType.Entites.Select(JsonConvert.DeserializeObject<T>);
         }
 
         public void Add<T>(T entity)

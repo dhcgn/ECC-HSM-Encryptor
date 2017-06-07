@@ -69,8 +69,12 @@
             <Grid Grid.Column="1" Margin="6" Background="White" ZIndex="1" Visibility="{Binding PublicKeysIsBusy, Converter={StaticResource VisibilityConverter}}" >
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Loading ..." />
             </Grid>
+            <Grid Grid.Column="1" Margin="6" Background="White" ZIndex="1" Visibility="{Binding PublicKeys, Converter={StaticResource VisibilityEmptyListConverter}}" >
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="No public keys available." />
+            </Grid>
             
             <ItemsControl Grid.Column="1" Margin="5" ItemsSource="{Binding PublicKeys, Mode=TwoWay}"
+                          MinHeight="40"
                           BorderThickness="1" BorderBrush="Black">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
@@ -119,7 +123,7 @@
             <Grid Grid.Column="1" Margin="6" Background="White" ZIndex="1" Visibility="{Binding AvailableHardwareTokensIsBusy, Converter={StaticResource VisibilityConverter}}" >
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Loading ..." />
             </Grid>
-            <ComboBox Grid.Column="1" Margin="5" 
+            <ComboBox Grid.Column="1" Margin="5" MinHeight="40"
                       ItemsSource="{Binding AvailableHardwareTokens}"
                       SelectedItem="{Binding SelectedAvailableHardwareToken}">
                 <ComboBox.ItemTemplate>

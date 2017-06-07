@@ -8,6 +8,7 @@ using EccHsmEncryptor.Presentation.DesignData;
 using EccHsmEncryptor.Presentation.Views;
 using EncryptionSuite.Contract;
 using EncryptionSuite.Encryption.Hybrid;
+using EncryptionSuite.Encryption.NitroKey;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
@@ -67,16 +68,25 @@ namespace EccHsmEncryptor.Presentation.ViewModel
 
                 this.PropertyChanged += (sender, args) =>
                 {
-                    this.EncryptCommand.RaiseCanExecuteChanged();
-                    this.DecryptCommand.RaiseCanExecuteChanged();
+                    this.EncryptCommand?.RaiseCanExecuteChanged();
+                    this.DecryptCommand?.RaiseCanExecuteChanged();
                 };
 
-                this.AvailableHardwareTokensIsBusy = true;
-                this.AvailableHardwareTokens = new List<EcKeyPairInfo>() { new EcKeyPairInfo()};
-                this.SelectedAvailableHardwareToken = this.AvailableHardwareTokens.First();
+                // Todo: fix this workaround
+                base.MessengerInstance.Register<Messages.PropertyChanged>(this, changed =>
+                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        if (changed.TypeName == typeof(EcKeyPairInfoViewModel).Name)
+                        {
+                            this.EncryptCommand?.RaiseCanExecuteChanged();
+                            this.DecryptCommand?.RaiseCanExecuteChanged();
+                        }
+                    });
+                });
 
+                this.AvailableHardwareTokensIsBusy = true;
                 this.PublicKeysIsBusy = true;
-                this.PublicKeys = new ObservableCollection<EcKeyPairInfoViewModel>(){ new EcKeyPairInfoViewModel()};
             }
         }
 
@@ -148,26 +158,53 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             }
         }
 
-        private async void LoadedCommandHandling()
+        public void RefreshPublicKeys()
         {
-            var loadedKeys = await Task.Run(() =>
+            List<EcKeyPairInfoViewModel> loadedKeys;
+            try
             {
-                try
-                {
-                    return new LocalStorageManager().GetAll<EcKeyPairInfoViewModel>().ToArray();
-                }
-                catch (Exception e)
-                {
-                    return Enumerable.Empty<EcKeyPairInfoViewModel>().ToArray();
-                }
-            });
-            var nitroKeys = await Task.Run(() => EncryptionSuite.Encryption.NitroKey.EllipticCurveCryptographer.GetEcKeyPairInfos());
+                loadedKeys = new LocalStorageManager().GetAll<EcKeyPairInfoViewModel>().ToList();
+            }
+            catch (Exception e)
+            {
+                loadedKeys = Enumerable.Empty<EcKeyPairInfoViewModel>().ToList();
+            }
 
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
                 this.PublicKeys = new ObservableCollection<EcKeyPairInfoViewModel>(loadedKeys);
+
+                if (!loadedKeys.Any())
+                    this.PublicKeysNotAvailable = true;
+
                 this.PublicKeysIsBusy = false;
             });
+        }
+
+        private async void LoadedCommandHandling()
+        {
+            List<Task> tasks = new List<Task>
+            {
+                Task.Run(() => this.RefreshPublicKeys()),
+                Task.Run(() => this.RefreshAvailableHardwareToken())
+            };
+
+            await Task.WhenAll(tasks);
+        }
+
+        private void RefreshAvailableHardwareToken()
+        {
+            EcKeyPairInfo[] nitroKeys;
+            try
+            {
+                nitroKeys = EllipticCurveCryptographer.GetEcKeyPairInfos();
+            }
+            catch (Exception e)
+            {
+                nitroKeys = Enumerable.Empty<EcKeyPairInfo>().ToArray();
+            }
+
+
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
                 this.AvailableHardwareTokens = new List<EcKeyPairInfo>(nitroKeys);
@@ -205,6 +242,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private long fileLength;
+
         public long FileLength
         {
             get => this.fileLength;
@@ -212,6 +250,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private string filePath;
+
         public string FilePath
         {
             get => this.filePath;
@@ -219,6 +258,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private bool showDropPanel;
+
         public bool ShowDropPanel
         {
             get => this.showDropPanel;
@@ -226,7 +266,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private bool availableHardwareTokensIsBusy;
-      
+
 
         public bool AvailableHardwareTokensIsBusy
         {
@@ -235,10 +275,18 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private bool publicKeysIsBusy;
+        private bool publicKeysNotAvailable;
+
         public bool PublicKeysIsBusy
         {
             get => this.publicKeysIsBusy;
             set => this.Set(ref this.publicKeysIsBusy, value);
+        }
+
+        public bool PublicKeysNotAvailable
+        {
+            get => this.publicKeysNotAvailable;
+            set => this.Set(ref this.publicKeysNotAvailable, value);
         }
 
         #endregion

@@ -4,5 +4,6 @@
 
     <converter:IdenticonConverter x:Key="IdenticonConverter"></converter:IdenticonConverter>
     <converter:VisibilityConverter x:Key="VisibilityConverter"></converter:VisibilityConverter>
+    <converter:VisibilityEmptyListConverter x:Key="VisibilityEmptyListConverter"></converter:VisibilityEmptyListConverter>
 
 </ResourceDictionary>

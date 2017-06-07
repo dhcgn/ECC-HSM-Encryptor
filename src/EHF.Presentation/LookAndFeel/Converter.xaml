@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:converter="clr-namespace:EHF.Presentation.LookAndFeel.Converter">
+                    xmlns:converter="clr-namespace:EccHsmEncryptor.Presentation.LookAndFeel.Converter">
 
     <converter:IdenticonConverter x:Key="IdenticonConverter"></converter:IdenticonConverter>
     <converter:VisibilityConverter x:Key="VisibilityConverter"></converter:VisibilityConverter>

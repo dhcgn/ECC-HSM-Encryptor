@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage", "src\Storage\Stor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Test", "src\Storage.Test\Storage.Test.csproj", "{90FFE4CE-ABAD-4402-9A6D-F7AFE42B5347}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EHF.Presentation", "src\EHF.Presentation\EHF.Presentation.csproj", "{491DE712-062D-4EC5-A0B6-A46E7C7B27E4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EccHsmEncryptor.Presentation", "src\EHF.Presentation\EccHsmEncryptor.Presentation.csproj", "{491DE712-062D-4EC5-A0B6-A46E7C7B27E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

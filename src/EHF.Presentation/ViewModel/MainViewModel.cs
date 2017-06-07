@@ -3,22 +3,18 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
+using EccHsmEncryptor.Presentation.DesignData;
+using EccHsmEncryptor.Presentation.Views;
 using EncryptionSuite.Contract;
-using EHF.Presentation.DesignData;
-using EHF.Presentation.Views;
-using EncryptionSuite.Encryption;
 using EncryptionSuite.Encryption.Hybrid;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Threading;
-using Newtonsoft.Json;
 using Storage;
 
-namespace EHF.Presentation.ViewModel
+namespace EccHsmEncryptor.Presentation.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {

@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows;
 using GalaSoft.MvvmLight.Threading;
 using Microsoft.HockeyApp;
 
-namespace EHF.Presentation
+namespace EccHsmEncryptor.Presentation
 {
     /// <summary>
     /// Interaktionslogik für "App.xaml"
@@ -22,7 +19,7 @@ namespace EHF.Presentation
             EmbeddedLibsResolver.Init();
             InitHockeyClient();
             InitializeDispatcherHelper();
-            CheckInstalled();
+            this.CheckInstalled();
         }
 
         private  void CheckInstalled()
@@ -80,6 +77,11 @@ namespace EHF.Presentation
                     return assemblies.ContainsKey(path) ? assemblies[path] : null;
                 };
             }
+        }
+
+        private async void App_OnStartup(object sender, StartupEventArgs e)
+        {
+            await HockeyClient.Current.SendCrashesAsync();
         }
     }
 }

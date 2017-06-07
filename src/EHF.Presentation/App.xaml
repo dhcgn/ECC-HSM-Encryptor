@@ -1,10 +1,11 @@
-﻿<Application x:Class="EHF.Presentation.App"
+﻿<Application x:Class="EccHsmEncryptor.Presentation.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:viewModel="clr-namespace:EHF.Presentation.ViewModel"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModel="clr-namespace:EccHsmEncryptor.Presentation.ViewModel"
              mc:Ignorable="d"
+             Startup="App_OnStartup"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>

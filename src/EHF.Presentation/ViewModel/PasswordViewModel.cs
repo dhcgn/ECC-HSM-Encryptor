@@ -1,7 +1,7 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 
-namespace EHF.Presentation.ViewModel
+namespace EccHsmEncryptor.Presentation.ViewModel
 {
     public class PasswordViewModel : ViewModelBase
     {

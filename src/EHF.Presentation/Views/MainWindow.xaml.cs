@@ -1,20 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using EHF.Presentation.ViewModel;
+﻿using System.Windows;
+using EccHsmEncryptor.Presentation.ViewModel;
 
-namespace EHF.Presentation
+namespace EccHsmEncryptor.Presentation.Views
 {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
@@ -28,13 +15,13 @@ namespace EHF.Presentation
 
         private void MainWindow_OnDragEnter(object sender, DragEventArgs e)
         {
-            var viewModel = (MainViewModel)DataContext;
+            var viewModel = (MainViewModel)this.DataContext;
            // viewModel.ShowDropPanel = true;
         }
 
         private void MainWindow_OnDragLeave(object sender, DragEventArgs e)
         {
-            var viewModel = (MainViewModel)DataContext;
+            var viewModel = (MainViewModel)this.DataContext;
            // viewModel.ShowDropPanel = false;
         }
 
@@ -44,7 +31,7 @@ namespace EHF.Presentation
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-                var viewModel = (MainViewModel)DataContext;
+                var viewModel = (MainViewModel)this.DataContext;
                 viewModel.DropFiles(files);
                // viewModel.ShowDropPanel = false;
             }

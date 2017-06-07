@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EncryptionSuite.Contract;
-using EHF.Presentation.Views;
+using EccHsmEncryptor.Presentation.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
 
-namespace EHF.Presentation.ViewModel
+namespace EccHsmEncryptor.Presentation.ViewModel
 {
     public class PublicKeySettingsViewModel : ViewModelBase
     {

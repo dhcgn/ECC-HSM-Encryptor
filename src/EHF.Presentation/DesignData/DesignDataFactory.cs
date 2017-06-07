@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using EncryptionSuite.Contract;
-using EncryptionSuite.Encryption.NitroKey;
-using Newtonsoft.Json;
 
-namespace EHF.Presentation.DesignData
+namespace EccHsmEncryptor.Presentation.DesignData
 {
     public static class DesignDataFactory
     {

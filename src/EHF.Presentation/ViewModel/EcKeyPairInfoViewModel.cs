@@ -1,7 +1,7 @@
 ﻿using EncryptionSuite.Contract;
 using GalaSoft.MvvmLight;
 
-namespace EHF.Presentation.ViewModel
+namespace EccHsmEncryptor.Presentation.ViewModel
 {
     public class EcKeyPairInfoViewModel : ViewModelBase
     {

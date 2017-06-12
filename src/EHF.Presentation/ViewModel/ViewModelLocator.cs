@@ -32,16 +32,6 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         {
             public bool? DialogResult { get; set; }
         }
-
-        public class PropertyChanged
-        {
-            public PropertyChanged(Type type)
-            {
-                this.TypeName = type.Name;
-            }
-
-            public string TypeName { get; set; }
-        }
     }
 
 }

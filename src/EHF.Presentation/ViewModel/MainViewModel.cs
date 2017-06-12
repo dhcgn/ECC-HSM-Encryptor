@@ -10,7 +10,7 @@ using EncryptionSuite.Contract;
 using EncryptionSuite.Encryption.Hybrid;
 using EncryptionSuite.Encryption.NitroKey;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Threading;
 using Storage;
@@ -64,25 +64,6 @@ namespace EccHsmEncryptor.Presentation.ViewModel
                 this.PublicKeySettingsCommand = new RelayCommand(this.PublicKeySettingsCommandHandling);
                 this.EncryptCommand = new RelayCommand(this.EncryptCommandHandling, this.EncryptCommandCanExecute);
                 this.DecryptCommand = new RelayCommand(this.DecryptCommandHandling, this.DecryptCommandCanExecute);
-
-                this.PropertyChanged += (sender, args) =>
-                {
-                    this.EncryptCommand?.RaiseCanExecuteChanged();
-                    this.DecryptCommand?.RaiseCanExecuteChanged();
-                };
-
-                // Todo: fix this workaround
-                base.MessengerInstance.Register<Messages.PropertyChanged>(this, changed =>
-                {
-                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                    {
-                        if (changed.TypeName == typeof(EcKeyPairInfoViewModel).Name)
-                        {
-                            this.EncryptCommand?.RaiseCanExecuteChanged();
-                            this.DecryptCommand?.RaiseCanExecuteChanged();
-                        }
-                    });
-                });
 
                 this.AvailableHardwareTokensIsBusy = true;
                 this.PublicKeysIsBusy = true;

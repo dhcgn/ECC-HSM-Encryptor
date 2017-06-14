@@ -222,7 +222,7 @@
             </Button>
         </Grid>
         <Grid Grid.Row="4">
-            <ProgressBar Height="10" Value="75" />
+            <ProgressBar Height="10" Value="{Binding Progress}" />
         </Grid>
     </Grid>
 </Window>

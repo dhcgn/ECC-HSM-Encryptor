@@ -28,6 +28,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
                 #region Design Data
 
                 this.FilePath = @"C:\temp\document.docx";
+                this.Progress = 80;
                 this.PublicKeys = new ObservableCollection<EcKeyPairInfoViewModel>()
                 {
                     new EcKeyPairInfoViewModel()
@@ -64,7 +65,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
                 this.PublicKeySettingsCommand = new RelayCommand(this.PublicKeySettingsCommandHandling);
                 this.EncryptCommand = new RelayCommand(this.EncryptCommandHandling, this.EncryptCommandCanExecute);
                 this.DecryptCommand = new RelayCommand(this.DecryptCommandHandling, this.DecryptCommandCanExecute);
-
+                this.CancelCommand = new RelayCommand(this.CancelCommandHandling, this.CancelCommandCanExecute);
                 this.AvailableHardwareTokensIsBusy = true;
                 this.PublicKeysIsBusy = true;
             }
@@ -80,6 +81,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         public RelayCommand StartCommand { get; set; }
         public RelayCommand LoadedCommand { get; set; }
         public RelayCommand HelpCommand { get; set; }
+        public RelayCommand CancelCommand { get; set; }
 
         #endregion
 
@@ -92,6 +94,8 @@ namespace EccHsmEncryptor.Presentation.ViewModel
 
         private bool EncryptCommandCanExecute()
         {
+            if (this.IsBusy) return false;
+
             if (!File.Exists(this.FilePath))
                 return false;
 
@@ -103,16 +107,27 @@ namespace EccHsmEncryptor.Presentation.ViewModel
 
         private void EncryptCommandHandling()
         {
+            this.IsBusy = true;
+
             using (var input = File.OpenRead(this.FilePath))
             using (var output = File.Create(this.FilePath + ".enc"))
             {
                 var publicKeys = this.PublicKeys.Where(model => model.IsSelected).Select(model => model.KeyPairInfos.PublicKey.ExportPublicKey());
-                HybridEncryption.Encrypt(input, output, publicKeys.ToArray());
+                HybridEncryption.Encrypt(input, output, this.ReportProgress, () => this.IsCanceled, publicKeys.ToArray());
             }
+
+            this.IsBusy = false;
+        }
+
+        private void ReportProgress(double d)
+        {
+            DispatcherHelper.CheckBeginInvokeOnUI(() => { this.Progress = d; });
         }
 
         private bool DecryptCommandCanExecute()
         {
+            if (this.IsBusy) return false;
+
             if (!File.Exists(this.FilePath))
                 return false;
 
@@ -129,13 +144,17 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             if (result == null || !(bool) result)
                 return;
 
+            this.IsBusy = true;
+
             var password = SimpleIoc.Default.GetInstance<PasswordViewModel>().Password;
 
             using (var input = File.OpenRead(this.FilePath))
             using (var output = File.Create(this.FilePath + ".dec"))
             {
-                HybridEncryption.Decrypt(input, output, password);
+                HybridEncryption.Decrypt(input, output, password, this.ReportProgress, () => this.IsCanceled);
             }
+
+            this.IsBusy = false;
         }
 
         private async void LoadedCommandHandling()
@@ -147,6 +166,16 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             };
 
             await Task.WhenAll(tasks);
+        }
+
+        private bool CancelCommandCanExecute()
+        {
+            return this.isBusy;
+        }
+
+        private void CancelCommandHandling()
+        {
+            this.IsCanceled = true;
         }
 
         #endregion
@@ -211,7 +240,6 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private EcKeyPairInfo selectedAvailableHardwareToken;
-
         public EcKeyPairInfo SelectedAvailableHardwareToken
         {
             get => this.selectedAvailableHardwareToken;
@@ -219,7 +247,6 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private ObservableCollection<EcKeyPairInfoViewModel> publicKeys;
-
         public ObservableCollection<EcKeyPairInfoViewModel> PublicKeys
         {
             get => this.publicKeys;
@@ -227,7 +254,6 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private string filePath;
-
         public string FilePath
         {
             get => this.filePath;
@@ -235,7 +261,6 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private bool showDropPanel;
-
         public bool ShowDropPanel
         {
             get => this.showDropPanel;
@@ -243,8 +268,6 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private bool availableHardwareTokensIsBusy;
-
-
         public bool AvailableHardwareTokensIsBusy
         {
             get => this.availableHardwareTokensIsBusy;
@@ -252,7 +275,6 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private bool publicKeysIsBusy;
-
         public bool PublicKeysIsBusy
         {
             get => this.publicKeysIsBusy;
@@ -260,11 +282,31 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private bool publicKeysNotAvailable;
-
         public bool PublicKeysNotAvailable
         {
             get => this.publicKeysNotAvailable;
             set => this.Set(ref this.publicKeysNotAvailable, value);
+        }
+
+        private double progress;
+        public double Progress
+        {
+            get => this.progress;
+            set => this.Set(ref this.progress, value);
+        }
+
+        private bool isCanceled;
+        public bool IsCanceled
+        {
+            get => this.isCanceled;
+            set => this.Set(ref this.isCanceled, value);
+        }
+
+        private bool isBusy;
+        public bool IsBusy
+        {
+            get => this.isBusy;
+            set => this.Set(ref this.isBusy, value);
         }
 
         #endregion

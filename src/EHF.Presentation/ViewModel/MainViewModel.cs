@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 using EccHsmEncryptor.Presentation.DesignData;
 using EccHsmEncryptor.Presentation.Views;
 using EncryptionSuite.Contract;
+using EncryptionSuite.Encryption;
 using EncryptionSuite.Encryption.Hybrid;
-using EncryptionSuite.Encryption.NitroKey;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Threading;
 using Storage;
+using EllipticCurveCryptographer = EncryptionSuite.Encryption.NitroKey.EllipticCurveCryptographer;
 
 namespace EccHsmEncryptor.Presentation.ViewModel
 {
@@ -111,8 +112,12 @@ namespace EccHsmEncryptor.Presentation.ViewModel
 
             await Task.Run(() =>
             {
+                var targetPath = this.HideFilename
+                    ? Path.Combine(Path.GetDirectoryName(this.FilePath), $"{Guid.NewGuid()}.enc")
+                    : $"{this.FilePath}.enc";
+
                 using (var input = File.OpenRead(this.FilePath))
-                using (var output = File.Create(this.FilePath + ".enc"))
+                using (var output = File.Create(targetPath))
                 {
                     var selectedPublicKeys = this.PublicKeys.Where(model => model.IsSelected).Select(model => model.KeyPairInfos.PublicKey.ExportPublicKey());
 
@@ -125,7 +130,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
                     });
                 }
             });
-            
+
             this.IsBusy = false;
         }
 
@@ -160,16 +165,28 @@ namespace EccHsmEncryptor.Presentation.ViewModel
 
             await Task.Run(() =>
             {
+                SymmetricEncryption.DecryptInfo info;
+                var targetPath = $"{this.FilePath}.dec";
+
                 using (var input = File.OpenRead(this.FilePath))
-                using (var output = File.Create(this.FilePath + ".dec"))
+                using (var output = File.Create(targetPath))
                 {
-                    HybridEncryption.Decrypt(input, output, new HybridEncryption.DecryptionParameter()
+                    info = HybridEncryption.Decrypt(input, output, new HybridEncryption.DecryptionParameter()
                     {
                         Progress = this.ReportProgress,
                         IsCanceled = () => this.IsCanceled,
                         Password = hsmPin,
                     });
                 }
+
+                var decryptedFileName = Path.Combine(Path.GetDirectoryName(this.FilePath), info.FileName);
+                if (File.Exists(decryptedFileName))
+                {
+                    var dto = new DateTimeOffset(DateTime.Now);
+                    decryptedFileName += $".{dto.ToUnixTimeMilliseconds()}{Path.GetExtension(info.FileName)}";
+                }
+
+                File.Move(targetPath, decryptedFileName);
             });
 
             this.IsBusy = false;
@@ -258,6 +275,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private EcKeyPairInfo selectedAvailableHardwareToken;
+
         public EcKeyPairInfo SelectedAvailableHardwareToken
         {
             get => this.selectedAvailableHardwareToken;
@@ -265,6 +283,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private ObservableCollection<EcKeyPairInfoViewModel> publicKeys;
+
         public ObservableCollection<EcKeyPairInfoViewModel> PublicKeys
         {
             get => this.publicKeys;
@@ -272,6 +291,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private string filePath;
+
         public string FilePath
         {
             get => this.filePath;
@@ -279,6 +299,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private bool showDropPanel;
+
         public bool ShowDropPanel
         {
             get => this.showDropPanel;
@@ -286,6 +307,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private bool availableHardwareTokensIsBusy;
+
         public bool AvailableHardwareTokensIsBusy
         {
             get => this.availableHardwareTokensIsBusy;
@@ -293,6 +315,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private bool publicKeysIsBusy;
+
         public bool PublicKeysIsBusy
         {
             get => this.publicKeysIsBusy;
@@ -300,6 +323,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private bool publicKeysNotAvailable;
+
         public bool PublicKeysNotAvailable
         {
             get => this.publicKeysNotAvailable;
@@ -307,6 +331,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private double progress;
+
         public double Progress
         {
             get => this.progress;
@@ -314,6 +339,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private bool isCanceled;
+
         public bool IsCanceled
         {
             get => this.isCanceled;
@@ -321,10 +347,19 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private bool isBusy;
+
         public bool IsBusy
         {
             get => this.isBusy;
             set => this.Set(ref this.isBusy, value);
+        }
+
+        private bool hideFilename = true;
+
+        public bool HideFilename
+        {
+            get => this.hideFilename;
+            set => this.Set(ref this.hideFilename, value);
         }
 
         #endregion

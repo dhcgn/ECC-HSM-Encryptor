@@ -16,10 +16,10 @@
         Title="ECC HSM Encryptor (Working title) ALPHA 0.0.1"
         Icon="{StaticResource BitmapIcon}"
 
-        MinHeight="280"
+        MinHeight="285"
         MinWidth="680"
 
-        Height="280"
+        Height="285"
         Width="680">
 
     <i:Interaction.Triggers>

@@ -26,11 +26,21 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
     }
 
+    public enum StorageNames
+    {
+        PublicKeys
+    }
+
     public class Messages
     {
         public class PasswordWindowMessage
         {
             public bool? DialogResult { get; set; }
+        }
+
+        public class StorageChange
+        {
+            public StorageNames StorageName { get; set; }
         }
     }
 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace Storage
 {
@@ -6,10 +7,10 @@ namespace Storage
     {
         public StorageType()
         {
-            this.Entites = new List<string>();
+            this.Entites = new List<JObject>();
         }
 
         public string Name { get; set; }
-        public List<string> Entites { get; set; }
+        public List<JObject> Entites { get; set; }
     }
 }

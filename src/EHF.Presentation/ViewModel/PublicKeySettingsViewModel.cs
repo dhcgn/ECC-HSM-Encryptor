@@ -42,9 +42,10 @@ namespace EccHsmEncryptor.Presentation.ViewModel
 
         private void SaveCommandHandling()
         {
-            new Storage.LocalStorageManager().RemoveAll<EcKeyPairInfoViewModel>();
+            new Storage.LocalStorageManager().RemoveAll(StorageNames.PublicKeys.ToString());
+            new Storage.LocalStorageManager().AddRange(SimpleIoc.Default.GetInstance<MainViewModel>().PublicKeys, StorageNames.PublicKeys.ToString());
 
-            new Storage.LocalStorageManager().AddRange(SimpleIoc.Default.GetInstance<MainViewModel>().PublicKeys);
+            base.MessengerInstance.Send(new Messages.StorageChange(){StorageName = StorageNames.PublicKeys });
         }
 
         private void LoadPublicKeysFromHSMCommandHandling()

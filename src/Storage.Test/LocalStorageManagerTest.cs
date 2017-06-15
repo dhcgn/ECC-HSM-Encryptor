@@ -13,6 +13,10 @@ namespace Storage.Test
     [TestFixture]
     public class LocalStorageManagerTest
     {
+        private string storageName1;
+        private string storageName2;
+        private string storageName3;
+
         [SetUp]
         public void Setup()
         {
@@ -24,33 +28,74 @@ namespace Storage.Test
 
             tryDelete(LocalStorageManager.GetStoragePath(false));
             tryDelete(LocalStorageManager.GetStoragePath(true));
+
+            this.storageName1 = Guid.NewGuid().ToString();
+            this.storageName2 = Guid.NewGuid().ToString();
+            this.storageName3 = Guid.NewGuid().ToString();
         }
 
         [Test]
-        public void SaveAndLoad()
+        public void SaveAndLoad_Encrypted()
         {
-            new LocalStorageManager("qwert").Add(new EcKeyPair());
-            var result = new LocalStorageManager("qwert").GetAll<EcKeyPair>();
+            new LocalStorageManager("qwert").Add(new EcKeyPair(), this.storageName1);
+            var result = new LocalStorageManager("qwert").GetAll<EcKeyPair>(this.storageName1);
 
             Assert.That(result.Count(), Is.EqualTo(1));
         }
 
         [Test]
-        public void IsNotJson()
+        public void SaveAndLoad()
         {
-            var localStorageManager = new LocalStorageManager("qwert");
-            localStorageManager.Add(new EcKeyPair());
+            new LocalStorageManager().Add(new EcKeyPair(), this.storageName1);
 
-            var content = File.ReadAllText(localStorageManager.StoragePath);
+            Console.Out.WriteLine(File.ReadAllText(LocalStorageManager.GetStoragePath(false)));
 
-            Assert.Throws<Newtonsoft.Json.JsonReaderException>(() => JsonConvert.DeserializeObject(content),"Can parse as json");
+            var result = new LocalStorageManager().GetAll<EcKeyPair>(this.storageName1);
+
+            Assert.That(result.Count(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void SaveAndLoad_DifferentTypeDifferentValues()
+        {
+            #region Arrange
+
+            new LocalStorageManager().Add(new EcKeyPair(){Version = 1}, this.storageName1);
+            new LocalStorageManager().Add(new EcKeyPair(){Version = 2}, this.storageName1);
+            new LocalStorageManager().Add(new EcIdentifier(), this.storageName2);
+            new LocalStorageManager().Add(new EcIdentifier(), this.storageName2);
+            new LocalStorageManager().Add(new EcIdentifier(), this.storageName2);
+            new LocalStorageManager().Add(new EcKeyPairInfo(), this.storageName3);
+
+            Console.Out.WriteLine(File.ReadAllText(LocalStorageManager.GetStoragePath(false)));
+
+            #endregion
+
+            #region Act
+
+            var result1 = new LocalStorageManager().GetAll<EcKeyPair>(this.storageName1);
+            var result2 = new LocalStorageManager().GetAll<EcIdentifier>(this.storageName2);
+            var result3 = new LocalStorageManager().GetAll<EcKeyPairInfo>(this.storageName3);
+
+            #endregion
+
+            #region Assert
+
+            Assert.That(result1.Count(), Is.EqualTo(2));
+            Assert.That(result2.Count(), Is.EqualTo(3));
+            Assert.That(result3.Count(), Is.EqualTo(1));
+
+            Assert.That(result1.ToArray()[0].Version, Is.EqualTo(1));
+            Assert.That(result1.ToArray()[1].Version, Is.EqualTo(2));
+
+            #endregion
         }
 
         [Test]
         public void IsJson()
         {
             var localStorageManager = new LocalStorageManager();
-            localStorageManager.Add(new EcKeyPair());
+            localStorageManager.Add(new EcKeyPair(), this.storageName1);
 
             var content = File.ReadAllText(localStorageManager.StoragePath);
 

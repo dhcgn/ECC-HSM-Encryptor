@@ -69,6 +69,18 @@ namespace EccHsmEncryptor.Presentation.ViewModel
                 this.CancelCommand = new RelayCommand(this.CancelCommandHandling, this.CancelCommandCanExecute);
                 this.AvailableHardwareTokensIsBusy = true;
                 this.PublicKeysIsBusy = true;
+
+                base.MessengerInstance.Register<Messages.StorageChange>(this, change =>
+                {
+                    switch (change.StorageName)
+                    {
+                        case StorageNames.PublicKeys:
+                            this.RefreshPublicKeys();
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                });
             }
         }
 
@@ -220,7 +232,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             List<EcKeyPairInfoViewModel> loadedKeys;
             try
             {
-                loadedKeys = new LocalStorageManager().GetAll<EcKeyPairInfoViewModel>().ToList();
+                loadedKeys = new LocalStorageManager().GetAll<EcKeyPairInfoViewModel>(StorageNames.PublicKeys.ToString()).ToList();
             }
             catch (Exception e)
             {

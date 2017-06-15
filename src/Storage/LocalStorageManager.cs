@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Security;
 using System.Xml.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Storage
 {
@@ -12,12 +13,11 @@ namespace Storage
     {
         private readonly DiskStorage diskStorage;
 
-        internal static IStorageProvider storageProvider = new StorageProvider();
-        private string password;
+        internal static IStorageProvider StorageProvider = new StorageProvider();
+        private readonly string password;
 
         public LocalStorageManager() : this(null)
         {
-
         }
 
         public LocalStorageManager(string password)
@@ -26,7 +26,7 @@ namespace Storage
 
             if (File.Exists(this.StoragePath))
             {
-                this.diskStorage = storageProvider.Load(this.StoragePath, password);
+                this.diskStorage = StorageProvider.Load(this.StoragePath, password);
             }
             else
             {
@@ -34,48 +34,48 @@ namespace Storage
             }
         }
 
-        public void RemoveAll<T>()
+        public void RemoveAll(string name)
         {
-            var storageType = this.diskStorage.StorageTypes.SingleOrDefault(type => type.Name == typeof(T).Name);
+            var storageType = this.diskStorage.StorageTypes.SingleOrDefault(type => type.Name == name);
             if (storageType == null)
             {
                 return;
             }
 
             storageType.Entites.Clear();
-            storageProvider.Save(this.diskStorage, this.StoragePath, this.password);
+            StorageProvider.Save(this.diskStorage, this.StoragePath, this.password);
         }
 
-        public IEnumerable<T> GetAll<T>()
+        public IEnumerable<T> GetAll<T>(string name)
         {
-            var storageType = this.diskStorage.StorageTypes.SingleOrDefault(type => type.Name == typeof(T).Name);
+            var storageType = this.diskStorage.StorageTypes.SingleOrDefault(type => type.Name == name);
             if (storageType == null)
             {
                 return Enumerable.Empty<T>();
             }
-            return storageType.Entites.Select(JsonConvert.DeserializeObject<T>);
+            return storageType.Entites.Select(o => o.ToObject<T>());
         }
 
-        public void Add<T>(T entity)
+        public void Add<T>(T entity, string name) where T : class, new()
         {
-            var storageType = this.diskStorage.StorageTypes.SingleOrDefault(type => type.Name == typeof(T).Name);
+            var storageType = this.diskStorage.StorageTypes.SingleOrDefault(type => type.Name == name);
             if (storageType == null)
             {
-                storageType = new StorageType() {Name = typeof(T).Name};
+                storageType = new StorageType {Name = name};
                 this.diskStorage.StorageTypes.Add(storageType);
             }
 
-            storageType.Entites.Add(JsonConvert.SerializeObject(entity));
+            storageType.Entites.Add(JObject.FromObject(entity));
 
-            storageProvider.Save(this.diskStorage, this.StoragePath, this.password);
+            StorageProvider.Save(this.diskStorage, this.StoragePath, this.password);
         }
 
-        public void AddRange<T>(IEnumerable<T> entities)
+        public void AddRange<T>(IEnumerable<T> entities, string name) where T : class, new()
         {
             // BUG Performance nightmare
             foreach (var entity in entities)
             {
-                this.Add(entity);
+                this.Add(entity, name);
             }
         }
 
@@ -97,7 +97,5 @@ namespace Storage
             var storagePath = Path.Combine(directory, filename);
             return storagePath;
         }
-
-
     }
 }

@@ -105,17 +105,27 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             return true;
         }
 
-        private void EncryptCommandHandling()
+        private async void EncryptCommandHandling()
         {
             this.IsBusy = true;
 
-            using (var input = File.OpenRead(this.FilePath))
-            using (var output = File.Create(this.FilePath + ".enc"))
+            await Task.Run(() =>
             {
-                var publicKeys = this.PublicKeys.Where(model => model.IsSelected).Select(model => model.KeyPairInfos.PublicKey.ExportPublicKey());
-                HybridEncryption.Encrypt(input, output, this.ReportProgress, () => this.IsCanceled, publicKeys.ToArray());
-            }
+                using (var input = File.OpenRead(this.FilePath))
+                using (var output = File.Create(this.FilePath + ".enc"))
+                {
+                    var selectedPublicKeys = this.PublicKeys.Where(model => model.IsSelected).Select(model => model.KeyPairInfos.PublicKey.ExportPublicKey());
 
+                    HybridEncryption.Encrypt(input, output, new HybridEncryption.EncryptionParameter
+                    {
+                        Progress = this.ReportProgress,
+                        IsCanceled = () => this.IsCanceled,
+                        PublicKeys = selectedPublicKeys,
+                        Filename = Path.GetFileName(this.FilePath),
+                    });
+                }
+            });
+            
             this.IsBusy = false;
         }
 
@@ -137,7 +147,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             return true;
         }
 
-        private void DecryptCommandHandling()
+        private async void DecryptCommandHandling()
         {
             var result = new PasswordWindow().ShowDialog();
 
@@ -146,13 +156,21 @@ namespace EccHsmEncryptor.Presentation.ViewModel
 
             this.IsBusy = true;
 
-            var password = SimpleIoc.Default.GetInstance<PasswordViewModel>().Password;
+            var hsmPin = SimpleIoc.Default.GetInstance<PasswordViewModel>().Password;
 
-            using (var input = File.OpenRead(this.FilePath))
-            using (var output = File.Create(this.FilePath + ".dec"))
+            await Task.Run(() =>
             {
-                HybridEncryption.Decrypt(input, output, password, this.ReportProgress, () => this.IsCanceled);
-            }
+                using (var input = File.OpenRead(this.FilePath))
+                using (var output = File.Create(this.FilePath + ".dec"))
+                {
+                    HybridEncryption.Decrypt(input, output, new HybridEncryption.DecryptionParameter()
+                    {
+                        Progress = this.ReportProgress,
+                        IsCanceled = () => this.IsCanceled,
+                        Password = hsmPin,
+                    });
+                }
+            });
 
             this.IsBusy = false;
         }

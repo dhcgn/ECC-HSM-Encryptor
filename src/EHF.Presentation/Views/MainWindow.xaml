@@ -78,7 +78,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding FilePath, StringFormat=Size: {0}, Converter={StaticResource FileSizeHumanReadableConverter}}" FontSize="10" />
                         <CheckBox Grid.Column="1" IsChecked="{Binding HideFilename, Mode=TwoWay}" Content="hide filename" FontSize="10" />
-                        <TextBlock Grid.Column="2"  Text="Can be decrypted:" IsEnabled="false" FontSize="10" />
+                        <TextBlock Grid.Column="2" Text="{Binding FilePath, Converter={StaticResource FileSignatureConverter}, StringFormat=Can be decrypted: {0}}" IsEnabled="false" FontSize="10" />
                     </Grid>
                 </Grid>
             </Border>

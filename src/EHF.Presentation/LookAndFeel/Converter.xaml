@@ -6,5 +6,6 @@
     <converter:VisibilityConverter x:Key="VisibilityConverter"></converter:VisibilityConverter>
     <converter:VisibilityEmptyListConverter x:Key="VisibilityEmptyListConverter"></converter:VisibilityEmptyListConverter>
     <converter:FileSizeHumanReadableConverter x:Key="FileSizeHumanReadableConverter"></converter:FileSizeHumanReadableConverter>
+    <converter:FileSignatureConverter x:Key="FileSignatureConverter"></converter:FileSignatureConverter>
 
 </ResourceDictionary>

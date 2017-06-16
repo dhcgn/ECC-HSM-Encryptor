@@ -15,25 +15,25 @@ namespace EccHsmEncryptor.Presentation.Views
 
         private void MainWindow_OnDragEnter(object sender, DragEventArgs e)
         {
-            var viewModel = (MainViewModel)this.DataContext;
-           // viewModel.ShowDropPanel = true;
+            var viewModel = (MainViewModel) this.DataContext;
+            // viewModel.ShowDropPanel = true;
         }
 
         private void MainWindow_OnDragLeave(object sender, DragEventArgs e)
         {
-            var viewModel = (MainViewModel)this.DataContext;
-           // viewModel.ShowDropPanel = false;
+            var viewModel = (MainViewModel) this.DataContext;
+            // viewModel.ShowDropPanel = false;
         }
 
         private void MainWindow_OnDrop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                string[] files = (string[]) e.Data.GetData(DataFormats.FileDrop);
 
-                var viewModel = (MainViewModel)this.DataContext;
+                var viewModel = (MainViewModel) this.DataContext;
                 viewModel.DropFiles(files);
-               // viewModel.ShowDropPanel = false;
+                // viewModel.ShowDropPanel = false;
             }
         }
     }

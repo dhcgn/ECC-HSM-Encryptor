@@ -9,17 +9,17 @@ using Devcorner.NIdenticon;
 
 namespace EccHsmEncryptor.Presentation.LookAndFeel.Converter
 {
-    public class IdenticonConverter :IValueConverter
+    public class IdenticonConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(!(value is string))
-                return ToBitmapImage( new IdenticonGenerator().Create(String.Empty));
+            if (!(value is string))
+                return ToBitmapImage(new IdenticonGenerator().Create(String.Empty));
 
-            return ToBitmapImage(new IdenticonGenerator().Create((string)value));
+            return ToBitmapImage(new IdenticonGenerator().Create((string) value));
         }
 
-        private static  BitmapImage ToBitmapImage(Bitmap bitmap)
+        private static BitmapImage ToBitmapImage(Bitmap bitmap)
         {
             using (var memory = new MemoryStream())
             {

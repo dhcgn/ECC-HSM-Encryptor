@@ -22,7 +22,7 @@ namespace Storage.Test
         {
             var tryDelete = new Action<string>(s =>
             {
-                if(File.Exists(s))
+                if (File.Exists(s))
                     File.Delete(s);
             });
 
@@ -60,8 +60,8 @@ namespace Storage.Test
         {
             #region Arrange
 
-            new LocalStorageManager().Add(new EcKeyPair(){Version = 1}, this.storageName1);
-            new LocalStorageManager().Add(new EcKeyPair(){Version = 2}, this.storageName1);
+            new LocalStorageManager().Add(new EcKeyPair() {Version = 1}, this.storageName1);
+            new LocalStorageManager().Add(new EcKeyPair() {Version = 2}, this.storageName1);
             new LocalStorageManager().Add(new EcIdentifier(), this.storageName2);
             new LocalStorageManager().Add(new EcIdentifier(), this.storageName2);
             new LocalStorageManager().Add(new EcIdentifier(), this.storageName2);
@@ -96,7 +96,7 @@ namespace Storage.Test
         {
             #region Arrange
 
-            var data = new[] {new EcKeyPair() {Version = 1}, new EcKeyPair() { Version = 2 } };
+            var data = new[] {new EcKeyPair() {Version = 1}, new EcKeyPair() {Version = 2}};
             var storageName = Guid.NewGuid().ToString();
 
             #endregion
@@ -133,7 +133,7 @@ namespace Storage.Test
 
             var content = File.ReadAllText(localStorageManager.StoragePath);
 
-            Assert.DoesNotThrow(() => JsonConvert.DeserializeObject(content),"Can parse as json");
+            Assert.DoesNotThrow(() => JsonConvert.DeserializeObject(content), "Can parse as json");
         }
     }
 }

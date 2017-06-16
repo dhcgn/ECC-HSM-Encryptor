@@ -18,7 +18,7 @@ namespace EccHsmEncryptor.Presentation.LookAndFeel.Converter
             {
                 return "file not found";
             }
-            var mb = (double)fileInfo.Length/1024/1014;
+            var mb = (double) fileInfo.Length / 1024 / 1014;
             return $"{mb:N3}MB";
         }
 

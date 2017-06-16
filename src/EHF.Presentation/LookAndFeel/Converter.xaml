@@ -2,10 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converter="clr-namespace:EccHsmEncryptor.Presentation.LookAndFeel.Converter">
 
-    <converter:IdenticonConverter x:Key="IdenticonConverter"></converter:IdenticonConverter>
-    <converter:VisibilityConverter x:Key="VisibilityConverter"></converter:VisibilityConverter>
-    <converter:VisibilityEmptyListConverter x:Key="VisibilityEmptyListConverter"></converter:VisibilityEmptyListConverter>
-    <converter:FileSizeHumanReadableConverter x:Key="FileSizeHumanReadableConverter"></converter:FileSizeHumanReadableConverter>
-    <converter:FileSignatureConverter x:Key="FileSignatureConverter"></converter:FileSignatureConverter>
+    <converter:IdenticonConverter x:Key="IdenticonConverter" />
+    <converter:VisibilityConverter x:Key="VisibilityConverter" />
+    <converter:VisibilityEmptyListConverter x:Key="VisibilityEmptyListConverter" />
+    <converter:FileSizeHumanReadableConverter x:Key="FileSizeHumanReadableConverter" />
+    <converter:FileSignatureConverter x:Key="FileSignatureConverter" />
 
 </ResourceDictionary>

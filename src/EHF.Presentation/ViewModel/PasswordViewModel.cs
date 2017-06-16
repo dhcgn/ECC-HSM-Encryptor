@@ -9,7 +9,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
 
         public PasswordViewModel()
         {
-            this.ExitCommand=new RelayCommand(() =>
+            this.ExitCommand = new RelayCommand(() =>
             {
                 this.MessengerInstance.Send<Messages.PasswordWindowMessage>(new Messages.PasswordWindowMessage()
                 {

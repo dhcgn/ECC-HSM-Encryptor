@@ -16,7 +16,7 @@ namespace EccHsmEncryptor.Presentation.LookAndFeel.Converter
             var list = value as IEnumerable;
             var moveNext = list.GetEnumerator().MoveNext();
 
-            return moveNext ? Visibility.Collapsed :Visibility.Visible;
+            return moveNext ? Visibility.Collapsed : Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

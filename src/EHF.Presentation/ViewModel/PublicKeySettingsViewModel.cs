@@ -100,7 +100,6 @@ namespace EccHsmEncryptor.Presentation.ViewModel
 
         private void ExportCommandHandling(ExportType exportType)
         {
-            
         }
 
         private void RefreshPublicKeys()
@@ -115,10 +114,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
                 loadedKeys = Enumerable.Empty<EcKeyPairInfoViewModel>().ToList();
             }
 
-            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-            {
-                this.PublicKeys = new ObservableCollection<EcKeyPairInfoViewModel>(loadedKeys);
-            });
+            DispatcherHelper.CheckBeginInvokeOnUI(() => { this.PublicKeys = new ObservableCollection<EcKeyPairInfoViewModel>(loadedKeys); });
         }
 
 
@@ -127,7 +123,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             new LocalStorageManager().RemoveAll(StorageNames.PublicKeys.ToString());
             new LocalStorageManager().AddRange(this.PublicKeys, StorageNames.PublicKeys.ToString());
 
-            this.MessengerInstance.Send(new Messages.StorageChange(){StorageName = StorageNames.PublicKeys });
+            this.MessengerInstance.Send(new Messages.StorageChange() {StorageName = StorageNames.PublicKeys});
         }
 
         private void LoadPublicKeysFromHSMCommandHandling()
@@ -148,7 +144,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         #endregion
 
         private ObservableCollection<EcKeyPairInfoViewModel> publicKeys;
-       
+
 
         public ObservableCollection<EcKeyPairInfoViewModel> PublicKeys
         {
@@ -157,6 +153,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private EcKeyPairInfoViewModel selectedPublicKey;
+
         public EcKeyPairInfoViewModel SelectedPublicKey
         {
             get => this.selectedPublicKey;

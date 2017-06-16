@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
-    
-    <SolidColorBrush x:Key="BorderBrush" Color="Black"></SolidColorBrush>
-    <Thickness x:Key="BorderThickness">1</Thickness> 
+
+    <SolidColorBrush x:Key="BorderBrush" Color="Black" />
+    <Thickness x:Key="BorderThickness">1</Thickness>
 </ResourceDictionary>

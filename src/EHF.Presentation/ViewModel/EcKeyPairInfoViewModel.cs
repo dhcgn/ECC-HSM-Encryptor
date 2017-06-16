@@ -8,6 +8,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         #region Properties
 
         private bool isSelected;
+
         public bool IsSelected
         {
             get => this.isSelected;
@@ -15,6 +16,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private string description;
+
         public string Description
         {
             get => this.description;

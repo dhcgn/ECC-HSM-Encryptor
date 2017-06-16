@@ -5,5 +5,5 @@
     <system:String x:Key="TooltipPublicKey">The public key</system:String>
     <system:String x:Key="TooltipFile">The file to encrypt or decrypt</system:String>
     <system:String x:Key="TooltipHardware">the hardware secruity module (hsm) usb device</system:String>
-    
+
 </ResourceDictionary>

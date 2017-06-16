@@ -9,8 +9,7 @@
         Title="PublicKeySettingsWindows" Height="288.093" Width="528.818"
 
         DataContext="{Binding Source={StaticResource Locator}, Path=PublicKeySettingsViewModel}"
-        d:DataContext="{Binding Source={StaticResource Locator}, Path=PublicKeySettingsViewModel}"
-        >
+        d:DataContext="{Binding Source={StaticResource Locator}, Path=PublicKeySettingsViewModel}">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -56,9 +55,12 @@
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu DataContext="{Binding Source={StaticResource Locator}, Path=PublicKeySettingsViewModel}">
-                    <MenuItem Header="Export to JSON" Command="{Binding ExportCommand}" CommandParameter="{x:Static viewModel:PublicKeySettingsViewModel+ExportType.Json}" />
-                    <MenuItem Header="Export to ASN.1" Command="{Binding ExportCommand}" CommandParameter="{x:Static viewModel:PublicKeySettingsViewModel+ExportType.Ans1}" />
-                    <MenuItem Header="Export to DER" Command="{Binding ExportCommand}" CommandParameter="{x:Static viewModel:PublicKeySettingsViewModel+ExportType.Der}" />
+                    <MenuItem Header="Export to JSON" Command="{Binding ExportCommand}"
+                              CommandParameter="{x:Static viewModel:PublicKeySettingsViewModel+ExportType.Json}" />
+                    <MenuItem Header="Export to ASN.1" Command="{Binding ExportCommand}"
+                              CommandParameter="{x:Static viewModel:PublicKeySettingsViewModel+ExportType.Ans1}" />
+                    <MenuItem Header="Export to DER" Command="{Binding ExportCommand}"
+                              CommandParameter="{x:Static viewModel:PublicKeySettingsViewModel+ExportType.Der}" />
                     <Separator />
                     <MenuItem Header="Remove" Command="{Binding RemoveCommand}" />
                     <MenuItem Header="Remove All" Command="{Binding RemoveAllCommand}" />

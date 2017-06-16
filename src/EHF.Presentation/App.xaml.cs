@@ -9,9 +9,6 @@ using Microsoft.HockeyApp;
 
 namespace EccHsmEncryptor.Presentation
 {
-    /// <summary>
-    /// Interaktionslogik für "App.xaml"
-    /// </summary>
     public partial class App : Application
     {
         public App()
@@ -22,11 +19,11 @@ namespace EccHsmEncryptor.Presentation
             this.CheckInstalled();
         }
 
-        private  void CheckInstalled()
+        private void CheckInstalled()
         {
             // Todo move to lib
-            var filepath = Environment.Is64BitProcess 
-                ? @"C:\Windows\System32\opensc-pkcs11.dll" 
+            var filepath = Environment.Is64BitProcess
+                ? @"C:\Windows\System32\opensc-pkcs11.dll"
                 : @"C:\Windows\syswow64\opensc-pkcs11.dll";
 
             if (!File.Exists(filepath))

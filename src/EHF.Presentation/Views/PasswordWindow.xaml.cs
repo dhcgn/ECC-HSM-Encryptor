@@ -14,10 +14,7 @@ namespace EccHsmEncryptor.Presentation.Views
         private void PasswordWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             this.PasswordBox.Focus();
-            Messenger.Default.Register<Messages.PasswordWindowMessage>(this, message =>
-            {
-                this.DialogResult = message.DialogResult;
-            });
+            Messenger.Default.Register<Messages.PasswordWindowMessage>(this, message => { this.DialogResult = message.DialogResult; });
         }
 
         private void PasswordWindow_OnUnloaded(object sender, RoutedEventArgs e)
@@ -27,7 +24,7 @@ namespace EccHsmEncryptor.Presentation.Views
 
         private void PasswordBox_OnPasswordChanged(object sender, RoutedEventArgs e)
         {
-            ((PasswordViewModel)this.DataContext).Password = this.PasswordBox.Password;
+            ((PasswordViewModel) this.DataContext).Password = this.PasswordBox.Password;
         }
     }
 }

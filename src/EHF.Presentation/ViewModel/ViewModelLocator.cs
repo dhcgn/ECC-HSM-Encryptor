@@ -43,5 +43,4 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             public StorageNames StorageName { get; set; }
         }
     }
-
 }

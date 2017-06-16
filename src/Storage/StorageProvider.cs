@@ -34,7 +34,7 @@ namespace Storage
             var jsonData = Encoding.UTF8.GetBytes(json);
 
             using (var input = new MemoryStream(jsonData))
-            using (var output = File.OpenWrite(storagePath))
+            using (var output = File.Create(storagePath))
             {
                 if (password == null)
                 {

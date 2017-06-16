@@ -92,6 +92,40 @@ namespace Storage.Test
         }
 
         [Test]
+        public void RemoveAll()
+        {
+            #region Arrange
+
+            var data = new[] {new EcKeyPair() {Version = 1}, new EcKeyPair() { Version = 2 } };
+            var storageName = Guid.NewGuid().ToString();
+
+            #endregion
+
+            #region Act
+
+            new LocalStorageManager().AddRange(data, storageName);
+            Console.Out.WriteLine(File.ReadAllText(LocalStorageManager.GetStoragePath(false)));
+
+            new LocalStorageManager().RemoveAll(storageName);
+            Console.Out.WriteLine(File.ReadAllText(LocalStorageManager.GetStoragePath(false)));
+
+            new LocalStorageManager().AddRange(data.Take(1), storageName);
+            Console.Out.WriteLine(File.ReadAllText(LocalStorageManager.GetStoragePath(false)));
+
+
+            var result1 = new LocalStorageManager().GetAll<EcKeyPair>(storageName);
+
+            #endregion
+
+            #region Assert
+
+            Assert.That(result1.Count(), Is.EqualTo(1));
+            Assert.That(result1.ToArray()[0].Version, Is.EqualTo(1));
+
+            #endregion
+        }
+
+        [Test]
         public void IsJson()
         {
             var localStorageManager = new LocalStorageManager();

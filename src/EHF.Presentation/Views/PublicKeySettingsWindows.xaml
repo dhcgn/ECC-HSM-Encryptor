@@ -3,13 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModel="clr-namespace:EccHsmEncryptor.Presentation.ViewModel"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Title="PublicKeySettingsWindows" Height="288.093" Width="528.818"
-        
+
         DataContext="{Binding Source={StaticResource Locator}, Path=PublicKeySettingsViewModel}"
         d:DataContext="{Binding Source={StaticResource Locator}, Path=PublicKeySettingsViewModel}"
         >
-    
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+
     <Window.InputBindings>
         <KeyBinding Command="{Binding CloseCommand}" Key="Escape" />
     </Window.InputBindings>
@@ -19,31 +28,47 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <DataGrid DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModel}" 
-                  ItemsSource="{Binding PublicKeys}" 
+        <DataGrid ItemsSource="{Binding PublicKeys}"
+                  SelectedValue="{Binding SelectedPublicKey}"
                   CanUserAddRows="False"
                   AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="viewModel:EcKeyPairInfoViewModel">
-                            <Image Height="10" Width="10" Source="{Binding KeyPairInfos.PublicKey.ToJson, Converter={StaticResource IdenticonConverter}}">
+                            <Image Height="10" Width="10"
+                                   Source="{Binding KeyPairInfos.PublicKey.ToJson, Converter={StaticResource IdenticonConverter}}">
                                 <Image.ToolTip>
-                                    <Image Height="50" Width="50" Source="{Binding KeyPairInfos.PublicKey.ToJson, Converter={StaticResource IdenticonConverter}}" />
+                                    <Image Height="50" Width="50"
+                                           Source="{Binding KeyPairInfos.PublicKey.ToJson, Converter={StaticResource IdenticonConverter}}" />
                                 </Image.ToolTip>
                             </Image>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding KeyPairInfos.EcIdentifier.KeyLabel}" Header="KeyLabel" IsReadOnly="True"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding KeyPairInfos.EcIdentifier.TokenSerialNumber}" Header="TokenSerialNumber" IsReadOnly="True"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding KeyPairInfos.CurveDescription}" Header="CurveDescription" IsReadOnly="True"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Description}" Header="Description" Width="*" IsReadOnly="False"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding KeyPairInfos.EcIdentifier.KeyLabel}" Header="KeyLabel"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Binding="{Binding KeyPairInfos.EcIdentifier.TokenSerialNumber}"
+                                    Header="TokenSerialNumber" IsReadOnly="True" />
+                <DataGridTextColumn Binding="{Binding KeyPairInfos.CurveDescription}" Header="CurveDescription"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Binding="{Binding Description}" Header="Description" Width="*" IsReadOnly="False" />
             </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu DataContext="{Binding Source={StaticResource Locator}, Path=PublicKeySettingsViewModel}">
+                    <MenuItem Header="Export to JSON" Command="{Binding ExportCommand}" CommandParameter="{x:Static viewModel:PublicKeySettingsViewModel+ExportType.Json}" />
+                    <MenuItem Header="Export to ASN.1" Command="{Binding ExportCommand}" CommandParameter="{x:Static viewModel:PublicKeySettingsViewModel+ExportType.Ans1}" />
+                    <MenuItem Header="Export to DER" Command="{Binding ExportCommand}" CommandParameter="{x:Static viewModel:PublicKeySettingsViewModel+ExportType.Der}" />
+                    <Separator />
+                    <MenuItem Header="Remove" Command="{Binding RemoveCommand}" />
+                    <MenuItem Header="Remove All" Command="{Binding RemoveAllCommand}" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
         </DataGrid>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Load from HSM" Margin="5" Padding="5" MinWidth="120" Command="{Binding LoadPublicKeysFromHSMCommand}" />
-            <Button Content="Save" Margin="5" Padding="5"  MinWidth="120" Command="{Binding SaveCommand}"/>
+            <Button Content="Load from HSM" Margin="5" Padding="5" MinWidth="120"
+                    Command="{Binding LoadPublicKeysFromHSMCommand}" />
+            <Button Content="Save" Margin="5" Padding="5" MinWidth="120" Command="{Binding SaveCommand}" />
             <Button Content="Close" Margin="5" Padding="5" MinWidth="120" Command="{Binding CloseCommand}" />
         </StackPanel>
     </Grid>

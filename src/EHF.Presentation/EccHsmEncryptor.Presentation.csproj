@@ -129,12 +129,16 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\PasswordViewModel.cs" />
     <Compile Include="ViewModel\PublicKeySettingsViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="Views\PasswordWindow.xaml.cs">
       <DependentUpon>PasswordWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PublicKeySettingsWindows.xaml.cs">
       <DependentUpon>PublicKeySettingsWindows.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsWindows.xaml.cs">
+      <DependentUpon>SettingsWindows.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WindowInvoker.cs" />
     <Page Include="LookAndFeel\Bitmaps.xaml">
@@ -178,6 +182,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PublicKeySettingsWindows.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsWindows.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

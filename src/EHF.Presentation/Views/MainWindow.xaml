@@ -238,7 +238,7 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <Button Grid.Column="2" Style="{StaticResource IconButtonStyle}" Command="{Binding RefreshHsmList}">
+            <Button Grid.Column="2" Style="{StaticResource IconButtonStyle}" Command="{Binding RefreshHsmListCommand}">
                 <Image Source="{StaticResource BitmapRefresh}" />
             </Button>
         </Grid>
@@ -261,7 +261,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" Style="{StaticResource IconButtonStyle}">
+            <Button Grid.Column="1" Style="{StaticResource IconButtonStyle}" Command="{Binding SettingsCommand}">
                 <Image Source="{StaticResource BitmapSetting}" />
             </Button>
         </Grid>

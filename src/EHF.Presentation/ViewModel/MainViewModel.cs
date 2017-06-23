@@ -68,8 +68,9 @@ namespace EccHsmEncryptor.Presentation.ViewModel
                 this.EncryptCommand = new RelayCommand(this.EncryptCommandHandling, this.EncryptCommandCanExecute);
                 this.DecryptCommand = new RelayCommand(this.DecryptCommandHandling, this.DecryptCommandCanExecute);
                 this.CancelCommand = new RelayCommand(this.CancelCommandHandling, this.CancelCommandCanExecute);
-                this.RefreshHsmList = new RelayCommand(this.RefreshHsmListCommandHandling);
+                this.RefreshHsmListCommand = new RelayCommand(this.RefreshHsmListCommandHandling);
                 this.HelpCommand = new RelayCommand(this.HelpCommandHandling);
+                this.SettingsCommand = new RelayCommand(this.SettingsCommandHandling);
                 this.AvailableHardwareTokensIsBusy = true;
                 this.PublicKeysIsBusy = true;
 
@@ -99,7 +100,8 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         public RelayCommand LoadedCommand { get; set; }
         public RelayCommand HelpCommand { get; set; }
         public RelayCommand CancelCommand { get; set; }
-        public RelayCommand RefreshHsmList { get; set; }
+        public RelayCommand RefreshHsmListCommand { get; set; }
+        public RelayCommand SettingsCommand { get; set; }
 
         #endregion
 
@@ -107,7 +109,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
 
         private void PublicKeySettingsCommandHandling()
         {
-            WindowInvoker.ShowPublicKeySettingsWindows();
+            WindowInvoker.ShowWindow(WindowInvoker.Windows.PublicKeySettings);
         }
 
         private bool EncryptCommandCanExecute()
@@ -288,6 +290,11 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         private void HelpCommandHandling()
         {
             Process.Start("https://github.com/dhcgn/ECC-HSM-Encryptor/wiki");
+        }
+
+        private void SettingsCommandHandling()
+        {
+            WindowInvoker.ShowWindow(WindowInvoker.Windows.Settings);
         }
 
         public void DropFiles(string[] files)

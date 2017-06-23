@@ -95,7 +95,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
 
         private void CloseCommandHandling()
         {
-            WindowInvoker.ClosePublicKeySettingsWindows();
+            WindowInvoker.CloseWindows(WindowInvoker.Windows.PublicKeySettings);
         }
 
         private void ExportCommandHandling(ExportType exportType)
@@ -144,8 +144,6 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         #endregion
 
         private ObservableCollection<EcKeyPairInfoViewModel> publicKeys;
-
-
         public ObservableCollection<EcKeyPairInfoViewModel> PublicKeys
         {
             get => this.publicKeys;
@@ -153,7 +151,6 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private EcKeyPairInfoViewModel selectedPublicKey;
-
         public EcKeyPairInfoViewModel SelectedPublicKey
         {
             get => this.selectedPublicKey;

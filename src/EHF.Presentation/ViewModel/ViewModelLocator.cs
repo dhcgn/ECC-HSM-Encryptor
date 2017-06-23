@@ -13,12 +13,14 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<PasswordViewModel>();
             SimpleIoc.Default.Register<PublicKeySettingsViewModel>();
+            SimpleIoc.Default.Register<SettingsViewModel>();
         }
 
 
         public MainViewModel MainViewModel => ServiceLocator.Current.GetInstance<MainViewModel>();
         public PasswordViewModel PasswordViewModel => ServiceLocator.Current.GetInstance<PasswordViewModel>();
         public PublicKeySettingsViewModel PublicKeySettingsViewModel => ServiceLocator.Current.GetInstance<PublicKeySettingsViewModel>();
+        public SettingsViewModel SettingsViewModel => ServiceLocator.Current.GetInstance<SettingsViewModel>();
 
         public static void Cleanup()
         {

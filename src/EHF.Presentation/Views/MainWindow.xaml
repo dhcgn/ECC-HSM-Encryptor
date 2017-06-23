@@ -83,8 +83,28 @@
                         <CheckBox Grid.Column="1" IsChecked="{Binding HideFilename, Mode=TwoWay}"
                                   Content="hide filename" FontSize="10" />
                         <TextBlock Grid.Column="2"
-                                   Text="{Binding FilePath, Converter={StaticResource FileSignatureConverter}, StringFormat=Can be decrypted: {0}}"
-                                   IsEnabled="false" FontSize="10" />
+                                   IsEnabled="false" FontSize="10">
+                            <Run>can decrypt: </Run>
+                            <Run>
+                                <Run.Style>
+                                    <Style TargetType="Run">
+                                        <Style.Triggers>
+                                            <DataTrigger
+                                                Binding="{Binding FilePath, Converter={StaticResource FileSignatureConverter}}"
+                                                Value="True">
+                                                <Setter Property="Text" Value="yes" />
+                                                <Setter Property="FontWeight" Value="Bold" />
+                                            </DataTrigger>
+                                            <DataTrigger
+                                                Binding="{Binding FilePath, Converter={StaticResource FileSignatureConverter}}"
+                                                Value="False">
+                                                <Setter Property="Text" Value="no" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Run.Style>
+                            </Run>
+                        </TextBlock>
                     </Grid>
                 </Grid>
             </Border>

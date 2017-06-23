@@ -161,6 +161,10 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             if (this.SelectedAvailableHardwareToken == null)
                 return false;
 
+            var hasFileSignature = EncryptionSuite.Encryption.FileOperation.HasFileSignature(this.FilePath);
+            if (!hasFileSignature)
+                return false;
+
             return true;
         }
 

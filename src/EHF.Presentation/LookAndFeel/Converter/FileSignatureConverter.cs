@@ -11,10 +11,10 @@ namespace EccHsmEncryptor.Presentation.LookAndFeel.Converter
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (!(value is string))
-                return "no";
+                return false;
 
             var hasFileSignature = EncryptionSuite.Encryption.FileOperation.HasFileSignature((string) value);
-            return hasFileSignature ? "yes" : "no";
+            return hasFileSignature;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -32,7 +32,7 @@ namespace EccHsmEncryptor.Presentation.Views
                 string[] files = (string[]) e.Data.GetData(DataFormats.FileDrop);
 
                 var viewModel = (MainViewModel) this.DataContext;
-                viewModel.DropFiles(files);
+                viewModel.SetFilenamesToView(files);
                 // viewModel.ShowDropPanel = false;
             }
         }

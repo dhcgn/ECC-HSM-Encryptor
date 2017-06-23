@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using EccHsmEncryptor.Presentation.DesignData;
 using EccHsmEncryptor.Presentation.Views;
 using EncryptionSuite.Contract;
@@ -13,7 +15,9 @@ using EncryptionSuite.Encryption.Hybrid;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
+using Microsoft.Win32;
 using Storage;
 using EllipticCurveCryptographer = EncryptionSuite.Encryption.NitroKey.EllipticCurveCryptographer;
 
@@ -71,6 +75,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
                 this.RefreshHsmListCommand = new RelayCommand(this.RefreshHsmListCommandHandling);
                 this.HelpCommand = new RelayCommand(this.HelpCommandHandling);
                 this.SettingsCommand = new RelayCommand(this.SettingsCommandHandling);
+                this.LoadFileCommand = new RelayCommand(this.LoadFileCommandHandling);
                 this.AvailableHardwareTokensIsBusy = true;
                 this.PublicKeysIsBusy = true;
 
@@ -88,7 +93,6 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             }
         }
 
-
         #endregion
 
         #region Commands
@@ -96,7 +100,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         public RelayCommand DecryptCommand { get; set; }
         public RelayCommand EncryptCommand { get; set; }
         public RelayCommand PublicKeySettingsCommand { get; set; }
-        public RelayCommand StartCommand { get; set; }
+        public RelayCommand LoadFileCommand { get; set; }
         public RelayCommand LoadedCommand { get; set; }
         public RelayCommand HelpCommand { get; set; }
         public RelayCommand CancelCommand { get; set; }
@@ -297,9 +301,44 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             WindowInvoker.ShowWindow(WindowInvoker.Windows.Settings);
         }
 
-        public void DropFiles(string[] files)
+        private void LoadFileCommandHandling()
         {
-            this.FilePath = files.FirstOrDefault();
+            var dialog = new OpenFileDialog
+            {
+                Multiselect = true,
+            };
+            if (dialog.ShowDialog() == true)
+            {
+                this.SetFilenamesToView(dialog.FileNames);
+            }
+        }
+
+        public void SetFilenamesToView(string[] files)
+        {
+            if (files == null || !files.Any())
+                return;
+
+            if (files.Length == 1 && File.GetAttributes(files[0]).HasFlag(FileAttributes.Directory))
+            {
+                this.FilePath = files[0];
+                return;
+            }
+
+            var result = MessageBox.Show("This is not a single file, files or folder need to be zipped, continue?", "Zip files or folder?",MessageBoxButton.YesNo);
+            if(result != MessageBoxResult.Yes)
+                return;
+
+            var tempFilePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.zip");
+
+            using (ZipArchive archive = ZipFile.Open(tempFilePath, ZipArchiveMode.Update))
+            {
+                foreach (var file in files)
+                {
+                    archive.CreateEntryFromFile(file, Path.GetFileName(file));
+                }
+            }
+
+            this.FilePath = tempFilePath;
         }
 
         #region Properties
@@ -393,6 +432,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private bool hideFilename = true;
+
         public bool HideFilename
         {
             get => this.hideFilename;

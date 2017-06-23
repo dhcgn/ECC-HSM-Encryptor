@@ -108,7 +108,7 @@
                     </Grid>
                 </Grid>
             </Border>
-            <Button Grid.Column="2" Style="{StaticResource IconButtonStyle}">
+            <Button Grid.Column="2" Style="{StaticResource IconButtonStyle}" Command="{Binding LoadFileCommand}">
                 <Image Source="{StaticResource BitmapOpen}" />
             </Button>
         </Grid>

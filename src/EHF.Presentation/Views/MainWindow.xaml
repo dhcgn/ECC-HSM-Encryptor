@@ -183,6 +183,16 @@
                   Visibility="{Binding AvailableHardwareTokensIsBusy, Converter={StaticResource VisibilityConverter}}">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Loading ..." />
             </Grid>
+            <Border Grid.Column="1" Margin="5" 
+                    Background="White" 
+                    Panel.ZIndex="1" 
+                    BorderThickness="{StaticResource BorderThickness}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    Visibility="{Binding ShowTokenHint, Converter={StaticResource VisibilityConverter}}">
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Run>No hardware token was found. Insert a supported HSM or create a software HSM.</Run>
+                </TextBlock>
+            </Border>
             <ComboBox Grid.Column="1" Margin="5" MinHeight="40"
                       ItemsSource="{Binding AvailableHardwareTokens}"
                       SelectedItem="{Binding SelectedAvailableHardwareToken}"
@@ -224,7 +234,7 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <Button Grid.Column="2" Style="{StaticResource IconButtonStyle}">
+            <Button Grid.Column="2" Style="{StaticResource IconButtonStyle}" Command="{Binding RefreshHsmList}">
                 <Image Source="{StaticResource BitmapRefresh}" />
             </Button>
         </Grid>

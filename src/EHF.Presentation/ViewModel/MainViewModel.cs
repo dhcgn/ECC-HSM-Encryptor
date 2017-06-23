@@ -67,6 +67,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
                 this.EncryptCommand = new RelayCommand(this.EncryptCommandHandling, this.EncryptCommandCanExecute);
                 this.DecryptCommand = new RelayCommand(this.DecryptCommandHandling, this.DecryptCommandCanExecute);
                 this.CancelCommand = new RelayCommand(this.CancelCommandHandling, this.CancelCommandCanExecute);
+                this.RefreshHsmList = new RelayCommand(this.RefreshHsmListCommandHandling);
                 this.AvailableHardwareTokensIsBusy = true;
                 this.PublicKeysIsBusy = true;
 
@@ -95,6 +96,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         public RelayCommand LoadedCommand { get; set; }
         public RelayCommand HelpCommand { get; set; }
         public RelayCommand CancelCommand { get; set; }
+        public RelayCommand RefreshHsmList { get; set; }
 
         #endregion
 
@@ -269,10 +271,16 @@ namespace EccHsmEncryptor.Presentation.ViewModel
 
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
+                this.ShowTokenHint = !nitroKeys.Any();
                 this.AvailableHardwareTokens = new List<EcKeyPairInfo>(nitroKeys);
                 this.SelectedAvailableHardwareToken = this.AvailableHardwareTokens.FirstOrDefault();
                 this.AvailableHardwareTokensIsBusy = false;
             });
+        }
+
+        private void RefreshHsmListCommandHandling()
+        {
+            this.RefreshAvailableHardwareToken();
         }
 
         public void DropFiles(string[] files)
@@ -371,11 +379,18 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         }
 
         private bool hideFilename = true;
-
         public bool HideFilename
         {
             get => this.hideFilename;
             set => this.Set(ref this.hideFilename, value);
+        }
+
+        private bool showTokenHint;
+
+        public bool ShowTokenHint
+        {
+            get => this.showTokenHint;
+            set => this.Set(ref this.showTokenHint, value);
         }
 
         #endregion

@@ -271,7 +271,6 @@ namespace EccHsmEncryptor.Presentation.ViewModel
 
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
-                this.ShowTokenHint = !nitroKeys.Any();
                 this.AvailableHardwareTokens = new List<EcKeyPairInfo>(nitroKeys);
                 this.SelectedAvailableHardwareToken = this.AvailableHardwareTokens.FirstOrDefault();
                 this.AvailableHardwareTokensIsBusy = false;
@@ -383,14 +382,6 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         {
             get => this.hideFilename;
             set => this.Set(ref this.hideFilename, value);
-        }
-
-        private bool showTokenHint;
-
-        public bool ShowTokenHint
-        {
-            get => this.showTokenHint;
-            set => this.Set(ref this.showTokenHint, value);
         }
 
         #endregion

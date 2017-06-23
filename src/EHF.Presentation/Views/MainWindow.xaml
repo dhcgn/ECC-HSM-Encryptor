@@ -124,10 +124,14 @@
                   Visibility="{Binding PublicKeysIsBusy, Converter={StaticResource VisibilityConverter}}">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Loading ..." />
             </Grid>
-            <Grid Grid.Column="1" Margin="6" Background="White" ZIndex="1"
-                  Visibility="{Binding PublicKeys, Converter={StaticResource VisibilityEmptyListConverter}}">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="No public keys available." />
-            </Grid>
+            <Border Grid.Column="1" Margin="5" Background="White" Panel.ZIndex="1"
+                    Visibility="{Binding PublicKeys, Converter={StaticResource VisibilityEmptyListConverter}}"
+                    BorderThickness="{StaticResource BorderThickness}"
+                    BorderBrush="{StaticResource BorderBrush}">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Run>No public keys available. Load public keys from HSM or import public key from file.</Run>
+                </TextBlock>
+            </Border>
 
             <ItemsControl Grid.Column="1" Margin="5" ItemsSource="{Binding PublicKeys, Mode=TwoWay}"
                           MinHeight="40"
@@ -183,12 +187,12 @@
                   Visibility="{Binding AvailableHardwareTokensIsBusy, Converter={StaticResource VisibilityConverter}}">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Loading ..." />
             </Grid>
-            <Border Grid.Column="1" Margin="5" 
-                    Background="White" 
-                    Panel.ZIndex="1" 
+            <Border Grid.Column="1" Margin="5"
+                    Background="White"
+                    Panel.ZIndex="1"
                     BorderThickness="{StaticResource BorderThickness}"
                     BorderBrush="{StaticResource BorderBrush}"
-                    Visibility="{Binding ShowTokenHint, Converter={StaticResource VisibilityConverter}}">
+                    Visibility="{Binding AvailableHardwareTokens, Converter={StaticResource VisibilityEmptyListConverter}}">
                 <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">
                     <Run>No hardware token was found. Insert a supported HSM or create a software HSM.</Run>
                 </TextBlock>

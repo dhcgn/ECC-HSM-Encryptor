@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -68,6 +69,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
                 this.DecryptCommand = new RelayCommand(this.DecryptCommandHandling, this.DecryptCommandCanExecute);
                 this.CancelCommand = new RelayCommand(this.CancelCommandHandling, this.CancelCommandCanExecute);
                 this.RefreshHsmList = new RelayCommand(this.RefreshHsmListCommandHandling);
+                this.HelpCommand = new RelayCommand(this.HelpCommandHandling);
                 this.AvailableHardwareTokensIsBusy = true;
                 this.PublicKeysIsBusy = true;
 
@@ -84,6 +86,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
                 });
             }
         }
+
 
         #endregion
 
@@ -280,6 +283,11 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         private void RefreshHsmListCommandHandling()
         {
             this.RefreshAvailableHardwareToken();
+        }
+
+        private void HelpCommandHandling()
+        {
+            Process.Start("https://github.com/dhcgn/ECC-HSM-Encryptor/wiki");
         }
 
         public void DropFiles(string[] files)

@@ -250,6 +250,9 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
+            <Button Style="{StaticResource IconButtonStyle}" Command="{Binding HelpCommand}">
+                <Image Source="{StaticResource WikiIcon}" />
+            </Button>
             <Button Grid.Column="1" Content="encrypt" Height="40" Command="{Binding EncryptCommand}" />
             <Button Grid.Column="3" Content="decrypt" Height="40" Command="{Binding DecryptCommand}" />
         </Grid>

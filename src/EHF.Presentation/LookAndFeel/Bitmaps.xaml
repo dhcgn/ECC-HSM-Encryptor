@@ -9,5 +9,6 @@
     <BitmapImage x:Key="BitmapKey" UriSource="Bitmaps/Key 2-96.png" />
     <BitmapImage x:Key="BitmapSupport" UriSource="Bitmaps/Support-96.png" />
     <BitmapImage x:Key="BitmapIcon" UriSource="Bitmaps/web_hi_res_512.png" />
+    <BitmapImage x:Key="WikiIcon" UriSource="Bitmaps/icons8-Wikipedia-96.png" />
 
 </ResourceDictionary>

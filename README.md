@@ -40,6 +40,4 @@ The following ECDSA GF(p) 192-320 bit elliptic curves are supported by the HSM, 
 
 ## Screenshots
 
-![Startup](http://i.imgur.com/uWXjb83.png)
-
-![HSM Dialog](http://i.imgur.com/vvlWuLl.png)
+![HSM Dialog](http://i.imgur.com/KFJq7Zs.png)

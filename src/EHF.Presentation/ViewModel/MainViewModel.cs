@@ -192,7 +192,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
 
             await Task.Run(() =>
             {
-                SymmetricEncryption.DecryptInfo info;
+                DecryptInfo info;
                 var targetPath = $"{this.FilePath}.dec";
 
                 using (var input = File.OpenRead(this.FilePath))
@@ -318,7 +318,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             if (files == null || !files.Any())
                 return;
 
-            if (files.Length == 1 && File.GetAttributes(files[0]).HasFlag(FileAttributes.Directory))
+            if (files.Length == 1 && !File.GetAttributes(files[0]).HasFlag(FileAttributes.Directory))
             {
                 this.FilePath = files[0];
                 return;

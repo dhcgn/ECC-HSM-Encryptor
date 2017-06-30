@@ -328,7 +328,8 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             if(result != MessageBoxResult.Yes)
                 return;
 
-            var tempFilePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.zip");
+            var folder = Path.GetDirectoryName(files[0]);
+            var tempFilePath = Path.Combine(folder, $"{Guid.NewGuid()}.zip");
 
             using (ZipArchive archive = ZipFile.Open(tempFilePath, ZipArchiveMode.Update))
             {

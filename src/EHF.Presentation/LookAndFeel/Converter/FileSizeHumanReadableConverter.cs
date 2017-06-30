@@ -10,7 +10,7 @@ namespace EccHsmEncryptor.Presentation.LookAndFeel.Converter
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var filePath = value as string;
-            if (filePath == null)
+            if (String.IsNullOrWhiteSpace(filePath))
                 return "-";
 
             var fileInfo = new FileInfo(filePath);

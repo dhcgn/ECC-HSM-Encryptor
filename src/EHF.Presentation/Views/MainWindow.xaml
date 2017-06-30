@@ -13,7 +13,7 @@
         DragEnter="MainWindow_OnDragEnter"
         DragLeave="MainWindow_OnDragLeave"
         Drop="MainWindow_OnDrop"
-        Title="ECC HSM Encryptor (Working title) ALPHA 1.0.0.6"
+        Title="ECC HSM Encryptor (Working title) ALPHA 1.0.0.7"
         Icon="{StaticResource BitmapIcon}"
 
         MinHeight="285"

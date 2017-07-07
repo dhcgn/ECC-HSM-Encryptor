@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using EccHsmEncryptor.Presentation.ViewModel;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace EccHsmEncryptor.Presentation.Views
 {
@@ -35,6 +37,24 @@ namespace EccHsmEncryptor.Presentation.Views
                 viewModel.SetFilenamesToView(files);
                 // viewModel.ShowDropPanel = false;
             }
+        }
+
+        private bool shutdownAllowd;
+        private void MainWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            if (this.shutdownAllowd)
+                return;
+
+            e.Cancel = true;
+            Messenger.Default.Send(new Messages.StorageChange
+            {
+                StorageName = StorageNames.State,
+                CompletedCallback = () =>
+                {
+                    this.shutdownAllowd = true;
+                    Application.Current.Shutdown();
+                }
+            });
         }
     }
 }

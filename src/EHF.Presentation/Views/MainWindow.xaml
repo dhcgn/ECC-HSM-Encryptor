@@ -20,17 +20,19 @@
         MinWidth="680"
 
         Height="285"
-        Width="680">
+        Width="680"
+        
+        Closing="MainWindow_OnClosing"
+        >
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+            <i:InvokeCommandAction Command="{Binding LoadedEvent}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
 
     <Window.InputBindings>
-        <KeyBinding Command="{Binding StartCommand}" Key="Enter" />
         <KeyBinding Command="{Binding HelpCommand}" Key="F1" />
     </Window.InputBindings>
 

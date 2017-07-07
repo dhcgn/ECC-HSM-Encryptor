@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -67,7 +68,8 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             }
             else
             {
-                this.LoadedCommand = new RelayCommand(this.LoadedCommandHandling);
+                this.LoadedEvent = new RelayCommand(this.LoadedEventHandling);
+
                 this.PublicKeySettingsCommand = new RelayCommand(this.PublicKeySettingsCommandHandling);
                 this.EncryptCommand = new RelayCommand(this.EncryptCommandHandling, this.EncryptCommandCanExecute);
                 this.DecryptCommand = new RelayCommand(this.DecryptCommandHandling, this.DecryptCommandCanExecute);
@@ -86,10 +88,14 @@ namespace EccHsmEncryptor.Presentation.ViewModel
                         case StorageNames.PublicKeys:
                             this.RefreshPublicKeys();
                             break;
+                        case StorageNames.State:
+                            this.SaveState();
+                            break;
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
-                });
+                    change.CompletedCallback();
+                });               
             }
         }
 
@@ -101,7 +107,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         public RelayCommand EncryptCommand { get; set; }
         public RelayCommand PublicKeySettingsCommand { get; set; }
         public RelayCommand LoadFileCommand { get; set; }
-        public RelayCommand LoadedCommand { get; set; }
+        public RelayCommand LoadedEvent { get; set; }
         public RelayCommand HelpCommand { get; set; }
         public RelayCommand CancelCommand { get; set; }
         public RelayCommand RefreshHsmListCommand { get; set; }
@@ -219,7 +225,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             this.IsBusy = false;
         }
 
-        private async void LoadedCommandHandling()
+        private async void LoadedEventHandling()
         {
             var tasks = new List<Task>
             {
@@ -228,6 +234,38 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             };
 
             await Task.WhenAll(tasks);
+
+            var tasksSecondPass = new List<Task>
+            {
+                Task.Run(() => this.LoadState()),
+            };
+
+            await Task.WhenAll(tasksSecondPass);
+        }
+
+        private void SaveState()
+        {
+            var state = new DataViewRowState
+            {
+                SelectedPublicKeys = this.PublicKeys.Where(model => model.IsSelected).Select(model => model.KeyPairInfos.PublicKey.ToAns1()).ToList()
+            };
+            new LocalStorageManager().RemoveAll("SelectedPublicKeysAns1");
+            new LocalStorageManager().Add(state, "SelectedPublicKeysAns1");
+        }
+
+        private void LoadState()
+        {
+            var state = new LocalStorageManager().GetAll<DataViewRowState>("SelectedPublicKeysAns1")?.FirstOrDefault();
+            if (state == null)
+                return;
+
+            var toSelect = this.PublicKeys.Where(model => state.SelectedPublicKeys.Any(bytes => bytes.SequenceEqual(model.KeyPairInfos.PublicKey.ToAns1()))).ToList();
+            toSelect.ForEach(model => model.IsSelected = true);
+        }
+
+        public class DataViewRowState
+        {
+            public List<byte[]> SelectedPublicKeys { get; set; }
         }
 
         private bool CancelCommandCanExecute()
@@ -324,8 +362,8 @@ namespace EccHsmEncryptor.Presentation.ViewModel
                 return;
             }
 
-            var result = MessageBox.Show("This is not a single file, files or folder need to be zipped, continue?", "Zip files or folder?",MessageBoxButton.YesNo);
-            if(result != MessageBoxResult.Yes)
+            var result = MessageBox.Show("This is not a single file, files or folder need to be zipped, continue?", "Zip files or folder?", MessageBoxButton.YesNo);
+            if (result != MessageBoxResult.Yes)
                 return;
 
             var folder = Path.GetDirectoryName(files[0]);

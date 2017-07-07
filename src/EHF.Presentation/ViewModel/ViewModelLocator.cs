@@ -30,7 +30,8 @@ namespace EccHsmEncryptor.Presentation.ViewModel
 
     public enum StorageNames
     {
-        PublicKeys
+        PublicKeys,
+        State
     }
 
     public class Messages
@@ -43,6 +44,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
         public class StorageChange
         {
             public StorageNames StorageName { get; set; }
+            public Action CompletedCallback { get; set; }
         }
     }
 }

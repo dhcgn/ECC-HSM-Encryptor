@@ -123,7 +123,7 @@ namespace EccHsmEncryptor.Presentation.ViewModel
             new LocalStorageManager().RemoveAll(StorageNames.PublicKeys.ToString());
             new LocalStorageManager().AddRange(this.PublicKeys, StorageNames.PublicKeys.ToString());
 
-            this.MessengerInstance.Send(new Messages.StorageChange() {StorageName = StorageNames.PublicKeys});
+            this.MessengerInstance.Send(new Messages.StorageChange {StorageName = StorageNames.PublicKeys});
         }
 
         private void LoadPublicKeysFromHSMCommandHandling()

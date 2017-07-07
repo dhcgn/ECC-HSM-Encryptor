@@ -40,6 +40,7 @@ namespace EccHsmEncryptor.Presentation
 
         private static void InitHockeyClient()
         {
+            // Only for alpha and beta state, see https://github.com/dhcgn/ECC-HSM-Encryptor/wiki
             Microsoft.HockeyApp.HockeyClient.Current.Configure("9fb8c20ccd9b45f8aad2c9c192bf92f2");
         }
 
@@ -66,8 +67,9 @@ namespace EccHsmEncryptor.Presentation
 
                 AppDomain.CurrentDomain.AssemblyResolve += (s, e) =>
                 {
+#if DEBUG
                     Console.Out.WriteLine("AssemblyResolve Name: " + e.Name);
-
+#endif
                     var assemblyName = new AssemblyName(e.Name);
                     var path = $"{assemblyName.Name}.dll";
 

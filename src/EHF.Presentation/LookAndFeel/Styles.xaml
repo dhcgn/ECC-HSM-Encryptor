@@ -19,6 +19,14 @@
         <Setter Property="Width" Value="20" />
     </Style>
 
+    <Style TargetType="Button" x:Key="MainActionButtonStyle">
+
+        <Setter Property="Background" Value="White" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="MinWidth" Value="120" />
+        <Setter Property="Margin" Value="5" />
+    </Style>
+
 
     <Style TargetType="FrameworkElement" x:Key="ComboBoxItemElementStyle">
 

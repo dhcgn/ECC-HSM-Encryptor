@@ -68,10 +68,10 @@
             </DataGrid.ContextMenu>
         </DataGrid>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Load from HSM" Margin="5" Padding="5" MinWidth="120"
+            <Button Content="Load from HSM" Style="{StaticResource MainActionButtonStyle}"
                     Command="{Binding LoadPublicKeysFromHSMCommand}" />
-            <Button Content="Save" Margin="5" Padding="5" MinWidth="120" Command="{Binding SaveCommand}" />
-            <Button Content="Close" Margin="5" Padding="5" MinWidth="120" Command="{Binding CloseCommand}" />
+            <Button Content="Save" Command="{Binding SaveCommand}" Style="{StaticResource MainActionButtonStyle}" />
+            <Button Content="Close" Command="{Binding CloseCommand}" Style="{StaticResource MainActionButtonStyle}" />
         </StackPanel>
     </Grid>
 </Window>

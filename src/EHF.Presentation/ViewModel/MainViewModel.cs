@@ -8,6 +8,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using EccHsmEncryptor.Presentation.DesignData;
 using EccHsmEncryptor.Presentation.Views;
 using EncryptionSuite.Contract;
@@ -261,6 +262,8 @@ namespace EccHsmEncryptor.Presentation.ViewModel
 
             var toSelect = this.PublicKeys.Where(model => state.SelectedPublicKeys.Any(bytes => bytes.SequenceEqual(model.KeyPairInfos.PublicKey.ToAns1()))).ToList();
             toSelect.ForEach(model => model.IsSelected = true);
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         public class DataViewRowState
@@ -410,7 +413,11 @@ namespace EccHsmEncryptor.Presentation.ViewModel
 
         public string FilePath
         {
-            get => this.filePath;
+            get
+            {
+                CommandManager.InvalidateRequerySuggested();
+                return this.filePath;
+            }
             set => this.Set(ref this.filePath, value);
         }
 

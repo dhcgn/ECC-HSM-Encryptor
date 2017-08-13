@@ -12,6 +12,10 @@ The actual state is more or less a minimum viable product (MVP), it has a few li
 
 The Crypto-Stuff is here: https://github.com/dhcgn/Encryption-Suite
 
+## Sample
+
+[![Screencast](http://i.imgur.com/9GkkKBZ.png)](https://vimeo.com/229488098)
+
 ### Limitations
 
 The following ECDSA GF(p) 192-320 bit elliptic curves are supported by the HSM, but only brainpoolP320r1 is at the moment implemented.
